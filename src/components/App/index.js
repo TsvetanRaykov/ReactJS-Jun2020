@@ -1,17 +1,27 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import './styless.css'
 import HomePage from '../HomePage'
 import Login from '../Login'
 import Register from '../Register'
 import Dashboard from '../Dashboard'
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import { CssBaseline } from '@material-ui/core'
+import { CssBaseline, CircularProgress } from '@material-ui/core'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import firebase from '../firebase'
 
 const theme = createMuiTheme()
 
-const App = () => {
-	return (
+export default function App() {
+	const [firebaseInitialized, setFirebaseInitialized] = useState(false)
+
+	useEffect(() => {
+		firebase.isInitialized().then((val) => {
+			setFirebaseInitialized(val)
+		})
+	})
+
+	return firebaseInitialized !== false ? (
 		<MuiThemeProvider theme={theme}>
 			<CssBaseline />
 			<BrowserRouter>
@@ -23,7 +33,9 @@ const App = () => {
 				</Switch>
 			</BrowserRouter>
 		</MuiThemeProvider>
+	) : (
+		<div id='loader'>
+			<CircularProgress />
+		</div>
 	)
 }
-
-export default App

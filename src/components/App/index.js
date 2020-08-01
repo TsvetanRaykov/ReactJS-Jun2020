@@ -5,12 +5,12 @@ import Login from '../Login'
 import Register from '../Register'
 import Dashboard from '../Dashboard'
 
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { MuiThemeProvider } from '@material-ui/core/styles'
+import theme from './theme'
 import { CssBaseline, CircularProgress } from '@material-ui/core'
+import Loader from '../Loader'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import firebase from '../firebase'
-
-const theme = createMuiTheme()
 
 export default function App() {
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false)
@@ -26,16 +26,17 @@ export default function App() {
 			<CssBaseline />
 			<BrowserRouter>
 				<Switch>
-					<Route exact path='/' component={HomePage} />
-					<Route exact path='/login' component={Login} />
-					<Route exact path='/register' component={Register} />
-					<Route exact path='/dashboard' component={Dashboard} />
-				</Switch>
-			</BrowserRouter>
+					<Route exact path='/' component={HomePage} />{' '}
+					<Route exact path='/login' component={Login} />{' '}
+					<Route exact path='/register' component={Register} />{' '}
+					<Route exact path='/dashboard' component={Dashboard} />{' '}
+				</Switch>{' '}
+			</BrowserRouter>{' '}
 		</MuiThemeProvider>
 	) : (
-		<div id='loader'>
-			<CircularProgress />
-		</div>
+		<Loader />
 	)
+	// <div id='loader'>
+	// 	<CircularProgress />
+	// </div>
 }

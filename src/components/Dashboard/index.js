@@ -6,6 +6,7 @@ import {
 	CircularProgress,
 	Button,
 } from '@material-ui/core'
+
 import VerifiedUserOutlined from '@material-ui/icons/VerifiedUserOutlined'
 import withStyles from '@material-ui/core/styles/withStyles'
 import firebase from '../firebase'
@@ -45,20 +46,13 @@ function Dashboard(props) {
 	const { classes } = props
 	const [quote, setQuote] = useState('')
 
-	const username = firebase.getCurrentUsername()
-
 	useEffect(() => {
-		if (username) {
+		if (firebase.getCurrentUsername()) {
 			firebase.getCurrentUserQuote().then((quote) => setQuote(quote))
+		} else {
+			props.history.replace('/login')
 		}
-	})
-
-	if (!username) {
-		// not logged in
-		alert('Please login first')
-		props.history.replace('/login')
-		return null
-	}
+	}, [props.history])
 
 	return (
 		<main className={classes.main}>

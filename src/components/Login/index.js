@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { Link, withRouter } from 'react-router-dom'
 import firebase from '../firebase'
+import Loader from '../Loader'
 
 const styles = (theme) => ({
 	main: {
@@ -47,13 +48,16 @@ const styles = (theme) => ({
 	},
 })
 
-function SignIn(props) {
+const SignIn = (props) => {
 	const { classes } = props
 
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [loading, setLoading] = useState(false)
 
-	return (
+	return loading ? (
+		<Loader />
+	) : (
 		<main className={classes.main}>
 			<Paper className={classes.paper}>
 				<Avatar className={classes.avatar}>
@@ -115,11 +119,15 @@ function SignIn(props) {
 	)
 
 	async function login() {
+		setLoading(true)
 		try {
 			await firebase.login(email, password)
+			setLoading(false)
 			props.history.replace('/dashboard')
 		} catch (error) {
 			alert(error.message)
+		} finally {
+			setLoading(false)
 		}
 	}
 }

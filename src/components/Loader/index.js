@@ -18,9 +18,11 @@ const styles = (theme) => ({
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
-		padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(
-			3
-		)}px`,
+		justifyContent: 'center',
+		height: 200,
+	},
+	loader: {
+		color: theme.palette.secondary.main,
 	},
 })
 
@@ -29,7 +31,7 @@ const Loader = (props) => {
 	return (
 		<main className={classes.main}>
 			<Paper className={classes.paper}>
-				<CircularProgress />
+				<CircularProgress className={classes.loader} disableShrink size={100} />
 			</Paper>
 		</main>
 	)

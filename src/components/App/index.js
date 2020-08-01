@@ -7,7 +7,7 @@ import Dashboard from '../Dashboard'
 
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import theme from './theme'
-import { CssBaseline, CircularProgress } from '@material-ui/core'
+import { CssBaseline } from '@material-ui/core'
 import Loader from '../Loader'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import firebase from '../firebase'
@@ -34,9 +34,9 @@ export default function App() {
 			</BrowserRouter>{' '}
 		</MuiThemeProvider>
 	) : (
-		<Loader />
+		<MuiThemeProvider theme={theme}>
+			<CssBaseline />
+			<Loader />
+		</MuiThemeProvider>
 	)
-	// <div id='loader'>
-	// 	<CircularProgress />
-	// </div>
 }

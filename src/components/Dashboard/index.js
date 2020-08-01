@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core'
 import VerifiedUserOutlined from '@material-ui/icons/VerifiedUserOutlined'
 import withStyles from '@material-ui/core/styles/withStyles'
-//import firebase from '../firebase'
+import firebase from '../firebase'
 import { withRouter } from 'react-router-dom'
 
 const styles = (theme) => ({
@@ -45,20 +45,20 @@ function Dashboard(props) {
 	const { classes } = props
 	const [quote, setQuote] = useState('')
 
-	// const username = firebase.getCurrentUsername()
+	const username = firebase.getCurrentUsername()
 
-	// useEffect(() => {
-	// 	if (username) {
-	// 		firebase.getCurrentUserQuote().then((quote) => setQuote(quote))
-	// 	}
-	// })
+	useEffect(() => {
+		if (username) {
+			firebase.getCurrentUserQuote().then((quote) => setQuote(quote))
+		}
+	})
 
-	// if (!username) {
-	// 	// not logged in
-	// 	alert('Please login first')
-	// 	props.history.replace('/login')
-	// 	return null
-	// }
+	if (!username) {
+		// not logged in
+		alert('Please login first')
+		props.history.replace('/login')
+		return null
+	}
 
 	return (
 		<main className={classes.main}>
@@ -67,7 +67,7 @@ function Dashboard(props) {
 					<VerifiedUserOutlined />
 				</Avatar>
 				<Typography component='h1' variant='h5'>
-					{/* Hello {firebase.getCurrentUsername()} */}
+					Hello {firebase.getCurrentUsername()}
 				</Typography>
 				<Typography component='h1' variant='h5'>
 					Your quote: {quote ? `"${quote}"` : <CircularProgress size={20} />}
@@ -77,7 +77,7 @@ function Dashboard(props) {
 					fullWidth
 					variant='contained'
 					color='secondary'
-					//	onClick={logout}
+					onClick={logout}
 					className={classes.submit}
 				>
 					Logout
@@ -86,10 +86,10 @@ function Dashboard(props) {
 		</main>
 	)
 
-	// async function logout() {
-	// 	await firebase.logout()
-	// 	props.history.push('/')
-	// }
+	async function logout() {
+		await firebase.logout()
+		props.history.push('/')
+	}
 }
 
 export default withRouter(withStyles(styles)(Dashboard))

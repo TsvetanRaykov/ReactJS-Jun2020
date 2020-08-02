@@ -22,7 +22,7 @@ const styles = (theme) => ({
 		height: 200,
 	},
 	loader: {
-		color: theme.palette.secondary.main,
+		color: theme.palette.primary.light,
 	},
 })
 

@@ -121,7 +121,10 @@ const SignIn = (props) => {
 	async function login() {
 		setLoading(true)
 		try {
-			await firebase.login(email, password)
+			const user = await firebase.login(email, password)
+
+			console.log(user.user)
+
 			setLoading(false)
 			props.history.replace('/dashboard')
 		} catch (error) {

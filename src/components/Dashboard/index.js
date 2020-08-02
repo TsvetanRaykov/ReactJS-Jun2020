@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
 	Typography,
 	Paper,
@@ -66,6 +67,17 @@ function Dashboard(props) {
 				<Typography component='h1' variant='h5'>
 					Your quote: {quote ? `"${quote}"` : <CircularProgress size={20} />}
 				</Typography>
+				<Button
+					type='submit'
+					fullWidth
+					variant='contained'
+					color='primary'
+					component={Link}
+					to='/quiz/create'
+					className={classes.submit}
+				>
+					Create Quiz
+				</Button>
 				<Button
 					type='submit'
 					fullWidth

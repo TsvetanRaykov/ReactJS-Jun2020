@@ -12,7 +12,7 @@ import theme from './components/theme'
 import { CssBaseline } from '@material-ui/core'
 import Loader from './components/Loader'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import firebase from './components/firebase'
+import firebase from './services/userService'
 
 export default function Navigation() {
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false)

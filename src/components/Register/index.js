@@ -7,11 +7,12 @@ import {
 	FormControl,
 	Input,
 	InputLabel,
+	FormHelperText,
 } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { Link, withRouter } from 'react-router-dom'
-import firebase from '../firebase'
+import userService from '../../services/userService'
 
 const styles = (theme) => ({
 	main: {
@@ -53,7 +54,18 @@ function Register(props) {
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [quote, setQuote] = useState('')
+	const [repassword, setRepassword] = useState('')
+
+	const [validators, setValidators] = useState({
+		name,
+		email,
+		password,
+		repassword,
+	})
+
+	const validEmailRegex = RegExp(
+		/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
+	)
 
 	return (
 		<main className={classes.main}>
@@ -73,21 +85,29 @@ function Register(props) {
 						<Input
 							id='name'
 							name='name'
+							error={!!validators.name}
 							autoComplete='off'
 							autoFocus
 							value={name}
 							onChange={(e) => setName(e.target.value)}
 						/>
+						<FormHelperText id='name-helper-text'>
+							{validators.name}
+						</FormHelperText>
 					</FormControl>
 					<FormControl margin='normal' required fullWidth>
 						<InputLabel htmlFor='email'>Email Address</InputLabel>
 						<Input
 							id='email'
 							name='email'
+							error={!!validators.email}
 							autoComplete='off'
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 						/>
+						<FormHelperText id='name-helper-text'>
+							{validators.email}
+						</FormHelperText>
 					</FormControl>
 					<FormControl margin='normal' required fullWidth>
 						<InputLabel htmlFor='password'>Password</InputLabel>
@@ -97,10 +117,29 @@ function Register(props) {
 							id='password'
 							autoComplete='off'
 							value={password}
+							error={!!validators.password}
 							onChange={(e) => setPassword(e.target.value)}
 						/>
+						<FormHelperText id='name-helper-text'>
+							{validators.password}
+						</FormHelperText>
 					</FormControl>
 					<FormControl margin='normal' required fullWidth>
+						<InputLabel htmlFor='password'>Confirm Password</InputLabel>
+						<Input
+							name='repassword'
+							type='password'
+							id='repassword'
+							autoComplete='off'
+							value={repassword}
+							error={!!validators.repassword}
+							onChange={(e) => setRepassword(e.target.value)}
+						/>
+						<FormHelperText id='name-helper-text'>
+							{validators.repassword}
+						</FormHelperText>
+					</FormControl>
+					{/* <FormControl margin='normal' required fullWidth>
 						<InputLabel htmlFor='quote'>Your Favorite Quote</InputLabel>
 						<Input
 							name='quote'
@@ -110,7 +149,7 @@ function Register(props) {
 							value={quote}
 							onChange={(e) => setQuote(e.target.value)}
 						/>
-					</FormControl>
+					</FormControl> */}
 
 					<Button
 						type='submit'
@@ -132,20 +171,44 @@ function Register(props) {
 						to='/login'
 						className={classes.submit}
 					>
-						Go back to Login
+						Login
 					</Button>
 				</form>
 			</Paper>
 		</main>
 	)
 
+	function validateForm() {
+		const errors = { name, email, password, repassword }
+		errors.name =
+			!name || name.length < 3 ? 'Name must be at least 3 characters.' : ''
+
+		errors.email = validEmailRegex.test(email)
+			? ''
+			: 'Email address is invalid.'
+
+		errors.password =
+			password.length < 3 ? 'Password must be at least 3 characters.' : ''
+
+		errors.repassword =
+			!errors.password && password !== repassword
+				? 'Passwords does not match.'
+				: ''
+
+		setValidators(errors)
+
+		return !Object.entries(errors).find(([k, v]) => v.length > 0)
+	}
+
 	async function onRegister() {
-		try {
-			await firebase.register(name, email, password)
-			await firebase.addQuote(quote)
-			props.history.replace('/dashboard')
-		} catch (error) {
-			alert(error.message)
+		if (validateForm()) {
+			try {
+				await userService.register(name, email, password)
+				//await userService.addQuote(quote)
+				props.history.replace('/dashboard')
+			} catch (error) {
+				alert(error.message)
+			}
 		}
 	}
 }

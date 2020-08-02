@@ -10,7 +10,7 @@ import {
 
 import VerifiedUserOutlined from '@material-ui/icons/VerifiedUserOutlined'
 import withStyles from '@material-ui/core/styles/withStyles'
-import firebase from '../firebase'
+import userService from '../../services/userService'
 import { withRouter } from 'react-router-dom'
 
 const styles = (theme) => ({
@@ -48,8 +48,8 @@ function Dashboard(props) {
 	const [quote, setQuote] = useState('')
 
 	useEffect(() => {
-		if (firebase.getCurrentUsername()) {
-			firebase.getCurrentUserQuote().then((quote) => setQuote(quote))
+		if (userService.getCurrentUsername()) {
+			userService.getCurrentUserQuote().then((quote) => setQuote(quote))
 		} else {
 			props.history.replace('/login')
 		}
@@ -62,7 +62,7 @@ function Dashboard(props) {
 					<VerifiedUserOutlined />
 				</Avatar>
 				<Typography component='h1' variant='h5'>
-					Hello {firebase.getCurrentUsername()}
+					Hello {userService.getCurrentUsername()}
 				</Typography>
 				<Typography component='h1' variant='h5'>
 					Your quote: {quote ? `"${quote}"` : <CircularProgress size={20} />}
@@ -93,7 +93,7 @@ function Dashboard(props) {
 	)
 
 	async function logout() {
-		await firebase.logout()
+		await userService.logout()
 		props.history.push('/')
 	}
 }

@@ -3,7 +3,7 @@ import { Typography, Paper, Avatar, Button } from '@material-ui/core'
 import VerifiedUserOutlined from '@material-ui/icons/VerifiedUserOutlined'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { Link } from 'react-router-dom'
-import firebase from '../firebase'
+import userService from '../../services/userService'
 
 const styles = (theme) => ({
 	main: {
@@ -39,7 +39,7 @@ function HomePage(props) {
 	const { classes } = props
 
 	useEffect(() => {
-		if (firebase.getCurrentUsername()) {
+		if (userService.getCurrentUsername()) {
 			props.history.replace('/dashboard')
 		}
 	}, [props.history])

@@ -11,7 +11,7 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { Link, withRouter } from 'react-router-dom'
-import firebase from '../firebase'
+import userService from '../../services/userService'
 import Loader from '../Loader'
 
 const styles = (theme) => ({
@@ -121,10 +121,7 @@ const SignIn = (props) => {
 	async function login() {
 		setLoading(true)
 		try {
-			const user = await firebase.login(email, password)
-
-			console.log(user.user)
-
+			await userService.login(email, password)
 			setLoading(false)
 			props.history.replace('/dashboard')
 		} catch (error) {

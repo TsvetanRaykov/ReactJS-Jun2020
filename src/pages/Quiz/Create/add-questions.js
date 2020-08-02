@@ -1,20 +1,22 @@
-import React, { useContext } from 'react'
+import React, { useContext, Fragment } from 'react'
 import Header from '../../../components/Header'
 import UserContext from '../../../Context'
-import NotFound from '../../../components/NotFound'
+import { Redirect } from 'react-router-dom'
+import AdminMenu from '../../../components/Quiz/AdminMenu'
+import Container from '@material-ui/core/Container'
 
 const AddQuestions = () => {
 	const { quiz } = useContext(UserContext)
 
-	console.log(quiz)
-
-	return quiz !== null ? (
+	return quiz.title ? (
 		<>
-			<Header title={quiz.title} />
-			<b>Add Questions</b>
+			<Header quiz={quiz} />
+			<Container>
+				<AdminMenu />
+			</Container>
 		</>
 	) : (
-		<NotFound />
+		<Redirect to='/quiz/create' />
 	)
 }
 

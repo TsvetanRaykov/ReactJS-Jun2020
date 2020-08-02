@@ -1,7 +1,5 @@
 import React from 'react'
 
-const UserContext = React.createContext({
-	quiz: null,
-})
+const UserContext = React.createContext()
 
 export default UserContext

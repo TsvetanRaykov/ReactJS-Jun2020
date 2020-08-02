@@ -45,27 +45,27 @@ const styles = (theme) => ({
 })
 
 const Quiz = (props) => {
-	const context = useContext(UserContext)
-	const { classes } = props
+	const { quiz } = useContext(UserContext)
 
-	const [title, setTitle] = useState('')
-	const [description, setDescription] = useState('')
-	const [isPublic, setPublic] = useState(false)
+	const { classes, history } = props
+
+	const [title, setTitle] = useState(quiz.title || '')
+	const [description, setDescription] = useState(quiz.description || '')
+	const [isPublic, setPublic] = useState(quiz.isPublic || false)
 
 	const create = () => {
-		context.quiz = {
-			title,
-			description,
-			isPublic,
-		}
-		props.history.push('/quiz/create/questions')
+		quiz.title = title
+		quiz.description = description
+		quiz.isPublic = isPublic
+
+		history.push('/quiz/create/questions')
 	}
 
 	const cancel = () => {
-		if (props.history.length > 0) {
-			props.history.goBack()
+		if (history.length > 0) {
+			history.goBack()
 		} else {
-			props.history.replace('/dashboard')
+			history.replace('/dashboard')
 		}
 	}
 

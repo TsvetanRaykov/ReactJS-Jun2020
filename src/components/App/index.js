@@ -3,7 +3,7 @@ import UserContext from '../../Context'
 
 const App = (props) => {
 	return (
-		<UserContext.Provider value={{ quiz: null }}>
+		<UserContext.Provider value={{ quiz: {} }}>
 			{props.children}
 		</UserContext.Provider>
 	)

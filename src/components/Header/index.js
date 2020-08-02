@@ -7,24 +7,22 @@ import {
 	IconButton,
 	Menu,
 	MenuItem,
+	Avatar,
 } from '@material-ui/core'
-import { AccountCircle } from '@material-ui/icons'
-import MenuIcon from '@material-ui/icons/Menu'
-
 const styles = (theme) => ({
 	root: {
 		flexGrow: 1,
 	},
-	menuButton: {
-		marginRight: theme.spacing(2),
-	},
+	// menuButton: {
+	// 	marginRight: theme.spacing(2),
+	// },
 	title: {
 		flexGrow: 1,
 	},
 })
 
 const Header = (props) => {
-	const { classes, title } = props
+	const { classes, quiz } = props
 
 	const menuWrapper = createRef()
 
@@ -39,18 +37,16 @@ const Header = (props) => {
 		setAnchorEl(null)
 	}
 	return (
-		<AppBar position='static'>
+		<AppBar position='static' className={classes.root}>
 			<Toolbar>
-				<IconButton
+				{/* <IconButton
 					edge='start'
 					className={classes.menuButton}
 					color='inherit'
 					aria-label='menu'
-				>
-					<MenuIcon />
-				</IconButton>
+				></IconButton> */}
 				<Typography variant='h6' className={classes.title}>
-					{title}
+					{quiz.title}
 				</Typography>
 				<div>
 					<IconButton
@@ -61,7 +57,7 @@ const Header = (props) => {
 						ref={menuWrapper}
 						color='inherit'
 					>
-						<AccountCircle />
+						<Avatar src='https://randomuser.me/api/portraits/men/7.jpg' />
 					</IconButton>
 					<Menu
 						id='menu-appbar'

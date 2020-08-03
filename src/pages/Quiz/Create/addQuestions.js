@@ -9,10 +9,15 @@ import QuizContent from '../../../components/Quiz/AdminContent'
 const AddQuestions = () => {
 	const { quiz } = useContext(UserContext)
 
-	const [addQuestion, setAddQuestion] = useState(false)
+	const [isFormOpen, setIsFormOpen] = useState(false)
 
-	const handleAddQuestion = () => {
-		setAddQuestion(true)
+	const openForm = () => {
+		setIsFormOpen(true)
+	}
+
+	const closeForm = (update) => {
+		setIsFormOpen(false)
+		// TODO: if update - refresh question list
 	}
 
 	if (quiz.title) {
@@ -20,8 +25,8 @@ const AddQuestions = () => {
 			<Fragment>
 				<Header quiz={quiz} />
 				<Container>
-					<AdminMenu addQuestion={handleAddQuestion} />
-					<QuizContent showAddQuestionForm={addQuestion} />
+					<AdminMenu addQuestion={openForm} />
+					<QuizContent formOpen={isFormOpen} formHandler={closeForm} />
 				</Container>
 			</Fragment>
 		)

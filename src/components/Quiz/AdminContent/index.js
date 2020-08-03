@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Paper, Typography, withStyles } from '@material-ui/core'
 import AddQuestionForm from '../../../components/Forms/AddQuestion'
 
@@ -9,24 +9,14 @@ const styles = (theme) => ({
 })
 
 const QuizContent = (props) => {
-	const { classes, showAddQuestionForm } = props
-
-	const [formOpen, setFormOpen] = useState(showAddQuestionForm)
-
-	const onQuestionAdd = (question) => {
-		setFormOpen(false)
-	}
-
-	useEffect(() => {
-		setFormOpen(showAddQuestionForm)
-	}, [showAddQuestionForm])
+	let { classes, formOpen, formHandler } = props
 
 	return (
 		<Paper className={classes.root}>
 			<Typography component='h1' variant='h6'>
 				Questions
 			</Typography>
-			{formOpen && <AddQuestionForm onSave={onQuestionAdd} />}
+			{formOpen && <AddQuestionForm onSave={formHandler} />}
 		</Paper>
 	)
 }

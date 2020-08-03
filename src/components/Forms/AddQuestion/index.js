@@ -20,7 +20,9 @@ const AddQuestionForm = (props) => {
 	const [question, setQuestion] = useState('')
 
 	const onSaveClick = () => {
-		onSave(question)
+		// TODO: Validate data
+		// TODO: Save in firebase
+		onSave(false)
 	}
 
 	return (

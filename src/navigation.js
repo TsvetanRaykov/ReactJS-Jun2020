@@ -5,7 +5,7 @@ import Login from './components/Login'
 import Register from './components/Register'
 import Dashboard from './components/Dashboard'
 import Quiz from './pages/Quiz/Create'
-import QuizQuestions from './pages/Quiz/Create/add-questions'
+import QuizQuestions from './pages/Quiz/Create/addQuestions'
 
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import theme from './components/theme'

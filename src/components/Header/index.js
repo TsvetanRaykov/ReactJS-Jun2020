@@ -1,4 +1,6 @@
 import React, { useState, createRef } from 'react'
+import { withRouter } from 'react-router-dom'
+import userService from '../../services/userService'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {
 	AppBar,
@@ -35,6 +37,11 @@ const Header = (props) => {
 
 	const handleClose = () => {
 		setAnchorEl(null)
+	}
+	async function logout() {
+		setAnchorEl(null)
+		await userService.logout()
+		props.history.push('/')
 	}
 	return (
 		<AppBar position='static' className={classes.root}>
@@ -75,7 +82,7 @@ const Header = (props) => {
 						onClose={handleClose}
 					>
 						<MenuItem onClick={handleClose}>Profile</MenuItem>
-						<MenuItem onClick={handleClose}>My account</MenuItem>
+						<MenuItem onClick={logout}>Logout</MenuItem>
 					</Menu>
 				</div>
 			</Toolbar>
@@ -83,4 +90,4 @@ const Header = (props) => {
 	)
 }
 
-export default withStyles(styles)(Header)
+export default withRouter(withStyles(styles)(Header))

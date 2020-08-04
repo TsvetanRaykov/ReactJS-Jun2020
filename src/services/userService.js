@@ -1,11 +1,9 @@
-import app from 'firebase/app'
+import app from './firebase'
 import 'firebase/auth'
 import 'firebase/firebase-firestore'
-import firebaseConfig from './firebase-config'
 
 class Firebase {
 	constructor() {
-		app.initializeApp(firebaseConfig)
 		this.auth = app.auth()
 		this.db = app.firestore()
 	}

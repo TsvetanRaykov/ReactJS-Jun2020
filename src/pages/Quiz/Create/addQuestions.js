@@ -5,23 +5,26 @@ import { Redirect } from 'react-router-dom'
 import AdminMenu from '../../../components/Quiz/AdminMenu'
 import Container from '@material-ui/core/Container'
 import QuizContent from '../../../components/Quiz/AdminContent'
+import quizService from '../../../services/quizService'
 
 const AddQuestions = () => {
 	const { quiz } = useContext(UserContext)
 
-	const [isFormOpen, setIsFormOpen] = useState(false)
+	const [isFormOpen, setFormOpen] = useState(false)
+	const [questions, setQuestions] = useState([])
 
 	const openForm = () => {
-		setIsFormOpen(true)
+		setFormOpen(true)
 	}
 
-	const closeForm = (update) => {
-		setIsFormOpen(false)
-		// TODO: if update - refresh question list
+	const closeForm = (questions) => {
+		setFormOpen(false)
+		setQuestions(questions)
 	}
 
-	const saveQuiz = () => {
-		console.log(quiz)
+	const saveQuiz = async () => {
+		quiz.questions = questions
+		await quizService.addQuiz(quiz)
 	}
 
 	if (quiz.title) {

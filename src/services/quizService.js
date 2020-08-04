@@ -1,17 +1,17 @@
-import app from 'firebase/app'
+import app from './firebase'
 import 'firebase/auth'
 import 'firebase/firebase-firestore'
-import firebaseConfig from './firebase-config'
 
 class UserService {
 	constructor() {
-		app.initializeApp(firebaseConfig)
 		this.auth = app.auth()
 		this.ref = app.firestore().collection('quizzes')
 	}
 
-	async addQuiz(quiz) {
-		return await this.ref.add(quiz)
+	addQuiz(quiz) {
+		quiz.createdBy = this.auth.currentUser.uid
+		quiz.createdAt = new Date()
+		return this.ref.add(quiz)
 	}
 }
 

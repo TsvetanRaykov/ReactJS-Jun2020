@@ -57,6 +57,7 @@ const Quiz = (props) => {
 		quiz.title = title
 		quiz.description = description
 		quiz.isPublic = isPublic
+		quiz.questions = []
 
 		history.push('/quiz/create/questions')
 	}

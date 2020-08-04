@@ -14,9 +14,12 @@ const QuizContent = (props) => {
 
 	const addQuestionHandler = (question) => {
 		if (question) {
-			setQuestions([...questions, question])
+			setQuestions((current) => {
+				const updated = [...current, question]
+				formHandler(updated)
+				return updated
+			})
 		}
-		formHandler(false)
 	}
 
 	return (

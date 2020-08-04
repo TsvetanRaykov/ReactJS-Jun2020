@@ -46,7 +46,7 @@ const AddQuestionForm = (props) => {
 		// TODO: Validate data
 		// TODO: Save in firebase
 
-		onSave(false)
+		onSave({ question, answers })
 	}
 
 	const [open, setOpen] = React.useState(false)
@@ -183,7 +183,7 @@ const AddQuestionForm = (props) => {
 					onClick={onSaveClick}
 					className={classes.submit}
 				>
-					Save
+					Save Question
 				</Button>
 			</form>
 		</Paper>

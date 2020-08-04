@@ -20,12 +20,16 @@ const AddQuestions = () => {
 		// TODO: if update - refresh question list
 	}
 
+	const saveQuiz = () => {
+		console.log(quiz)
+	}
+
 	if (quiz.title) {
 		return (
 			<Fragment>
 				<Header quiz={quiz} />
 				<Container>
-					<AdminMenu addQuestion={openForm} />
+					<AdminMenu addQuestion={openForm} saveQuiz={saveQuiz} />
 					<QuizContent formOpen={isFormOpen} formHandler={closeForm} />
 				</Container>
 			</Fragment>

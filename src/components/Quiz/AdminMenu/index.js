@@ -4,7 +4,7 @@ import { Paper, Button, Box } from '@material-ui/core'
 import { Link, withRouter } from 'react-router-dom'
 
 const EditMenu = (props) => {
-	const { addQuestion } = props
+	const { addQuestion, saveQuiz } = props
 
 	const addQuestionHandler = () => {
 		addQuestion()
@@ -17,7 +17,7 @@ const EditMenu = (props) => {
 					Edit Quiz
 				</Button>
 				<Button onClick={addQuestionHandler}>Add Question</Button>
-				<Button>Save Quiz</Button>
+				<Button onClick={saveQuiz}>Save Quiz</Button>
 			</Box>
 		</Paper>
 	)

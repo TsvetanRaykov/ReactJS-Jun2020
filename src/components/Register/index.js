@@ -204,7 +204,6 @@ function Register(props) {
 		if (validateForm()) {
 			try {
 				await userService.register(name, email, password)
-				//await userService.addQuote(quote)
 				props.history.replace('/dashboard')
 			} catch (error) {
 				alert(error.message)

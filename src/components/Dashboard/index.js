@@ -1,101 +1,125 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, createRef, useContext, useEffect } from 'react'
+import Header from '../Header'
 import {
-	Typography,
+	Grid,
 	Paper,
+	withStyles,
+	Box,
 	Avatar,
 	CircularProgress,
-	Button,
 } from '@material-ui/core'
-
-import VerifiedUserOutlined from '@material-ui/icons/VerifiedUserOutlined'
-import withStyles from '@material-ui/core/styles/withStyles'
+import UserContext from '../../Context'
 import userService from '../../services/userService'
-import { withRouter } from 'react-router-dom'
 
 const styles = (theme) => ({
-	main: {
-		width: 'auto',
-		display: 'block',
-		marginLeft: theme.spacing(3),
-		marginRight: theme.spacing(3),
-		[theme.breakpoints.up(400 + theme.spacing(3 * 2))]: {
-			width: 400,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		},
-	},
 	paper: {
-		marginTop: theme.spacing(8),
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(
-			3
-		)}px`,
+		padding: theme.spacing(2),
+		color: theme.palette.text.secondary,
+		margin: theme.spacing(1),
+	},
+	content: {
+		height: '85vh',
 	},
 	avatar: {
-		margin: theme.spacing(),
-		backgroundColor: theme.palette.secondary.main,
+		width: theme.spacing(15),
+		height: theme.spacing(15),
+		cursor: 'pointer',
 	},
-	submit: {
-		marginTop: theme.spacing(3),
+	file: {
+		opacity: '0%',
+		position: 'absolute',
 	},
 })
 
-function Dashboard(props) {
+const Profile = (props) => {
 	const { classes } = props
-	const [quote, setQuote] = useState('')
+	const context = useContext(UserContext)
+	const [newContext, setNewContext] = useState(context)
 
 	useEffect(() => {
-		if (userService.getCurrentUsername()) {
-			userService.getCurrentUserQuote().then((quote) => setQuote(quote))
-		} else {
-			props.history.replace('/login')
+		setNewContext(context)
+	}, [context])
+
+	const fileRef = createRef()
+
+	const imageHandler = (event) => {
+		if (event.target.files.length === 0) {
+			return
 		}
-	}, [props.history])
+		const imageFile = event.target.files[0]
+		const reader = new FileReader()
+
+		reader.onload = () => {
+			if (reader.readyState === 2) {
+				setNewContext((current) => ({
+					...current,
+					userImg: reader.result,
+				}))
+				userService.addImage(imageFile)
+			}
+		}
+
+		reader.readAsDataURL(imageFile)
+	}
+
+	const triggerInputFile = () => {
+		if (fileRef.current !== undefined && fileRef.current.click !== undefined) {
+			fileRef.current.click()
+		}
+	}
 
 	return (
-		<main className={classes.main}>
-			<Paper className={classes.paper}>
-				<Avatar className={classes.avatar}>
-					<VerifiedUserOutlined />
-				</Avatar>
-				<Typography component='h1' variant='h5'>
-					Hello {userService.getCurrentUsername()}
-				</Typography>
-				<Typography component='h1' variant='h5'>
-					Your quote: {quote ? `"${quote}"` : <CircularProgress size={20} />}
-				</Typography>
-				<Button
-					type='submit'
-					fullWidth
-					variant='contained'
-					color='primary'
-					component={Link}
-					to='/quiz/create'
-					className={classes.submit}
-				>
-					Create Quiz
-				</Button>
-				<Button
-					type='submit'
-					fullWidth
-					variant='contained'
-					color='secondary'
-					onClick={logout}
-					className={classes.submit}
-				>
-					Logout
-				</Button>
-			</Paper>
-		</main>
+		<UserContext.Provider value={newContext}>
+			<>
+				<Header title='Quizoom'></Header>
+				<Grid container>
+					<Grid item xs={12} sm={6}>
+						<Paper className={classes.paper}>
+							<Box className={classes.content}>
+								<Grid container>
+									<Grid item xs={4} md={3} lg={2}>
+										{newContext.userImg ? (
+											<Avatar
+												className={classes.avatar}
+												alt={newContext.userName}
+												src={newContext.userImg}
+												onClick={triggerInputFile}
+											/>
+										) : (
+											<CircularProgress />
+										)}
+										<input
+											id='img-input'
+											accept='image/*'
+											type='file'
+											className={classes.file}
+											onChange={imageHandler}
+											ref={fileRef}
+										/>
+									</Grid>
+									<Grid item xs={8} md={9} lg={10}>
+										<Box px={2} m={1}>
+											{newContext.userName}
+										</Box>
+										<Box px={2} m={1}>
+											{newContext.userEmail}
+										</Box>
+									</Grid>
+								</Grid>
+								<br />
+								<hr />
+							</Box>
+						</Paper>
+					</Grid>
+					<Grid item xs={12} sm={6}>
+						<Paper className={classes.paper}>
+							<Box className={classes.content}>Right Side</Box>
+						</Paper>
+					</Grid>
+				</Grid>
+			</>
+		</UserContext.Provider>
 	)
-
-	async function logout() {
-		await userService.logout()
-		props.history.push('/')
-	}
 }
 
-export default withRouter(withStyles(styles)(Dashboard))
+export default withStyles(styles)(Profile)

@@ -16,7 +16,6 @@ import {
 } from '@material-ui/core'
 import Answer from '../../Answer'
 import { DeleteForever, Add } from '@material-ui/icons'
-// import AddIcon from '@material-ui/icons/Add'
 
 const styles = (theme) => ({
 	submit: {

@@ -14,8 +14,8 @@ class Firebase {
 		return this.auth.signInWithEmailAndPassword(email, password)
 	}
 
-	logout() {
-		return this.auth.signOut()
+	async logout() {
+		await this.auth.signOut()
 	}
 
 	async register(name, email, password) {
@@ -42,31 +42,31 @@ class Firebase {
 				console.error(err)
 			},
 			async () => {
-				const imageUrl = await this.storage
+				const photoURL = await this.storage
 					.ref('images')
 					.child(imageFile.name)
 					.getDownloadURL()
 
-				await this.db.doc(`users_image/${this.auth.currentUser.uid}`).set({
-					imageUrl,
-				})
-
-				this.auth.currentUser.updateProfile({
-					imageUrl,
+				// await this.db.doc(`users_image/${this.auth.currentUser.uid}`).set({
+				// 	imageUrl,
+				// })
+				await this.auth.currentUser.updateProfile({
+					photoURL,
 				})
 			}
 		)
 	}
 
-	async getCurrentUserImage() {
-		if (!this.auth.currentUser) {
-			return ''
-		}
-		const data = await this.db
-			.doc(`users_image/${this.auth.currentUser.uid}`)
-			.get()
+	getCurrentUserImage() {
+		// if (!this.auth.currentUser) {
+		// 	return ''
+		// }
+		// const data = await this.db
+		// 	.doc(`users_image/${this.auth.currentUser.uid}`)
+		// 	.get()
 
-		return data.get('imageUrl')
+		// return data.get('imageUrl')
+		return (this.auth.currentUser && this.auth.currentUser.photoURL) || '-'
 	}
 
 	getCurrentUsername() {

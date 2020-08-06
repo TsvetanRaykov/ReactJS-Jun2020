@@ -7,9 +7,11 @@ import {
 	Box,
 	Avatar,
 	CircularProgress,
+	Tooltip,
 } from '@material-ui/core'
 import UserContext from '../../Context'
 import userService from '../../services/userService'
+import EditableTextField from '../EditableTextField'
 
 const styles = (theme) => ({
 	paper: {
@@ -68,6 +70,8 @@ const Profile = (props) => {
 		}
 	}
 
+	const saveName = () => {}
+
 	return (
 		<UserContext.Provider value={newContext}>
 			<>
@@ -79,12 +83,21 @@ const Profile = (props) => {
 								<Grid container>
 									<Grid item xs={4} md={3} lg={2}>
 										{newContext.userImg ? (
-											<Avatar
-												className={classes.avatar}
-												alt={newContext.userName}
-												src={newContext.userImg}
-												onClick={triggerInputFile}
-											/>
+											<Tooltip
+												title={
+													<>
+														Is that you? <br />
+														Click to change the picture.
+													</>
+												}
+											>
+												<Avatar
+													className={classes.avatar}
+													alt={newContext.userName}
+													src={newContext.userImg}
+													onClick={triggerInputFile}
+												/>
+											</Tooltip>
 										) : (
 											<CircularProgress />
 										)}
@@ -99,7 +112,10 @@ const Profile = (props) => {
 									</Grid>
 									<Grid item xs={8} md={9} lg={10}>
 										<Box px={2} m={1}>
-											{newContext.userName}
+											<EditableTextField
+												text={newContext.userName}
+												callback={saveName}
+											/>
 										</Box>
 										<Box px={2} m={1}>
 											{newContext.userEmail}

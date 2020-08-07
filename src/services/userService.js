@@ -25,6 +25,12 @@ class Firebase {
 		})
 	}
 
+	updateName(newName) {
+		this.auth.currentUser.updateProfile({
+			displayName: newName,
+		})
+	}
+
 	addImage(imageFile) {
 		if (!this.auth.currentUser) {
 			return alert('Not authorized')

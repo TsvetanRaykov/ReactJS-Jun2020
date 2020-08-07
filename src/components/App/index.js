@@ -14,36 +14,69 @@ import Loader from '../Loader'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import auth from '../../services/userService'
 import ProtectedRoute from '../ProtectedRoute'
+import userService from '../../services/userService'
+import UserContext from '../../Context'
 
 const App = () => {
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false)
+	const [user, setUser] = useState({})
+
+	const updateUser = ({ userImg, userName, userEmail }) => {
+		setUser((current) => {
+			const {
+				userName: currentName,
+				userImg: currentImg,
+				userEmail: currentEmail,
+			} = current
+			return {
+				userName: userName || currentName,
+				userImg: userImg || currentImg,
+				userEmail: userEmail || currentEmail,
+			}
+		})
+	}
 
 	useEffect(() => {
-		auth.isInitialized().then((val) => setFirebaseInitialized(val))
+		auth.isInitialized().then((val) => {
+			setFirebaseInitialized(val)
+			setUser(() => ({
+				userName: userService.getCurrentUsername(),
+				userImg: userService.getCurrentUserImage(),
+				userEmail: userService.getCurrentUserEmail(),
+			}))
+		})
 	}, [])
 
 	return (
-		<MuiThemeProvider theme={theme}>
-			<CssBaseline />
-			<BrowserRouter>
-				{firebaseInitialized !== false ? (
-					<Switch>
-						<Route exact path='/' component={HomePage} />
-						<Route exact path='/login' component={Login} />
-						<Route exact path='/register' component={Register} />
-						<ProtectedRoute exact path='/dashboard' component={Dashboard} />
-						<Route exact path='/quiz/create' component={Quiz} />
-						<Route
-							exact
-							path='/quiz/create/questions'
-							component={QuizQuestions}
-						/>
-					</Switch>
-				) : (
-					<Loader />
-				)}
-			</BrowserRouter>
-		</MuiThemeProvider>
+		<UserContext.Provider
+			value={{
+				user,
+				quiz: {},
+				updateUser,
+			}}
+		>
+			<MuiThemeProvider theme={theme}>
+				<CssBaseline />
+				<BrowserRouter>
+					{firebaseInitialized !== false ? (
+						<Switch>
+							<Route exact path='/' component={HomePage} />
+							<Route exact path='/login' component={Login} />
+							<Route exact path='/register' component={Register} />
+							<ProtectedRoute exact path='/dashboard' component={Dashboard} />
+							<ProtectedRoute exact path='/quiz/create' component={Quiz} />
+							<ProtectedRoute
+								exact
+								path='/quiz/create/questions'
+								component={QuizQuestions}
+							/>
+						</Switch>
+					) : (
+						<Loader />
+					)}
+				</BrowserRouter>
+			</MuiThemeProvider>
+		</UserContext.Provider>
 	)
 }
 

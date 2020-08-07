@@ -1,4 +1,4 @@
-import React, { useContext, Fragment, useState } from 'react'
+import React, { useContext, Fragment, useState, useEffect } from 'react'
 import Header from '../../../components/Header'
 import UserContext from '../../../Context'
 import { Redirect } from 'react-router-dom'
@@ -12,6 +12,10 @@ const AddQuestions = () => {
 
 	const [isFormOpen, setFormOpen] = useState(false)
 	const [questions, setQuestions] = useState([])
+
+	useEffect(() => {
+		console.log(quiz)
+	})
 
 	const openForm = () => {
 		setFormOpen(true)

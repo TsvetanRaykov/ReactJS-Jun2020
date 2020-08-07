@@ -1,4 +1,4 @@
-import React, { useState, createRef, useContext, useEffect } from 'react'
+import React, { createRef, useContext } from 'react'
 import Header from '../Header'
 import {
 	Grid,
@@ -8,12 +8,22 @@ import {
 	Avatar,
 	CircularProgress,
 	Tooltip,
+	List,
+	ListItem,
+	ListItemAvatar,
+	ListItemText,
+	Divider,
 } from '@material-ui/core'
 import UserContext from '../../Context'
 import userService from '../../services/userService'
 import EditableTextField from '../EditableTextField'
+import { PersonRounded, EmailRounded } from '@material-ui/icons'
 
 const styles = (theme) => ({
+	root: {
+		width: '100%',
+		backgroundColor: theme.palette.background.paper,
+	},
 	paper: {
 		padding: theme.spacing(2),
 		color: theme.palette.text.secondary,
@@ -35,12 +45,10 @@ const styles = (theme) => ({
 
 const Profile = (props) => {
 	const { classes } = props
-	const context = useContext(UserContext)
-	const [newContext, setNewContext] = useState(context)
-
-	useEffect(() => {
-		setNewContext(context)
-	}, [context])
+	const {
+		user: { userImg, userName, userEmail },
+		updateUser,
+	} = useContext(UserContext)
 
 	const fileRef = createRef()
 
@@ -53,10 +61,9 @@ const Profile = (props) => {
 
 		reader.onload = () => {
 			if (reader.readyState === 2) {
-				setNewContext((current) => ({
-					...current,
+				updateUser({
 					userImg: reader.result,
-				}))
+				})
 				userService.addImage(imageFile)
 			}
 		}
@@ -70,71 +77,78 @@ const Profile = (props) => {
 		}
 	}
 
-	const saveName = () => {}
+	const saveName = (newName) => {
+		updateUser({ userName: newName })
+		userService.updateName(newName)
+	}
 
 	return (
-		<UserContext.Provider value={newContext}>
-			<>
-				<Header title='Quizoom'></Header>
-				<Grid container>
-					<Grid item xs={12} sm={6}>
-						<Paper className={classes.paper}>
-							<Box className={classes.content}>
-								<Grid container>
-									<Grid item xs={4} md={3} lg={2}>
-										{newContext.userImg ? (
-											<Tooltip
-												title={
-													<>
-														Is that you? <br />
-														Click to change the picture.
-													</>
-												}
-											>
-												<Avatar
-													className={classes.avatar}
-													alt={newContext.userName}
-													src={newContext.userImg}
-													onClick={triggerInputFile}
-												/>
-											</Tooltip>
-										) : (
-											<CircularProgress />
-										)}
-										<input
-											id='img-input'
-											accept='image/*'
-											type='file'
-											className={classes.file}
-											onChange={imageHandler}
-											ref={fileRef}
-										/>
-									</Grid>
-									<Grid item xs={8} md={9} lg={10}>
-										<Box px={2} m={1}>
-											<EditableTextField
-												text={newContext.userName}
-												callback={saveName}
+		<>
+			<Header title='Quizoom'></Header>
+			<Grid container>
+				<Grid item xs={12} sm={6}>
+					<Paper className={classes.paper}>
+						<Box className={classes.content}>
+							<Grid container>
+								<Grid item xs={4} md={3} lg={2}>
+									{userImg ? (
+										<Tooltip
+											title={
+												<>
+													Is that you? <br />
+													Click to change the picture.
+												</>
+											}
+										>
+											<Avatar
+												className={classes.avatar}
+												alt={userName}
+												src={userImg}
+												onClick={triggerInputFile}
 											/>
-										</Box>
-										<Box px={2} m={1}>
-											{newContext.userEmail}
-										</Box>
-									</Grid>
+										</Tooltip>
+									) : (
+										<CircularProgress />
+									)}
+									<input
+										id='img-input'
+										accept='image/*'
+										type='file'
+										className={classes.file}
+										onChange={imageHandler}
+										ref={fileRef}
+									/>
 								</Grid>
-								<br />
-								<hr />
-							</Box>
-						</Paper>
-					</Grid>
-					<Grid item xs={12} sm={6}>
-						<Paper className={classes.paper}>
-							<Box className={classes.content}>Right Side</Box>
-						</Paper>
-					</Grid>
+								<Grid item xs={8} md={9} lg={10}>
+									<List className={classes.root}>
+										<ListItem>
+											<ListItemAvatar>
+												<PersonRounded color='primary' />
+											</ListItemAvatar>
+											<EditableTextField text={userName} callback={saveName} />
+										</ListItem>
+										<Divider />
+										<ListItem>
+											<ListItemAvatar>
+												<EmailRounded color='primary' />
+											</ListItemAvatar>
+											<ListItemText primary={userEmail} />
+										</ListItem>
+									</List>
+								</Grid>
+							</Grid>
+							<br />
+							<hr />
+						</Box>
+					</Paper>
 				</Grid>
-			</>
-		</UserContext.Provider>
+				<Grid item xs={12} sm={6}>
+					<Paper className={classes.paper}>
+						<Box className={classes.content}>Right Side</Box>
+					</Paper>
+				</Grid>
+			</Grid>
+		</>
 	)
 }
 

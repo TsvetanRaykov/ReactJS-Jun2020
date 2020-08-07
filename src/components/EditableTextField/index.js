@@ -1,15 +1,21 @@
 import React, { useState, useEffect, createRef } from 'react'
-import { Tooltip } from '@material-ui/core'
+import { Tooltip, withStyles, TextField } from '@material-ui/core'
+
+const styles = (theme) => ({
+	userName: {
+		fontSize: '1rem',
+	},
+})
 
 const EditableTextField = (props) => {
-	const { text, callback } = props
+	const { text, callback, classes } = props
 
 	const [isInEditMode, setEdiMode] = useState(false)
 	const [newText, setNewtext] = useState(text)
 
 	const textInput = createRef()
 
-	const chageEditMode = (e) => {
+	const chageToEditMode = () => {
 		setEdiMode(true)
 	}
 
@@ -33,12 +39,12 @@ const EditableTextField = (props) => {
 	const renderEditView = () => {
 		return (
 			<div>
-				<input
-					type='text'
+				<TextField
 					onChange={(e) => setNewtext(e.target.value)}
 					onBlur={saveText}
 					value={newText}
 					ref={textInput}
+					autoFocus
 				/>
 			</div>
 		)
@@ -46,11 +52,13 @@ const EditableTextField = (props) => {
 
 	const renderDefaultView = () => (
 		<Tooltip placement='bottom-start' title='Double click to edit'>
-			<div onDoubleClick={chageEditMode}>{newText}</div>
+			<div className={classes.userName} onDoubleClick={chageToEditMode}>
+				{newText}
+			</div>
 		</Tooltip>
 	)
 
 	return isInEditMode ? renderEditView() : renderDefaultView()
 }
 
-export default EditableTextField
+export default withStyles(styles)(EditableTextField)

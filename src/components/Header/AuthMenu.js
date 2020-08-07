@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import userService from '../../services/userService'
 import {
@@ -15,7 +15,9 @@ import UserContext from '../../Context'
 const AuthMenu = (props) => {
 	const [anchorEl, setAnchorEl] = useState(null)
 
-	const { userImg, userName } = useContext(UserContext)
+	const {
+		user: { userImg, userName },
+	} = useContext(UserContext)
 
 	const open = Boolean(anchorEl)
 
@@ -26,6 +28,11 @@ const AuthMenu = (props) => {
 	const handleClose = () => {
 		setAnchorEl(null)
 	}
+
+	const handleAddQuiz = () => {
+		props.history.push('/quiz/create')
+	}
+
 	async function logout() {
 		setAnchorEl(null)
 		await userService.logout()
@@ -60,6 +67,7 @@ const AuthMenu = (props) => {
 				onClose={handleClose}
 			>
 				<MenuItem onClick={handleClose}>Profile</MenuItem>
+				<MenuItem onClick={handleAddQuiz}>Add quiz</MenuItem>
 				<MenuItem onClick={logout}>Logout</MenuItem>
 			</Menu>
 		</div>

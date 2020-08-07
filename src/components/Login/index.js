@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
 	Typography,
 	Paper,
@@ -13,6 +13,7 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import { Link, withRouter } from 'react-router-dom'
 import userService from '../../services/userService'
 import Loader from '../Loader'
+import UserContext from '../../Context'
 
 const styles = (theme) => ({
 	main: {
@@ -50,6 +51,7 @@ const styles = (theme) => ({
 
 const SignIn = (props) => {
 	const { classes } = props
+	const { updateUser } = useContext(UserContext)
 
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -122,6 +124,11 @@ const SignIn = (props) => {
 		setLoading(true)
 		try {
 			await userService.login(email, password)
+			updateUser({
+				userImg: userService.getCurrentUserImage(),
+				userName: userService.getCurrentUsername(),
+				userEmail: userService.getCurrentUserEmail(),
+			})
 			setLoading(false)
 			props.history.replace('/dashboard')
 		} catch (error) {

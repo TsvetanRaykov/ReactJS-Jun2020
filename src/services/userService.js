@@ -53,9 +53,6 @@ class Firebase {
 					.child(imageFile.name)
 					.getDownloadURL()
 
-				// await this.db.doc(`users_image/${this.auth.currentUser.uid}`).set({
-				// 	imageUrl,
-				// })
 				await this.auth.currentUser.updateProfile({
 					photoURL,
 				})
@@ -64,14 +61,6 @@ class Firebase {
 	}
 
 	getCurrentUserImage() {
-		// if (!this.auth.currentUser) {
-		// 	return ''
-		// }
-		// const data = await this.db
-		// 	.doc(`users_image/${this.auth.currentUser.uid}`)
-		// 	.get()
-
-		// return data.get('imageUrl')
 		return (this.auth.currentUser && this.auth.currentUser.photoURL) || '-'
 	}
 

@@ -20,6 +20,12 @@ import UserContext from '../../Context'
 const App = () => {
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false)
 	const [user, setUser] = useState({})
+	const [quiz, setQuiz] = useState({
+		title: '',
+		description: '',
+		isPublic: false,
+		questions: [],
+	})
 
 	const updateUser = ({ userImg, userName, userEmail }) => {
 		setUser((current) => {
@@ -32,6 +38,25 @@ const App = () => {
 				userName: userName || currentName,
 				userImg: userImg || currentImg,
 				userEmail: userEmail || currentEmail,
+			}
+		})
+	}
+
+	const updateQuiz = ({ title, description, isPublic, questions }) => {
+		console.log('updateQuiz', questions)
+
+		setQuiz((current) => {
+			const {
+				title: currentTitle,
+				description: currentDescription,
+				questions: curentQuestions,
+			} = current
+			return {
+				title: title || currentTitle,
+				description: description || currentDescription,
+				isPublic,
+				questions:
+					questions && questions.length > 0 ? questions : curentQuestions,
 			}
 		})
 	}
@@ -51,8 +76,9 @@ const App = () => {
 		<UserContext.Provider
 			value={{
 				user,
-				quiz: {},
+				quiz,
 				updateUser,
+				updateQuiz,
 			}}
 		>
 			<MuiThemeProvider theme={theme}>

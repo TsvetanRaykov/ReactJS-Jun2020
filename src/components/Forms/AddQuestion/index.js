@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
 	Paper,
 	Button,
@@ -17,6 +17,8 @@ import {
 import Answer from '../../Answer'
 import { DeleteForever, Add } from '@material-ui/icons'
 
+import Context from '../../../Context'
+
 const styles = (theme) => ({
 	submit: {
 		margin: theme.spacing(),
@@ -34,7 +36,11 @@ const styles = (theme) => ({
 })
 
 const AddQuestionForm = (props) => {
-	const { classes, onSave } = props
+	const { classes, formClose } = props
+	const {
+		quiz: { questions, isPublic },
+		updateQuiz,
+	} = useContext(Context)
 
 	const [question, setQuestion] = useState('')
 	const [answers, setAnswers] = useState([])
@@ -42,10 +48,9 @@ const AddQuestionForm = (props) => {
 	const [value, setValue] = React.useState('')
 
 	const onSaveClick = () => {
-		// TODO: Validate data
-		// TODO: Save in firebase
-
-		onSave({ question, answers })
+		const newQuestions = questions.slice(0).concat({ question, answers })
+		updateQuiz({ questions: newQuestions, isPublic })
+		formClose()
 	}
 
 	const [open, setOpen] = React.useState(false)

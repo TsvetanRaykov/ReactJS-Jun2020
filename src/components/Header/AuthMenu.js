@@ -33,6 +33,10 @@ const AuthMenu = (props) => {
 		props.history.push('/quiz/create')
 	}
 
+	const handleProfileClick = () => {
+		props.history.push('/dashboard')
+	}
+
 	async function logout() {
 		setAnchorEl(null)
 		await userService.logout()
@@ -66,7 +70,7 @@ const AuthMenu = (props) => {
 				open={open}
 				onClose={handleClose}
 			>
-				<MenuItem onClick={handleClose}>Profile</MenuItem>
+				<MenuItem onClick={handleProfileClick}>Profile</MenuItem>
 				<MenuItem onClick={handleAddQuiz}>Add quiz</MenuItem>
 				<MenuItem onClick={logout}>Logout</MenuItem>
 			</Menu>

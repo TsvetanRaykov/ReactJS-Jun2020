@@ -17,7 +17,6 @@ const styles = (theme) => ({
 
 const Header = (props) => {
 	const { classes, title } = props
-
 	return (
 		<AppBar position='static' className={classes.root}>
 			<Toolbar>

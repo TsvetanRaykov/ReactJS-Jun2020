@@ -1,45 +1,35 @@
-import React, { useContext, Fragment, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import Header from '../../../components/Header'
 import UserContext from '../../../Context'
 import { Redirect } from 'react-router-dom'
 import AdminMenu from '../../../components/Quiz/AdminMenu'
 import Container from '@material-ui/core/Container'
 import QuizContent from '../../../components/Quiz/AdminContent'
-import quizService from '../../../services/quizService'
 
 const AddQuestions = () => {
-	const { quiz } = useContext(UserContext)
+	const {
+		quiz: { title },
+	} = useContext(UserContext)
 
 	const [isFormOpen, setFormOpen] = useState(false)
-	const [questions, setQuestions] = useState([])
-
-	useEffect(() => {
-		console.log(quiz)
-	})
 
 	const openForm = () => {
 		setFormOpen(true)
 	}
 
-	const closeForm = (questions) => {
+	const closeForm = () => {
 		setFormOpen(false)
-		setQuestions(questions)
 	}
 
-	const saveQuiz = async () => {
-		quiz.questions = questions
-		await quizService.addQuiz(quiz)
-	}
-
-	if (quiz.title) {
+	if (title) {
 		return (
-			<Fragment>
-				<Header quiz={quiz} />
+			<>
+				<Header title={title} />
 				<Container>
-					<AdminMenu addQuestion={openForm} saveQuiz={saveQuiz} />
+					<AdminMenu openForm={openForm} />
 					<QuizContent formOpen={isFormOpen} formHandler={closeForm} />
 				</Container>
-			</Fragment>
+			</>
 		)
 	}
 

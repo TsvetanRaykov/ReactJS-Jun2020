@@ -45,20 +45,23 @@ const styles = (theme) => ({
 })
 
 const Quiz = (props) => {
-	const { quiz } = useContext(UserContext)
+	const {
+		quiz: { title, description, isPublic },
+		updateQuiz,
+	} = useContext(UserContext)
 
 	const { classes, history } = props
 
-	const [title, setTitle] = useState(quiz.title || '')
-	const [description, setDescription] = useState(quiz.description || '')
-	const [isPublic, setPublic] = useState(quiz.isPublic || false)
+	const [quizTitle, setTitle] = useState(title)
+	const [quizDescription, setDescription] = useState(description)
+	const [quizIsPublic, setPublic] = useState(isPublic)
 
 	const create = () => {
-		quiz.title = title
-		quiz.description = description
-		quiz.isPublic = isPublic
-		quiz.questions = []
-
+		updateQuiz({
+			title: quizTitle,
+			description: quizDescription,
+			isPublic: quizIsPublic,
+		})
 		history.push('/quiz/create/questions')
 	}
 
@@ -87,7 +90,7 @@ const Quiz = (props) => {
 							name='title'
 							autoComplete='off'
 							autoFocus
-							value={title}
+							value={quizTitle}
 							onChange={(e) => setTitle(e.target.value)}
 						/>
 					</FormControl>
@@ -98,7 +101,7 @@ const Quiz = (props) => {
 							name='descripion'
 							autoComplete='off'
 							multiline
-							value={description}
+							value={quizDescription}
 							onChange={(e) => setDescription(e.target.value)}
 						/>
 					</FormControl>
@@ -106,7 +109,7 @@ const Quiz = (props) => {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={isPublic}
+									checked={quizIsPublic}
 									onChange={(e) => setPublic(e.target.checked)}
 									name='is-public'
 									color='primary'

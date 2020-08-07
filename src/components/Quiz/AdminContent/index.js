@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import { Paper, Typography, withStyles } from '@material-ui/core'
 import AddQuestionForm from '../../../components/Forms/AddQuestion'
+import Context from '../../../Context'
 
 const styles = (theme) => ({
 	root: {
@@ -10,16 +11,13 @@ const styles = (theme) => ({
 
 const QuizContent = (props) => {
 	const { classes, formOpen, formHandler } = props
-	const [questions, setQuestions] = useState([])
 
-	const addQuestionHandler = (question) => {
-		if (question) {
-			setQuestions((current) => {
-				const updated = [...current, question]
-				formHandler(updated)
-				return updated
-			})
-		}
+	const {
+		quiz: { questions },
+	} = useContext(Context)
+
+	const formClose = () => {
+		formHandler(false)
 	}
 
 	return (
@@ -32,7 +30,7 @@ const QuizContent = (props) => {
 					return <div key={i}>{q.question}</div>
 				})}
 			</Paper>
-			{formOpen && <AddQuestionForm onSave={addQuestionHandler} />}
+			{formOpen && <AddQuestionForm formClose={formClose} />}
 		</>
 	)
 }

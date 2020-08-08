@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom'
 import userService from '../../services/userService'
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-	const user = userService.getCurrentUserEmail()
+	const user = userService.getCurrentUser()
 
 	return (
 		<Route

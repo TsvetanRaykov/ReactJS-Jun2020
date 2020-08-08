@@ -60,16 +60,16 @@ class Firebase {
 		)
 	}
 
-	getCurrentUserImage() {
-		return (this.auth.currentUser && this.auth.currentUser.photoURL) || '-'
-	}
-
-	getCurrentUsername() {
-		return this.auth.currentUser && this.auth.currentUser.displayName
-	}
-
-	getCurrentUserEmail() {
-		return this.auth.currentUser && this.auth.currentUser.email
+	getCurrentUser() {
+		const user = this.auth.currentUser
+			? {
+					userName: this.auth.currentUser.displayName,
+					userImg: this.auth.currentUser.photoURL || '-',
+					userEmail: this.auth.currentUser.email,
+					userId: this.auth.currentUser.uid,
+			  }
+			: null
+		return user
 	}
 
 	isInitialized() {

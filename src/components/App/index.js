@@ -33,11 +33,13 @@ const App = () => {
 				userName: currentName,
 				userImg: currentImg,
 				userEmail: currentEmail,
+				userId,
 			} = current
 			return {
 				userName: userName || currentName,
 				userImg: userImg || currentImg,
 				userEmail: userEmail || currentEmail,
+				userId,
 			}
 		})
 	}
@@ -64,11 +66,7 @@ const App = () => {
 	useEffect(() => {
 		auth.isInitialized().then((val) => {
 			setFirebaseInitialized(val)
-			setUser(() => ({
-				userName: userService.getCurrentUsername(),
-				userImg: userService.getCurrentUserImage(),
-				userEmail: userService.getCurrentUserEmail(),
-			}))
+			setUser(() => userService.getCurrentUser())
 		})
 	}, [])
 

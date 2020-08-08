@@ -13,6 +13,13 @@ class UserService {
 		quiz.createdAt = new Date()
 		return this.ref.add(quiz)
 	}
+
+	async getPersonal(userId) {
+		const data = await this.ref.where('createdBy', '==', userId).get()
+		const quizList = []
+		data.forEach((doc) => quizList.push(doc.data()))
+		return quizList
+	}
 }
 
 export default new UserService()

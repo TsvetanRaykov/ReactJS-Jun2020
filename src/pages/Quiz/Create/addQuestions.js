@@ -13,12 +13,8 @@ const AddQuestions = () => {
 
 	const [isFormOpen, setFormOpen] = useState(false)
 
-	const openForm = () => {
-		setFormOpen(true)
-	}
-
-	const closeForm = () => {
-		setFormOpen(false)
+	const formHandler = (isFormOpen) => {
+		setFormOpen(isFormOpen)
 	}
 
 	if (title) {
@@ -26,8 +22,8 @@ const AddQuestions = () => {
 			<>
 				<Header title={title} />
 				<Container>
-					<AdminMenu openForm={openForm} />
-					<QuizContent formOpen={isFormOpen} formHandler={closeForm} />
+					<AdminMenu formHandler={formHandler} />
+					<QuizContent formOpen={isFormOpen} formHandler={formHandler} />
 				</Container>
 			</>
 		)

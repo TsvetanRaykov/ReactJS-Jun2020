@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Paper, Typography, withStyles } from '@material-ui/core'
-import AddQuestionForm from '../../../components/Forms/AddQuestion'
+import SetQuestionForm from '../../Forms/Quiz/SetQuestion'
 import Context from '../../../Context'
+import Questions from './Questions'
 
 const styles = (theme) => ({
 	root: {
@@ -16,9 +17,25 @@ const QuizContent = (props) => {
 		quiz: { questions },
 	} = useContext(Context)
 
+	const [activeQuestionIndex, setActiveQuestion] = useState(-1)
+
+	const [questionList, setQuestionList] = useState(questions.slice(0))
 	const formClose = () => {
+		setQuestionList(questions)
 		formHandler(false)
 	}
+
+	const editQuestion = (i) => {
+		setActiveQuestion(i)
+		setQuestionList((current) => {
+			return current.filter((a, n) => n !== i)
+		})
+		formHandler(true)
+	}
+
+	useEffect(() => {
+		setQuestionList(questions)
+	}, [questions])
 
 	return (
 		<>
@@ -26,11 +43,14 @@ const QuizContent = (props) => {
 				<Typography component='h1' variant='h6'>
 					Questions
 				</Typography>
-				{questions.map((q, i) => {
-					return <div key={i}>{q.question}</div>
-				})}
+				<Questions questions={questionList} editQuestion={editQuestion} />
 			</Paper>
-			{formOpen && <AddQuestionForm formClose={formClose} />}
+			{formOpen && (
+				<SetQuestionForm
+					formClose={formClose}
+					activeQuestionIndex={activeQuestionIndex}
+				/>
+			)}
 		</>
 	)
 }

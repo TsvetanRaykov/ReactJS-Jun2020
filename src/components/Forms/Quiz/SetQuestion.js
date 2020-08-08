@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import {
 	Paper,
 	Button,
@@ -10,13 +10,13 @@ import {
 	Dialog,
 	DialogActions,
 	DialogContent,
-	RadioGroup,
+	createMuiTheme,
+	ThemeProvider,
 	TextField,
-	IconButton,
 } from '@material-ui/core'
-import Answer from '../../Answer'
-import { DeleteForever, Add } from '@material-ui/icons'
-
+import Answers from './Answers'
+import { Add, Cancel } from '@material-ui/icons'
+import { green } from '@material-ui/core/colors'
 import Context from '../../../Context'
 
 const styles = (theme) => ({
@@ -33,41 +33,60 @@ const styles = (theme) => ({
 		},
 	},
 	dialog: { width: '90%' },
+	button: {
+		margin: theme.spacing(1),
+	},
 })
 
-const AddQuestionForm = (props) => {
-	const { classes, formClose } = props
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: green[500],
+			contrastText: '#fff',
+		},
+	},
+})
+
+const SetQuestionForm = (props) => {
+	const { classes, formClose, activeQuestionIndex } = props
 	const {
 		quiz: { questions, isPublic },
 		updateQuiz,
 	} = useContext(Context)
 
-	const [question, setQuestion] = useState('')
-	const [answers, setAnswers] = useState([])
+	const [open, setOpen] = useState(false)
+	const [question, setQuestion] = useState(
+		questions[activeQuestionIndex]?.question || ''
+	)
 	const [newAnswer, setNewAnswer] = useState('')
-	const [value, setValue] = useState('')
-
+	const [answers, setAnswers] = useState([])
 	const onSaveClick = () => {
-		const newQuestions = questions.slice(0).concat({ question, answers })
+		const newQuestions = questions.slice(0)
+		newQuestions.splice(activeQuestionIndex, 1, { question, answers })
 		updateQuiz({ questions: newQuestions, isPublic })
 		formClose()
 	}
 
-	const [open, setOpen] = useState(false)
-
 	useEffect(() => {
-		let correct
-		answers.forEach((a) => {
-			if (a.text === value) {
-				a.correct = true
-				correct = a
+		setAnswers(() =>
+			questions[activeQuestionIndex].answers.map((a) => Object.assign({}, a))
+		)
+	}, [activeQuestionIndex, questions])
+
+	const selectedValue = () => {
+		for (const a of answers) {
+			if (a.correct) {
+				return a.text
 			}
-		})
-		if (!correct) {
-			setValue('')
 		}
-		setAnswers(answers)
-	}, [value, answers])
+		return ''
+	}
+
+	const onCancelClick = () => {
+		console.log(answers)
+		console.log(questions[activeQuestionIndex]?.answers)
+		formClose()
+	}
 
 	const handleClickOpen = () => {
 		setOpen(true)
@@ -84,12 +103,17 @@ const AddQuestionForm = (props) => {
 		setOpen(false)
 	}
 
-	const handleRadioChange = (event) => {
-		setValue(event.target.value)
-	}
-
 	const handleDeleteAnswer = (key) => {
 		setAnswers(answers.filter((a) => a.text !== key))
+	}
+
+	const handleRadioChange = (event) => {
+		setAnswers(
+			answers.map((a) => {
+				a.correct = a.text === event.target.value
+				return a
+			})
+		)
 	}
 
 	return (
@@ -107,46 +131,37 @@ const AddQuestionForm = (props) => {
 						onChange={(e) => setQuestion(e.target.value)}
 					/>
 				</FormControl>
-				<Box display='flex' justifyContent='space-around' flexDirection='row'>
-					<Button
-						type='button'
-						variant='contained'
-						color='secondary'
-						onClick={handleClickOpen}
-						startIcon={<Add />}
-					>
-						Answer
-					</Button>
-				</Box>
-				<Box display='flex' justifyContent='space-around' flexDirection='row'>
-					<FormControl fullWidth>
-						<RadioGroup
-							aria-label='quiz'
-							name='quiz'
-							value={value}
-							onChange={handleRadioChange}
+				<ThemeProvider theme={theme}>
+					<Box display='flex' justifyContent='flex-end' flexDirection='row'>
+						<Button
+							className={classes.button}
+							type='button'
+							variant='contained'
+							color='secondary'
+							onClick={onCancelClick}
+							startIcon={<Cancel />}
 						>
-							{answers.map((a) => {
-								return (
-									<Box
-										key={a.text}
-										display='flex'
-										justifyContent='space-between'
-										flexDirection='row'
-									>
-										<Answer answer={a.text} />
-										<IconButton
-											aria-label='delete'
-											color='secondary'
-											onClick={() => handleDeleteAnswer(a.text)}
-										>
-											<DeleteForever />
-										</IconButton>
-									</Box>
-								)
-							})}
-						</RadioGroup>
-					</FormControl>
+							Cancel
+						</Button>
+						<Button
+							className={classes.button}
+							type='button'
+							variant='contained'
+							color='primary'
+							onClick={handleClickOpen}
+							startIcon={<Add />}
+						>
+							Answer
+						</Button>
+					</Box>
+				</ThemeProvider>
+				<Box display='flex' justifyContent='space-around' flexDirection='row'>
+					<Answers
+						answers={answers}
+						handleRadioChange={handleRadioChange}
+						handleDeleteAnswer={handleDeleteAnswer}
+						selectedValue={selectedValue}
+					/>
 				</Box>
 				<Dialog
 					open={open}
@@ -181,7 +196,7 @@ const AddQuestionForm = (props) => {
 
 				<Button
 					type='submit'
-					disabled={!value}
+					disabled={!selectedValue()}
 					variant='contained'
 					color='primary'
 					onClick={onSaveClick}
@@ -194,4 +209,4 @@ const AddQuestionForm = (props) => {
 	)
 }
 
-export default withStyles(styles)(AddQuestionForm)
+export default withStyles(styles)(SetQuestionForm)

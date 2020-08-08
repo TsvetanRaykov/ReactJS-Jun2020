@@ -51,11 +51,12 @@ const QuizList = (props) => {
 	const [expanded, setExpanded] = useState(false)
 
 	useEffect(() => {
-		userId &&
-			quizService.getPersonal(userId).then((data) => {
-				setQuizzes(data)
-				setLoading(false)
-			})
+		const getQUizes = async () => {
+			const data = await quizService.getPersonal(userId)
+			setQuizzes(data)
+			setLoading(false)
+		}
+		userId && getQUizes()
 	}, [userId])
 
 	const renderChip = (isPublic) => {
@@ -85,7 +86,7 @@ const QuizList = (props) => {
 		props.history.push('/quiz/create/questions')
 	}
 
-	const handleChange = (panel) => (event, isExpanded) => {
+	const handleChange = (panel) => (_, isExpanded) => {
 		setExpanded(isExpanded ? panel : false)
 	}
 	const renderQuizzes = () => {

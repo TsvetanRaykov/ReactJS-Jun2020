@@ -17,7 +17,7 @@ class UserService {
 	async getPersonal(userId) {
 		const data = await this.ref.where('createdBy', '==', userId).get()
 		const quizList = []
-		data.forEach((doc) => quizList.push(doc.data()))
+		data.forEach((doc) => quizList.push({ id: doc.id, data: doc.data() }))
 		return quizList
 	}
 }

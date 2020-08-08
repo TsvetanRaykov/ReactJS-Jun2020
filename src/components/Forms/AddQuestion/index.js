@@ -45,7 +45,7 @@ const AddQuestionForm = (props) => {
 	const [question, setQuestion] = useState('')
 	const [answers, setAnswers] = useState([])
 	const [newAnswer, setNewAnswer] = useState('')
-	const [value, setValue] = React.useState('')
+	const [value, setValue] = useState('')
 
 	const onSaveClick = () => {
 		const newQuestions = questions.slice(0).concat({ question, answers })
@@ -53,7 +53,7 @@ const AddQuestionForm = (props) => {
 		formClose()
 	}
 
-	const [open, setOpen] = React.useState(false)
+	const [open, setOpen] = useState(false)
 
 	useEffect(() => {
 		let correct

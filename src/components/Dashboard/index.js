@@ -20,7 +20,7 @@ const Profile = (props) => {
 
 	return (
 		<>
-			<Header title='Quizoom'></Header>
+			<Header />
 			<Grid container>
 				<Grid item xs={12} sm={6}>
 					<Paper className={classes.paper}>

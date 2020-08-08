@@ -12,6 +12,7 @@ import {
 	Box,
 } from '@material-ui/core'
 import UserContext from '../../../Context'
+import Header from '../../../components/Header'
 
 const styles = (theme) => ({
 	main: {
@@ -74,78 +75,81 @@ const Quiz = (props) => {
 	}
 
 	return (
-		<main className={classes.main}>
-			<Paper className={classes.paper}>
-				<Typography component='h1' variant='h5'>
-					Enter Quiz details
-				</Typography>
-				<form
-					className={classes.form}
-					onSubmit={(e) => e.preventDefault() && false}
-				>
-					<FormControl margin='normal' required fullWidth>
-						<InputLabel htmlFor='title'>Title</InputLabel>
-						<Input
-							id='title'
-							name='title'
-							autoComplete='off'
-							autoFocus
-							value={quizTitle}
-							onChange={(e) => setTitle(e.target.value)}
-						/>
-					</FormControl>
-					<FormControl margin='normal' required fullWidth>
-						<InputLabel htmlFor='description'>Description</InputLabel>
-						<Input
-							id='description'
-							name='descripion'
-							autoComplete='off'
-							multiline
-							value={quizDescription}
-							onChange={(e) => setDescription(e.target.value)}
-						/>
-					</FormControl>
-					<FormControl margin='normal' required fullWidth>
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={quizIsPublic}
-									onChange={(e) => setPublic(e.target.checked)}
-									name='is-public'
-									color='primary'
-								/>
-							}
-							label='Public'
-						/>
-					</FormControl>
-					<Box
-						display='flex'
-						justifyContent='space-between'
-						flexDirection='row'
-						bgcolor='background.paper'
+		<>
+			<Header title={quizTitle} />
+			<main className={classes.main}>
+				<Paper className={classes.paper}>
+					<Typography component='h1' variant='h5'>
+						Enter Quiz details
+					</Typography>
+					<form
+						className={classes.form}
+						onSubmit={(e) => e.preventDefault() && false}
 					>
-						<Button
-							type='submit'
-							variant='contained'
-							color='secondary'
-							onClick={cancel}
-							className={classes.submit}
+						<FormControl margin='normal' required fullWidth>
+							<InputLabel htmlFor='title'>Title</InputLabel>
+							<Input
+								id='title'
+								name='title'
+								autoComplete='off'
+								autoFocus
+								value={quizTitle}
+								onChange={(e) => setTitle(e.target.value)}
+							/>
+						</FormControl>
+						<FormControl margin='normal' required fullWidth>
+							<InputLabel htmlFor='description'>Description</InputLabel>
+							<Input
+								id='description'
+								name='descripion'
+								autoComplete='off'
+								multiline
+								value={quizDescription}
+								onChange={(e) => setDescription(e.target.value)}
+							/>
+						</FormControl>
+						<FormControl margin='normal' required fullWidth>
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={quizIsPublic}
+										onChange={(e) => setPublic(e.target.checked)}
+										name='is-public'
+										color='primary'
+									/>
+								}
+								label='Public'
+							/>
+						</FormControl>
+						<Box
+							display='flex'
+							justifyContent='space-between'
+							flexDirection='row'
+							bgcolor='background.paper'
 						>
-							Cancel
-						</Button>
-						<Button
-							type='submit'
-							variant='contained'
-							color='primary'
-							onClick={create}
-							className={classes.submit}
-						>
-							Next
-						</Button>
-					</Box>
-				</form>
-			</Paper>
-		</main>
+							<Button
+								type='submit'
+								variant='contained'
+								color='secondary'
+								onClick={cancel}
+								className={classes.submit}
+							>
+								Cancel
+							</Button>
+							<Button
+								type='submit'
+								variant='contained'
+								color='primary'
+								onClick={create}
+								className={classes.submit}
+							>
+								Continue
+							</Button>
+						</Box>
+					</form>
+				</Paper>
+			</main>
+		</>
 	)
 }
 

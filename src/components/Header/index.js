@@ -22,7 +22,7 @@ const Header = (props) => {
 			<Toolbar>
 				<Avatar src='/logo.jpg' alt='quizoom' className={classes.logo} />
 				<Typography variant='h6' className={classes.title}>
-					{title}
+					{`Quizoom${title ? ': ' + title : ''}`}
 				</Typography>
 				<AuthMenu />
 			</Toolbar>

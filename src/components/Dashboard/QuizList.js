@@ -48,6 +48,7 @@ const QuizList = (props) => {
 	const { classes } = props
 	const [quizzes, setQuizzes] = useState([])
 	const [loading, setLoading] = useState(true)
+	const [expanded, setExpanded] = useState(false)
 
 	useEffect(() => {
 		userId &&
@@ -81,9 +82,12 @@ const QuizList = (props) => {
 
 	const handleEditClick = (data) => {
 		updateQuiz({ ...data })
-		props.history.push('/quiz/create')
+		props.history.push('/quiz/create/questions')
 	}
 
+	const handleChange = (panel) => (event, isExpanded) => {
+		setExpanded(isExpanded ? panel : false)
+	}
 	const renderQuizzes = () => {
 		return (
 			<div className={classes.root}>
@@ -91,7 +95,11 @@ const QuizList = (props) => {
 					quizzes.map(({ id, data }) => {
 						const { title, description, isPublic, questions } = data
 						return (
-							<Accordion key={id}>
+							<Accordion
+								key={id}
+								expanded={expanded === id}
+								onChange={handleChange(id)}
+							>
 								<AccordionSummary expandIcon={<ExpandMore />}>
 									{renderChip(isPublic)}
 									<Typography className={classes.heading}>{title}</Typography>

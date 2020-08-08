@@ -6,11 +6,12 @@ import UserContext from '../../../Context'
 import quizService from '../../../services/quizService'
 
 const EditMenu = (props) => {
-	const { openForm } = props
+	const { openForm, history } = props
 	const { quiz } = useContext(UserContext)
 	const saveQuizHandler = () => {
 		//TODO: Validate Data
 		quizService.setQuiz(quiz)
+		history.push('/dashboard')
 	}
 
 	return (

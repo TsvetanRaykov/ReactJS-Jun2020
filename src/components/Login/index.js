@@ -124,11 +124,7 @@ const SignIn = (props) => {
 		setLoading(true)
 		try {
 			await userService.login(email, password)
-			updateUser({
-				userImg: userService.getCurrentUserImage(),
-				userName: userService.getCurrentUsername(),
-				userEmail: userService.getCurrentUserEmail(),
-			})
+			updateUser(userService.getCurrentUser())
 			setLoading(false)
 			props.history.replace('/dashboard')
 		} catch (error) {

@@ -39,7 +39,7 @@ function HomePage(props) {
 	const { classes } = props
 
 	useEffect(() => {
-		if (userService.getCurrentUsername()) {
+		if (userService.getCurrentUser()) {
 			props.history.replace('/dashboard')
 		}
 	}, [props.history])

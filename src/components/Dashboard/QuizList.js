@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { withRouter } from 'react-router-dom'
 import quizService from '../../services/quizService'
 import Context from '../../Context'
 import Loader from '../Loader'
@@ -42,6 +43,7 @@ const styles = (theme) => ({
 const QuizList = (props) => {
 	const {
 		user: { userId },
+		updateQuiz,
 	} = useContext(Context)
 	const { classes } = props
 	const [quizzes, setQuizzes] = useState([])
@@ -77,17 +79,17 @@ const QuizList = (props) => {
 		)
 	}
 
-	const handleEditClick = (quizId) => {
-		console.log(quizId)
+	const handleEditClick = (data) => {
+		updateQuiz({ ...data })
+		props.history.push('/quiz/create')
 	}
 
 	const renderQuizzes = () => {
-		console.log(quizzes)
 		return (
 			<div className={classes.root}>
-				{quizzes.map(
-					({ id, data: { title, description, isPublic, questions } }) => {
-						isPublic = false
+				{quizzes.length > 0 ? (
+					quizzes.map(({ id, data }) => {
+						const { title, description, isPublic, questions } = data
 						return (
 							<Accordion key={id}>
 								<AccordionSummary expandIcon={<ExpandMore />}>
@@ -105,7 +107,7 @@ const QuizList = (props) => {
 														<IconButton
 															color='primary'
 															aria-label='edit quiz'
-															onClick={() => handleEditClick(id)}
+															onClick={() => handleEditClick(data)}
 														>
 															<Settings />
 														</IconButton>
@@ -127,7 +129,11 @@ const QuizList = (props) => {
 								</AccordionDetails>
 							</Accordion>
 						)
-					}
+					})
+				) : (
+					<Typography variant='caption'>
+						You haven't created quizzes yet
+					</Typography>
 				)}
 			</div>
 		)
@@ -136,4 +142,4 @@ const QuizList = (props) => {
 	return loading ? <Loader /> : renderQuizzes()
 }
 
-export default withStyles(styles)(QuizList)
+export default withRouter(withStyles(styles)(QuizList))

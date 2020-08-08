@@ -45,8 +45,6 @@ const App = () => {
 	}
 
 	const updateQuiz = ({ title, description, isPublic, questions }) => {
-		console.log('updateQuiz', questions)
-
 		setQuiz((current) => {
 			const {
 				title: currentTitle,

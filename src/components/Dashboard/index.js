@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../Header'
-import { Grid, Paper, withStyles, Box } from '@material-ui/core'
+import { Grid, Paper, withStyles, Box, Typography } from '@material-ui/core'
 import UserData from './UserData'
 import QuizList from './QuizList'
 
@@ -28,6 +28,7 @@ const Profile = (props) => {
 							<UserData />
 							<br />
 							<hr />
+							<Typography variant='h6'>Your Quizzes</Typography>
 							<QuizList />
 						</Box>
 					</Paper>

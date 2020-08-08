@@ -10,7 +10,7 @@ const EditMenu = (props) => {
 	const { quiz } = useContext(UserContext)
 	const saveQuizHandler = () => {
 		//TODO: Validate Data
-		quizService.addQuiz(quiz)
+		quizService.setQuiz(quiz)
 	}
 
 	return (

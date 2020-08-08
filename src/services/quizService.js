@@ -2,16 +2,18 @@ import app from './firebase'
 import 'firebase/auth'
 import 'firebase/firebase-firestore'
 
-class UserService {
+class QuizService {
 	constructor() {
 		this.auth = app.auth()
 		this.ref = app.firestore().collection('quizzes')
 	}
 
-	addQuiz(quiz) {
+	//TODO: Add Error Handling
+
+	setQuiz(quiz) {
 		quiz.createdBy = this.auth.currentUser.uid
 		quiz.createdAt = new Date()
-		return this.ref.add(quiz)
+		return this.ref.doc(quiz.title).set(quiz)
 	}
 
 	async getPersonal(userId) {
@@ -22,4 +24,4 @@ class UserService {
 	}
 }
 
-export default new UserService()
+export default new QuizService()

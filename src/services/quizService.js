@@ -43,5 +43,10 @@ class QuizService {
 		})
 		return quizList
 	}
+
+	async getById(id) {
+		const doc = await this.ref.doc(id).get()
+		return { id: doc.id, data: doc.data() }
+	}
 }
 export default new QuizService()

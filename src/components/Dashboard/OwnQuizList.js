@@ -90,7 +90,7 @@ const OwnQuizList = (props) => {
 
 	const handleEditClick = (data) => {
 		updateQuiz({ ...data })
-		props.history.push('/quiz/create/questions')
+		props.history.push('/quiz/edit/questions')
 	}
 
 	const handleDeleteClick = (id) => {

@@ -8,8 +8,11 @@ import {
 	ListItemText,
 } from '@material-ui/core'
 import Loader from '../Loader'
+import { withRouter } from 'react-router-dom'
 
-const AvalableQuizList = () => {
+const AvalableQuizList = (props) => {
+	const { history } = props
+
 	const [quizzes, setQuizzes] = useState([])
 	const [loading, setLoading] = useState(false)
 
@@ -27,6 +30,7 @@ const AvalableQuizList = () => {
 		//TODO: make nicer
 		console.log('handleQuizClick', id)
 		if (window.confirm('Are you ready to pass that quiz?')) {
+			history.push(`/quiz/progress/${btoa(id)}`)
 		}
 	}
 
@@ -55,4 +59,4 @@ const AvalableQuizList = () => {
 	return loading ? <Loader /> : renderQuizList()
 }
 
-export default AvalableQuizList
+export default withRouter(AvalableQuizList)

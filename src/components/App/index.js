@@ -15,6 +15,7 @@ import auth from '../../services/userService'
 import ProtectedRoute from '../ProtectedRoute'
 import userService from '../../services/userService'
 import UserContext from '../../Context'
+import QuizProgress from '../../pages/Quiz/Progress'
 
 const App = () => {
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false)
@@ -95,15 +96,16 @@ const App = () => {
 							<Route exact path='/login' component={Login} />
 							<Route exact path='/register' component={Register} />
 							<ProtectedRoute exact path='/dashboard' component={Dashboard} />
+							<ProtectedRoute exact path='/quiz/edit' component={QuizCreate} />
 							<ProtectedRoute
 								exact
-								path='/quiz/create'
-								component={QuizCreate}
+								path='/quiz/edit/questions'
+								component={QuizQuestions}
 							/>
 							<ProtectedRoute
 								exact
-								path='/quiz/create/questions'
-								component={QuizQuestions}
+								path='/quiz/progress/:id'
+								component={QuizProgress}
 							/>
 						</Switch>
 					</BrowserRouter>

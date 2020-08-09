@@ -21,7 +21,7 @@ const EditMenu = (props) => {
 	return (
 		<Paper>
 			<Box display='flex' justifyContent='space-around' flexDirection='row'>
-				<Button component={Link} to='/quiz/create'>
+				<Button component={Link} to='/quiz/edit'>
 					Edit Quiz
 				</Button>
 				<Button onClick={addQuestionHandler}>Add Question</Button>

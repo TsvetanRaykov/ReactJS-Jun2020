@@ -63,7 +63,7 @@ const Quiz = (props) => {
 			description: quizDescription,
 			isPublic: quizIsPublic,
 		})
-		history.push('/quiz/create/questions')
+		history.push('/quiz/edit/questions')
 	}
 
 	const cancel = () => {

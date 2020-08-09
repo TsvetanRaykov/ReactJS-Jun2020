@@ -33,7 +33,7 @@ const AuthMenu = (props) => {
 	const handleAddQuiz = () => {
 		console.log('handleAddQuiz')
 		updateQuiz(null)
-		props.history.push('/quiz/create')
+		props.history.push('/quiz/edit')
 	}
 
 	const handleProfileClick = () => {

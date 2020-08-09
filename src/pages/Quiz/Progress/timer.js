@@ -32,13 +32,14 @@ const QuizTimer = (props) => {
 			setTimerHandler(() => {
 				return setTimeout(step, Math.max(0, interval - dt))
 			})
-			console.log(timerHandler)
+			// console.log(timerHandler)
 		}
 	}
 
 	const padZero = (num) => (num < 10 ? `0${num}` : `${num}`)
 
 	useEffect(() => {
+		//console.log(start)
 		if (start) startTimer()
 		return () => {
 			clearTimeout(timerHandler)

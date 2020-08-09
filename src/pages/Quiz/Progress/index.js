@@ -13,10 +13,10 @@ import {
 import quizService from '../../../services/quizService'
 import Loader from '../../../components/Loader'
 import { green } from '@material-ui/core/colors'
+import QuizActive from './QuizActive'
 
 const QuizProgress = (props) => {
 	const {
-		history,
 		match: {
 			params: { id },
 		},
@@ -24,6 +24,7 @@ const QuizProgress = (props) => {
 
 	const [quiz, setQuiz] = useState({})
 	const [loading, setLoading] = useState(false)
+	const [start, setStart] = useState(false)
 
 	useEffect(() => {
 		setLoading(true)
@@ -35,11 +36,11 @@ const QuizProgress = (props) => {
 			.finally(() => setLoading(false))
 	}, [id])
 
-	history.block(() => {
-		if (true) {
-			return window.confirm('Do you want to leave?')
-		}
-	})
+	// history.block(() => {
+	// 	if (true) {
+	// 		return window.confirm('Do you want to leave?')
+	// 	}
+	// })
 
 	const [timer, setTimer] = useState({
 		duration: 0,
@@ -48,15 +49,19 @@ const QuizProgress = (props) => {
 	})
 
 	const handleQuizStartClick = () => {
-		setTimer(() => {
-			return {
-				duration: 10,
-				start: true,
-				complete: () => {
-					console.log('Time expire')
-				},
-			}
-		})
+		setStart(true)
+
+		setTimer(() => ({
+			duration: 60 * 20,
+			start: true,
+			complete: () => {
+				console.log('Time is out')
+				setStart(false)
+				setTimer(() => ({
+					start: false,
+				}))
+			},
+		}))
 	}
 	const theme = createMuiTheme({
 		palette: {
@@ -68,6 +73,11 @@ const QuizProgress = (props) => {
 	})
 	const renderQuizIntro = () => {
 		const { data } = quiz
+
+		if (start) {
+			return <QuizActive quiz={quiz} />
+		}
+
 		return (
 			<Container>
 				<Paper>

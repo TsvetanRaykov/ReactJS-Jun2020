@@ -2,16 +2,20 @@ import React, { useContext } from 'react'
 
 import { Paper, Button, Box } from '@material-ui/core'
 import { Link, withRouter } from 'react-router-dom'
-import UserContext from '../../../Context'
+import Context from '../../../Context'
 import quizService from '../../../services/quizService'
 
 const EditMenu = (props) => {
 	const { formHandler, history } = props
-	const { quiz } = useContext(UserContext)
+	const { quiz } = useContext(Context)
 	const saveQuizHandler = () => {
 		//TODO: Validate Data
 		quizService.setQuiz(quiz)
 		history.push('/dashboard')
+	}
+
+	const addQuestionHandler = () => {
+		formHandler(true, true)
 	}
 
 	return (
@@ -20,7 +24,7 @@ const EditMenu = (props) => {
 				<Button component={Link} to='/quiz/create'>
 					Edit Quiz
 				</Button>
-				<Button onClick={() => formHandler(true)}>Add Question</Button>
+				<Button onClick={addQuestionHandler}>Add Question</Button>
 				<Button onClick={saveQuizHandler}>Save Quiz</Button>
 			</Box>
 		</Paper>

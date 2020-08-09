@@ -10,8 +10,8 @@ const styles = (theme) => ({
 	},
 })
 
-const QuizContent = (props) => {
-	const { classes, formOpen, formHandler } = props
+const AdminContent = (props) => {
+	const { classes, formOpen, formHandler, isNewQuestion } = props
 
 	const {
 		quiz: { questions },
@@ -20,9 +20,11 @@ const QuizContent = (props) => {
 	const [activeQuestionIndex, setActiveQuestion] = useState(-1)
 
 	const [questionList, setQuestionList] = useState(questions.slice(0))
+
 	const formClose = () => {
 		setQuestionList(questions)
-		formHandler(false)
+		formHandler(false, isNewQuestion)
+		setActiveQuestion(-1)
 	}
 
 	const editQuestion = (i) => {
@@ -30,7 +32,7 @@ const QuizContent = (props) => {
 		setQuestionList((current) => {
 			return current.filter((a, n) => n !== i)
 		})
-		formHandler(true)
+		formHandler(true, false)
 	}
 
 	useEffect(() => {
@@ -55,4 +57,4 @@ const QuizContent = (props) => {
 	)
 }
 
-export default withStyles(styles)(QuizContent)
+export default withStyles(styles)(AdminContent)

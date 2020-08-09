@@ -17,7 +17,13 @@ import {
 	IconButton,
 	Tooltip,
 } from '@material-ui/core'
-import { ExpandMore, Public, VpnLock, Settings } from '@material-ui/icons'
+import {
+	ExpandMore,
+	Public,
+	VpnLock,
+	Settings,
+	DeleteForever,
+} from '@material-ui/icons'
 
 const styles = (theme) => ({
 	root: {
@@ -40,24 +46,25 @@ const styles = (theme) => ({
 	},
 })
 
-const QuizList = (props) => {
-	const {
-		user: { userId },
-		updateQuiz,
-	} = useContext(Context)
+const OwnQuizList = (props) => {
+	const { updateQuiz } = useContext(Context)
 	const { classes } = props
 	const [quizzes, setQuizzes] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [expanded, setExpanded] = useState(false)
 
+	const loadOwnQuizes = () => {
+		quizService
+			.getPersonal()
+			.then((data) => {
+				setQuizzes(data)
+			})
+			.finally(() => setLoading(false))
+	}
+
 	useEffect(() => {
-		const getQUizes = async () => {
-			const data = await quizService.getPersonal(userId)
-			setQuizzes(data)
-			setLoading(false)
-		}
-		userId && getQUizes()
-	}, [userId])
+		loadOwnQuizes()
+	}, [])
 
 	const renderChip = (isPublic) => {
 		return isPublic ? (
@@ -86,6 +93,14 @@ const QuizList = (props) => {
 		props.history.push('/quiz/create/questions')
 	}
 
+	const handleDeleteClick = (id) => {
+		//TODO: Make nicer
+		if (window.confirm('Are you sure?')) {
+			setLoading(true)
+			quizService.deleteQuiz(id).finally(() => loadOwnQuizes())
+		}
+	}
+
 	const handleChange = (panel) => (_, isExpanded) => {
 		setExpanded(isExpanded ? panel : false)
 	}
@@ -112,7 +127,16 @@ const QuizList = (props) => {
 										subheader={
 											<>
 												<Box display='flex' justifyContent='flex-end'>
-													<Tooltip title='Edit Quiz' placement='left'>
+													<Tooltip title='Delete Quiz'>
+														<IconButton
+															color='secondary'
+															aria-label='delete quiz'
+															onClick={() => handleDeleteClick(id)}
+														>
+															<DeleteForever />
+														</IconButton>
+													</Tooltip>
+													<Tooltip title='Edit Quiz'>
 														<IconButton
 															color='primary'
 															aria-label='edit quiz'
@@ -151,4 +175,4 @@ const QuizList = (props) => {
 	return loading ? <Loader /> : renderQuizzes()
 }
 
-export default withRouter(withStyles(styles)(QuizList))
+export default withRouter(withStyles(styles)(OwnQuizList))

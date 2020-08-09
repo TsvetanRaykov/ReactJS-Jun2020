@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../Header'
 import { Grid, Paper, withStyles, Box, Typography } from '@material-ui/core'
 import UserData from './UserData'
-import QuizList from './QuizList'
+import QuizList from './OwnQuizList'
 
 const styles = (theme) => ({
 	paper: {

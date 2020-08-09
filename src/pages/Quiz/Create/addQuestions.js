@@ -4,7 +4,7 @@ import Context from '../../../Context'
 import { Redirect } from 'react-router-dom'
 import AdminMenu from '../../../components/Quiz/AdminMenu'
 import Container from '@material-ui/core/Container'
-import QuizContent from '../../../components/Quiz/AdminContent'
+import AdminContent from '../../../components/Quiz/AdminContent'
 
 const AddQuestions = () => {
 	const {
@@ -12,9 +12,11 @@ const AddQuestions = () => {
 	} = useContext(Context)
 
 	const [isFormOpen, setFormOpen] = useState(false)
+	const [isNewQuestion, setIsNewQuestion] = useState(false)
 
-	const formHandler = (isFormOpen) => {
+	const formHandler = (isFormOpen, isNewQuestion) => {
 		setFormOpen(isFormOpen)
+		setIsNewQuestion(isNewQuestion)
 	}
 
 	if (title) {
@@ -23,7 +25,11 @@ const AddQuestions = () => {
 				<Header title={title} />
 				<Container>
 					<AdminMenu formHandler={formHandler} />
-					<QuizContent formOpen={isFormOpen} formHandler={formHandler} />
+					<AdminContent
+						formOpen={isFormOpen}
+						formHandler={formHandler}
+						isNewQuestion={isNewQuestion}
+					/>
 				</Container>
 			</>
 		)

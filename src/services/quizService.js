@@ -16,12 +16,26 @@ class QuizService {
 		return this.ref.doc(quiz.title).set(quiz)
 	}
 
-	async getPersonal(userId) {
-		const data = await this.ref.where('createdBy', '==', userId).get()
+	async getPersonal() {
+		const data = await this.ref
+			.where('createdBy', '==', this.auth.currentUser.uid)
+			.get()
+		const quizList = []
+		data.forEach((doc) => quizList.push({ id: doc.id, data: doc.data() }))
+		return quizList
+	}
+
+	deleteQuiz(id) {
+		return this.ref.doc(id).delete()
+	}
+
+	async getAvailable() {
+		const data = await this.ref
+			.where('createdBy', '!=', this.auth.currentUser.uid)
+			.get()
 		const quizList = []
 		data.forEach((doc) => quizList.push({ id: doc.id, data: doc.data() }))
 		return quizList
 	}
 }
-
 export default new QuizService()

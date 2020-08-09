@@ -17,6 +17,7 @@ const AuthMenu = (props) => {
 
 	const {
 		user: { userImg, userName },
+		updateQuiz,
 	} = useContext(UserContext)
 
 	const open = Boolean(anchorEl)
@@ -30,6 +31,8 @@ const AuthMenu = (props) => {
 	}
 
 	const handleAddQuiz = () => {
+		console.log('handleAddQuiz')
+		updateQuiz(null)
 		props.history.push('/quiz/create')
 	}
 

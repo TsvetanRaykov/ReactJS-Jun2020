@@ -57,7 +57,7 @@ const Quiz = (props) => {
 	const [quizDescription, setDescription] = useState(description)
 	const [quizIsPublic, setPublic] = useState(isPublic)
 
-	const create = () => {
+	const continueClickHandler = () => {
 		updateQuiz({
 			title: quizTitle,
 			description: quizDescription,
@@ -140,7 +140,7 @@ const Quiz = (props) => {
 								type='submit'
 								variant='contained'
 								color='primary'
-								onClick={create}
+								onClick={continueClickHandler}
 								className={classes.submit}
 							>
 								Continue

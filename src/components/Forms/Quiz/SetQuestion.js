@@ -15,7 +15,7 @@ import {
 	TextField,
 } from '@material-ui/core'
 import Answers from './Answers'
-import { Add, Cancel } from '@material-ui/icons'
+import { Add, Cancel, Delete } from '@material-ui/icons'
 import { green } from '@material-ui/core/colors'
 import Context from '../../../Context'
 
@@ -60,18 +60,27 @@ const SetQuestionForm = (props) => {
 	)
 	const [newAnswer, setNewAnswer] = useState('')
 	const [answers, setAnswers] = useState([])
+
 	const onSaveClick = () => {
 		const newQuestions = questions.slice(0)
-		newQuestions.splice(activeQuestionIndex, 1, { question, answers })
+		activeQuestionIndex >= 0
+			? newQuestions.splice(activeQuestionIndex, 1, { question, answers })
+			: newQuestions.push({ question, answers })
+
+		console.log('onSaveClick', activeQuestionIndex, newQuestions)
 		updateQuiz({ questions: newQuestions, isPublic })
 		formClose()
 	}
 
 	useEffect(() => {
-		setAnswers(() =>
-			questions[activeQuestionIndex].answers.map((a) => Object.assign({}, a))
-		)
-	}, [activeQuestionIndex, questions])
+		const ansList = questions[activeQuestionIndex]?.answers || []
+		console.log('SetQuestion/useEffect', activeQuestionIndex)
+		setAnswers(() => ansList.map((a) => Object.assign({}, a)))
+	}, [])
+
+	useEffect(() => {
+		console.log(activeQuestionIndex)
+	}, [activeQuestionIndex])
 
 	const selectedValue = () => {
 		for (const a of answers) {
@@ -83,9 +92,18 @@ const SetQuestionForm = (props) => {
 	}
 
 	const onCancelClick = () => {
-		console.log(answers)
-		console.log(questions[activeQuestionIndex]?.answers)
 		formClose()
+	}
+
+	const onDeleteClick = () => {
+		//TODO: MAke it nicer
+		if (window.confirm('Are you sure?')) {
+			console.log('onDeleteClick', activeQuestionIndex)
+			const newQuestions = questions.slice(0)
+			newQuestions.splice(activeQuestionIndex, 1)
+			updateQuiz({ questions: newQuestions, isPublic })
+			formClose()
+		}
 	}
 
 	const handleClickOpen = () => {
@@ -137,16 +155,6 @@ const SetQuestionForm = (props) => {
 							className={classes.button}
 							type='button'
 							variant='contained'
-							color='secondary'
-							onClick={onCancelClick}
-							startIcon={<Cancel />}
-						>
-							Cancel
-						</Button>
-						<Button
-							className={classes.button}
-							type='button'
-							variant='contained'
 							color='primary'
 							onClick={handleClickOpen}
 							startIcon={<Add />}
@@ -166,7 +174,7 @@ const SetQuestionForm = (props) => {
 				<Dialog
 					open={open}
 					onClose={handleClose}
-					aria-labelledby='form-dialog'
+					aria-labelledby='answer-form-dialog'
 					fullWidth={true}
 				>
 					<DialogContent>
@@ -193,7 +201,6 @@ const SetQuestionForm = (props) => {
 						</Button>
 					</DialogActions>
 				</Dialog>
-
 				<Button
 					type='submit'
 					disabled={!selectedValue()}
@@ -204,6 +211,28 @@ const SetQuestionForm = (props) => {
 				>
 					Save Question
 				</Button>
+				<Button
+					className={classes.button}
+					type='button'
+					variant='contained'
+					color='secondary'
+					onClick={onCancelClick}
+					startIcon={<Cancel />}
+				>
+					Cancel
+				</Button>
+				{activeQuestionIndex >= 0 && (
+					<Button
+						className={classes.button}
+						type='button'
+						variant='contained'
+						color='secondary'
+						onClick={onDeleteClick}
+						startIcon={<Delete />}
+					>
+						Delete
+					</Button>
+				)}
 			</form>
 		</Paper>
 	)

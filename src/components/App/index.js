@@ -4,7 +4,7 @@ import HomePage from '../HomePage'
 import Login from '../Login'
 import Register from '../Register'
 import Dashboard from '../Dashboard'
-import Quiz from '../../pages/Quiz/Create'
+import QuizCreate from '../../pages/Quiz/Create'
 import QuizQuestions from '../../pages/Quiz/Create/addQuestions'
 
 import { MuiThemeProvider } from '@material-ui/core/styles'
@@ -20,12 +20,15 @@ import UserContext from '../../Context'
 const App = () => {
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false)
 	const [user, setUser] = useState({})
-	const [quiz, setQuiz] = useState({
+
+	const emptyQuiz = {
 		title: '',
 		description: '',
 		isPublic: false,
 		questions: [],
-	})
+	}
+
+	const [quiz, setQuiz] = useState(emptyQuiz)
 
 	const updateUser = ({ userImg, userName, userEmail }) => {
 		setUser((current) => {
@@ -44,13 +47,18 @@ const App = () => {
 		})
 	}
 
-	const updateQuiz = ({ title, description, isPublic, questions }) => {
+	const updateQuiz = (newState) => {
+		if (!newState) {
+			setQuiz(emptyQuiz)
+			return
+		}
 		setQuiz((current) => {
 			const {
 				title: currentTitle,
 				description: currentDescription,
 				questions: curentQuestions,
 			} = current
+			const { title, description, isPublic, questions } = newState
 			return {
 				title: title || currentTitle,
 				description: description || currentDescription,
@@ -86,7 +94,11 @@ const App = () => {
 							<Route exact path='/login' component={Login} />
 							<Route exact path='/register' component={Register} />
 							<ProtectedRoute exact path='/dashboard' component={Dashboard} />
-							<ProtectedRoute exact path='/quiz/create' component={Quiz} />
+							<ProtectedRoute
+								exact
+								path='/quiz/create'
+								component={QuizCreate}
+							/>
 							<ProtectedRoute
 								exact
 								path='/quiz/create/questions'

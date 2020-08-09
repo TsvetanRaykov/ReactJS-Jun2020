@@ -76,6 +76,7 @@ const SetQuestionForm = (props) => {
 		const ansList = questions[activeQuestionIndex]?.answers || []
 		console.log('SetQuestion/useEffect', activeQuestionIndex)
 		setAnswers(() => ansList.map((a) => Object.assign({}, a)))
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	useEffect(() => {

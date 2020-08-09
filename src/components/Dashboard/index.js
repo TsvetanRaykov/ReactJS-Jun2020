@@ -3,6 +3,7 @@ import Header from '../Header'
 import { Grid, Paper, withStyles, Box, Typography } from '@material-ui/core'
 import UserData from './UserData'
 import QuizList from './OwnQuizList'
+import AvalableQuizList from './AvailableQuizList'
 
 const styles = (theme) => ({
 	paper: {
@@ -35,7 +36,10 @@ const Profile = (props) => {
 				</Grid>
 				<Grid item xs={12} sm={6}>
 					<Paper className={classes.paper}>
-						<Box className={classes.content}>Right Side</Box>
+						<Box className={classes.content}>
+							<Typography variant='h6'>Available for you</Typography>
+							<AvalableQuizList />
+						</Box>
 					</Paper>
 				</Grid>
 			</Grid>

@@ -7,8 +7,7 @@ import Dashboard from '../Dashboard'
 import QuizCreate from '../../pages/Quiz/Create'
 import QuizQuestions from '../../pages/Quiz/Create/addQuestions'
 
-import { MuiThemeProvider } from '@material-ui/core/styles'
-import theme from '../theme'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { CssBaseline } from '@material-ui/core'
 import Loader from '../Loader'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
@@ -76,19 +75,21 @@ const App = () => {
 		})
 	}, [])
 
+	const theme = createMuiTheme()
+
 	return (
-		<UserContext.Provider
-			value={{
-				user,
-				quiz,
-				updateUser,
-				updateQuiz,
-			}}
-		>
-			<MuiThemeProvider theme={theme}>
-				<CssBaseline />
-				<BrowserRouter>
-					{firebaseInitialized !== false ? (
+		<MuiThemeProvider theme={theme}>
+			<CssBaseline />
+			{firebaseInitialized ? (
+				<UserContext.Provider
+					value={{
+						user,
+						quiz,
+						updateUser,
+						updateQuiz,
+					}}
+				>
+					<BrowserRouter>
 						<Switch>
 							<Route exact path='/' component={HomePage} />
 							<Route exact path='/login' component={Login} />
@@ -105,12 +106,12 @@ const App = () => {
 								component={QuizQuestions}
 							/>
 						</Switch>
-					) : (
-						<Loader />
-					)}
-				</BrowserRouter>
-			</MuiThemeProvider>
-		</UserContext.Provider>
+					</BrowserRouter>
+				</UserContext.Provider>
+			) : (
+				<Loader />
+			)}
+		</MuiThemeProvider>
 	)
 }
 

@@ -37,7 +37,6 @@ const styles = (theme) => ({
 
 function HomePage(props) {
 	const { classes } = props
-
 	useEffect(() => {
 		if (userService.getCurrentUser()) {
 			props.history.replace('/dashboard')

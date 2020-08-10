@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Modal from '@material-ui/core/Modal'
 import Backdrop from '@material-ui/core/Backdrop'
 import Fade from '@material-ui/core/Fade'
+import { Button, Box } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -18,39 +19,43 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-export default function ModalDialog() {
+export default function ModalDialog(props) {
+	const { open, handleClose, title, message } = props
+
 	const classes = useStyles()
-	const [open, setOpen] = useState(false)
-
-	const handleOpen = () => {
-		setOpen(true)
-	}
-
-	const handleClose = () => {
-		setOpen(false)
-	}
 
 	return (
 		<div>
-			<button type='button' onClick={handleOpen}>
-				modal-dialog
-			</button>
 			<Modal
 				aria-labelledby='modal-dialog-title'
 				aria-describedby='modal-dialog-description'
 				className={classes.modal}
 				open={open}
-				onClose={handleClose}
 				closeAfterTransition
 				BackdropComponent={Backdrop}
 				BackdropProps={{
 					timeout: 500,
 				}}
+				disableBackdropClick
+				disableEscapeKeyDown
 			>
 				<Fade in={open}>
 					<div className={classes.paper}>
-						<h2 id='modal-dialog-title'>Title</h2>
-						<p id='modal-dialog-description'>text</p>
+						<h2 id='modal-dialog-title'>{title}</h2>
+						<p id='modal-dialog-description'>{message}</p>
+
+						<Box display='flex' mt={2} justifyContent='space-around'>
+							<Button
+								autoFocus
+								onClick={() => handleClose(false)}
+								color='primary'
+							>
+								Cancel
+							</Button>
+							<Button onClick={() => handleClose(true)} color='primary'>
+								Ok
+							</Button>
+						</Box>
 					</div>
 				</Fade>
 			</Modal>

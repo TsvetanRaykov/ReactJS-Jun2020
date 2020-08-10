@@ -2,13 +2,13 @@ import React, { Fragment, useState } from 'react'
 
 import QuizNav from './Nav'
 import QuizActiveBody from './Body'
-import ModalDialog from './ModalDialog'
 
 const QuizActive = (props) => {
 	const {
 		quiz: {
 			data: { questions },
 		},
+		handleEndQuizClick,
 	} = props
 
 	const [active, setActiveQuestion] = useState(0)
@@ -24,11 +24,11 @@ const QuizActive = (props) => {
 
 	return (
 		<Fragment>
-			<ModalDialog />
 			<QuizNav
 				questions={questions}
 				changeQuestion={changeQuestion}
 				rerender={rerender}
+				handleEndQuizClick={handleEndQuizClick}
 			/>
 			<QuizActiveBody
 				question={questions[active]}

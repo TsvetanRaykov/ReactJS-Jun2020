@@ -12,7 +12,12 @@ import {
 } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
 
-const QuizNav = ({ questions, changeQuestion, rerender }) => {
+const QuizNav = ({
+	questions,
+	changeQuestion,
+	rerender,
+	handleEndQuizClick,
+}) => {
 	const handleClick = (e, i) => {
 		changeQuestion(i)
 	}
@@ -63,7 +68,11 @@ const QuizNav = ({ questions, changeQuestion, rerender }) => {
 								flexDirection='row'
 								p={3}
 							>
-								<Button variant='contained' color='primary'>
+								<Button
+									variant='contained'
+									color='primary'
+									onClick={handleEndQuizClick}
+								>
 									End
 								</Button>
 							</Box>

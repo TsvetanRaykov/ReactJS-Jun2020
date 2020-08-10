@@ -1,12 +1,16 @@
 import React, { Fragment, useState, useEffect } from 'react'
-
+import { withRouter } from 'react-router-dom'
 const QuizTimer = (props) => {
-	const { timer } = props
-	const { duration, start, complete } = timer || {}
+	const { timer, history } = props
+	const { duration, start, complete, progress } = timer || {}
 	const [minutes, setMinutes] = useState(0)
 	const [seconds, setSeconds] = useState(0)
 
 	const [timerHandler, setTimerHandler] = useState(0)
+
+	history.listen(() => {
+		clearTimeout(timerHandler)
+	})
 
 	const startTimer = () => {
 		const interval = 1000 // ms
@@ -27,20 +31,21 @@ const QuizTimer = (props) => {
 				clearTimeout(timerHandler)
 				return
 			}
-
+			progress(timer)
 			expected += interval
 			setTimerHandler(() => {
 				return setTimeout(step, Math.max(0, interval - dt))
 			})
-			// console.log(timerHandler)
 		}
 	}
 
 	const padZero = (num) => (num < 10 ? `0${num}` : `${num}`)
 
 	useEffect(() => {
-		//console.log(start)
 		if (start) startTimer()
+		else {
+			clearTimeout(timerHandler)
+		}
 		return () => {
 			clearTimeout(timerHandler)
 		}
@@ -50,4 +55,4 @@ const QuizTimer = (props) => {
 	return <Fragment>{`${padZero(minutes)} : ${padZero(seconds)}`}</Fragment>
 }
 
-export default QuizTimer
+export default withRouter(QuizTimer)

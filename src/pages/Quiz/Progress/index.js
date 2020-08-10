@@ -49,9 +49,23 @@ const QuizProgress = (props) => {
 			.finally(() => setLoading(false))
 	}, [id])
 
-	history.block(() => {
-		if (true) {
-			return window.confirm('Do you want to leave?')
+	history.block(function () {
+		if (start) {
+			setModalDialog({
+				title: 'Please confirm',
+				message: 'Are you ready to end the quiz?',
+				open: true,
+				handleYes: () => {
+					setTimer({ start: false })
+					setModalDialog({ open: false })
+					setStart(false)
+					setQuizResult(() => processQuizResult(quiz))
+				},
+				handleNo: () => {
+					setModalDialog({ open: false })
+				},
+			})
+			return false
 		}
 	})
 

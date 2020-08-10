@@ -9,15 +9,23 @@ import {
 	ThemeProvider,
 	createMuiTheme,
 	Container,
+	makeStyles,
 } from '@material-ui/core'
 import quizService from '../../../services/quizService'
 import Loader from '../../../components/Loader'
 import { green } from '@material-ui/core/colors'
 import QuizActive from './QuizActive'
-import ModalDialog from './ModalDialog'
+import ModalDialog from '../../../components/shared/ModalDialog'
 import QuizRezult from './QuizResult'
 import { processQuizResult } from '../../../utils'
+
+const useStyles = makeStyles((theme) => ({
+	button: {
+		margin: theme.spacing(1),
+	},
+}))
 const QuizProgress = (props) => {
+	const classes = useStyles()
 	const {
 		match: {
 			params: { id },
@@ -53,8 +61,8 @@ const QuizProgress = (props) => {
 	}, [id])
 
 	const buildEndQuizConfirmationDialog = () => ({
-		title: 'Please confirm',
-		message: 'Are you ready to end the quiz?',
+		title: 'Are you ready to end the quiz?',
+		message: 'You will not be able to continue.',
 		open: true,
 		handleYes: () => {
 			setTimer({ start: false, duration: timeLeft })
@@ -86,24 +94,35 @@ const QuizProgress = (props) => {
 	})
 
 	const handleQuizStartClick = () => {
-		setStart(true)
+		setModalDialog({
+			title: 'Are you ready to start?',
+			message: '',
+			open: true,
+			handleYes: () => {
+				setModalDialog({ open: false })
+				setStart(true)
 
-		setTimer(() => ({
-			duration: quiz?.data.duration,
-			start: true,
-			complete: () => {
-				console.log('The time is out')
-				setStart(false)
 				setTimer(() => ({
-					start: false,
-					duration: timeLeft,
+					duration: quiz?.data.duration,
+					start: true,
+					complete: () => {
+						console.log('The time is out')
+						setStart(false)
+						setTimer(() => ({
+							start: false,
+							duration: timeLeft,
+						}))
+						setQuizResult(() => processQuizResult(quiz))
+					},
+					progress: (s) => {
+						setTimeLeft(s)
+					},
 				}))
-				setQuizResult(() => processQuizResult(quiz))
 			},
-			progress: (s) => {
-				setTimeLeft(s)
+			handleNo: () => {
+				setModalDialog({ open: false })
 			},
-		}))
+		})
 	}
 
 	const theme = createMuiTheme({
@@ -134,6 +153,17 @@ const QuizProgress = (props) => {
 		<ThemeProvider theme={theme}>
 			<Box display='flex' py={2} flexDirection='row' justifyContent='center'>
 				<Button
+					className={classes.button}
+					variant='contained'
+					color='secondary'
+					onClick={() => {
+						history.goBack()
+					}}
+				>
+					Back
+				</Button>
+				<Button
+					className={classes.button}
 					variant='contained'
 					color='primary'
 					onClick={handleQuizStartClick}

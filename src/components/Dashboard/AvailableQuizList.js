@@ -22,7 +22,6 @@ const AvalableQuizList = (props) => {
 	const classes = useStyles()
 
 	const { history } = props
-
 	const [quizzes, setQuizzes] = useState([])
 	const [loading, setLoading] = useState(false)
 
@@ -37,10 +36,7 @@ const AvalableQuizList = (props) => {
 	}, [])
 
 	const handleQuizClick = (id) => {
-		//TODO: make nicer
-		if (window.confirm('Are you ready to pass that quiz?')) {
-			history.push(`/quiz/progress/${btoa(id)}`)
-		}
+		history.push(`/quiz/progress/${btoa(id)}`)
 	}
 
 	const renderQuizList = () => (

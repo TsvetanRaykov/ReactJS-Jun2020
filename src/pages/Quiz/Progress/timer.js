@@ -1,5 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
+import { padZero } from '../../../utils'
+
 const QuizTimer = (props) => {
 	const { timer, history } = props
 	const { duration, start, complete, progress } = timer || {}
@@ -38,8 +40,6 @@ const QuizTimer = (props) => {
 			})
 		}
 	}
-
-	const padZero = (num) => (num < 10 ? `0${num}` : `${num}`)
 
 	useEffect(() => {
 		if (start) startTimer()

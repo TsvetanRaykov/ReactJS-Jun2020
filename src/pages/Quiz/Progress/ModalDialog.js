@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Modal from '@material-ui/core/Modal'
 import Backdrop from '@material-ui/core/Backdrop'
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function ModalDialog(props) {
-	const { open, handleClose, title, message } = props
+	const { open, handleYes, handleNo, title, message } = props
 
 	const classes = useStyles()
 
@@ -45,14 +45,10 @@ export default function ModalDialog(props) {
 						<p id='modal-dialog-description'>{message}</p>
 
 						<Box display='flex' mt={2} justifyContent='space-around'>
-							<Button
-								autoFocus
-								onClick={() => handleClose(false)}
-								color='primary'
-							>
+							<Button autoFocus onClick={() => handleNo()} color='primary'>
 								Cancel
 							</Button>
-							<Button onClick={() => handleClose(true)} color='primary'>
+							<Button onClick={() => handleYes()} color='primary'>
 								Ok
 							</Button>
 						</Box>

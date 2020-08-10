@@ -15,21 +15,29 @@ import Loader from '../../../components/Loader'
 import { green } from '@material-ui/core/colors'
 import QuizActive from './QuizActive'
 import ModalDialog from './ModalDialog'
-
+import QuizRezult from './QuizResult'
+import { processQuizResult } from '../../../utils'
 const QuizProgress = (props) => {
 	const {
 		match: {
 			params: { id },
 		},
+		history,
 	} = props
 
 	const [quiz, setQuiz] = useState({})
 	const [loading, setLoading] = useState(false)
 	const [start, setStart] = useState(false)
-	const [dialogOpen, setDialogOpen] = useState(false)
-	const [dialogTitle, setDialogTitle] = useState('')
-	const [dialogMessage, setDialogMessage] = useState('')
 	const [timeLeft, setTimeLeft] = useState(0)
+	const [quizResult, setQuizResult] = useState(null)
+
+	const [modalDialog, setModalDialog] = useState({
+		title: '',
+		message: '',
+		open: false,
+		handleYes: () => {},
+		handleNo: () => {},
+	})
 
 	useEffect(() => {
 		setLoading(true)
@@ -41,11 +49,11 @@ const QuizProgress = (props) => {
 			.finally(() => setLoading(false))
 	}, [id])
 
-	// history.block(() => {
-	// 	if (true) {
-	// 		return window.confirm('Do you want to leave?')
-	// 	}
-	// })
+	history.block(() => {
+		if (true) {
+			return window.confirm('Do you want to leave?')
+		}
+	})
 
 	const [timer, setTimer] = useState({
 		duration: 0,
@@ -74,55 +82,20 @@ const QuizProgress = (props) => {
 	}
 
 	const handleEndQuizClick = () => {
-		setDialogMessage('Are you ready to end the quiz?')
-		setDialogTitle('Please confirm')
-		setDialogOpen(true)
-	}
-
-	const handleDialogClose = (confirm) => {
-		if (confirm) {
-			setStart(false)
-			const result = processResult()
-			displayResult(result)
-			return
-		}
-		setDialogOpen(false)
-	}
-
-	const processResult = () => {
-		const {
-			data: { questions },
-		} = quiz
-		let incorrect = 0
-		for (const question of questions) {
-			const { answers, userAnswer } = question
-			if (userAnswer === undefined) {
-				incorrect++
-				continue
-			}
-
-			let correct = false
-			for (let i = 0; i < answers.length; i++) {
-				const answer = answers[i]
-				if (answer.correct && answer.text === userAnswer) {
-					correct = true
-					break
-				}
-			}
-			if (correct === false) {
-				incorrect++
-			}
-		}
-
-		return [questions.length - incorrect, questions.length]
-	}
-
-	const displayResult = ([correct, total]) => {
-		setDialogMessage('Thank you!')
-		setDialogTitle(`${correct} / ${total} // ${timeLeft}`)
-
-		console.log(timeLeft)
-		setDialogOpen(true)
+		setModalDialog({
+			title: 'Please confirm',
+			message: 'Are you ready to end the quiz?',
+			open: true,
+			handleYes: () => {
+				setTimer({ start: false })
+				setModalDialog({ open: false })
+				setStart(false)
+				setQuizResult(() => processQuizResult(quiz))
+			},
+			handleNo: () => {
+				setModalDialog({ open: false })
+			},
+		})
 	}
 
 	const theme = createMuiTheme({
@@ -133,6 +106,35 @@ const QuizProgress = (props) => {
 			},
 		},
 	})
+
+	const renderQuizResult = () => {
+		if (!quizResult) {
+			return
+		}
+		const [correct, total] = quizResult
+
+		return (
+			<QuizRezult
+				correct={correct}
+				total={total}
+				duration={60 * 20 - timeLeft - 1}
+			/>
+		)
+	}
+
+	const renderButtonStart = () => (
+		<ThemeProvider theme={theme}>
+			<Box display='flex' py={2} flexDirection='row' justifyContent='center'>
+				<Button
+					variant='contained'
+					color='primary'
+					onClick={handleQuizStartClick}
+				>
+					Start
+				</Button>
+			</Box>
+		</ThemeProvider>
+	)
 
 	const renderQuizIntro = () => {
 		const { data } = quiz
@@ -164,22 +166,7 @@ const QuizProgress = (props) => {
 						<Typography>{data?.description}</Typography>
 					</Box>
 				</Paper>
-				<ThemeProvider theme={theme}>
-					<Box
-						display='flex'
-						py={2}
-						flexDirection='row'
-						justifyContent='center'
-					>
-						<Button
-							variant='contained'
-							color='primary'
-							onClick={handleQuizStartClick}
-						>
-							Start
-						</Button>
-					</Box>
-				</ThemeProvider>
+				{quizResult ? renderQuizResult() : renderButtonStart()}
 			</Container>
 		)
 	}
@@ -187,12 +174,7 @@ const QuizProgress = (props) => {
 	return (
 		<Fragment>
 			<Header timer={timer} />
-			<ModalDialog
-				open={dialogOpen}
-				handleClose={handleDialogClose}
-				title={dialogTitle}
-				message={dialogMessage}
-			/>
+			<ModalDialog {...modalDialog} />
 			{loading ? <Loader /> : renderQuizIntro()}
 		</Fragment>
 	)

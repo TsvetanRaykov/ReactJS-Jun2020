@@ -52,11 +52,9 @@ const QuizTimer = (props) => {
 	useEffect(() => {
 		if (start) startTimer()
 		else {
-			console.log('clearTimeOut', start)
 			clearTimeout(timerHandler)
 		}
 		return () => {
-			console.log('return clearTimeOut', start)
 			clearTimeout(timerHandler)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

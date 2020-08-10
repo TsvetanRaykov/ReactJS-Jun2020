@@ -18,6 +18,7 @@ import QuizActive from './QuizActive'
 import ModalDialog from '../../../components/shared/ModalDialog'
 import QuizRezult from './QuizResult'
 import { processQuizResult } from '../../../utils'
+import historyService from '../../../services/historyService'
 
 const useStyles = makeStyles((theme) => ({
 	button: {
@@ -60,15 +61,33 @@ const QuizProgress = (props) => {
 			.finally(() => setLoading(false))
 	}, [id])
 
+	const finishQuiz = () => {
+		setStart(false)
+		setTimer(() => {
+			setQuizResult(() => {
+				const result = processQuizResult(quiz)
+				historyService.addHistory({
+					quiz,
+					correct: result[0],
+					total: result[1],
+					duration: timeLeft,
+				})
+				return result
+			})
+			return {
+				start: false,
+				duration: timeLeft,
+			}
+		})
+	}
+
 	const buildEndQuizConfirmationDialog = () => ({
 		title: 'Are you ready to end the quiz?',
 		message: 'You will not be able to continue.',
 		open: true,
 		handleYes: () => {
-			setTimer({ start: false, duration: timeLeft })
 			setModalDialog({ open: false })
-			setStart(false)
-			setQuizResult(() => processQuizResult(quiz))
+			finishQuiz()
 		},
 		handleNo: () => {
 			setModalDialog({ open: false })
@@ -106,13 +125,7 @@ const QuizProgress = (props) => {
 					duration: quiz?.data.duration,
 					start: true,
 					complete: () => {
-						console.log('The time is out')
-						setStart(false)
-						setTimer(() => ({
-							start: false,
-							duration: timeLeft,
-						}))
-						setQuizResult(() => processQuizResult(quiz))
+						finishQuiz()
 					},
 					progress: (s) => {
 						setTimeLeft(s)

@@ -10,6 +10,7 @@ import {
 	Tooltip,
 	Avatar,
 	withStyles,
+	Link,
 } from '@material-ui/core'
 import { PersonRounded, EmailRounded } from '@material-ui/icons'
 import EditableTextField from '../EditableTextField'
@@ -110,12 +111,14 @@ const UserData = (props) => {
 						<EditableTextField text={userName} callback={saveName} />
 					</ListItem>
 					<Divider />
-					<ListItem>
-						<ListItemAvatar>
-							<EmailRounded color='primary' />
-						</ListItemAvatar>
-						<ListItemText primary={userEmail} />
-					</ListItem>
+					<Link href={`mailto://${userEmail}`}>
+						<ListItem>
+							<ListItemAvatar>
+								<EmailRounded color='primary' />
+							</ListItemAvatar>
+							<ListItemText primary={userEmail} />
+						</ListItem>
+					</Link>
 				</List>
 			</Grid>
 		</Grid>

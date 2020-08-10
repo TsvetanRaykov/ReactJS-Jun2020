@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
+import AccessTimeIcon from '@material-ui/icons/AccessTime'
 import {
 	Paper,
 	Typography,
@@ -10,6 +11,8 @@ import {
 	Checkbox,
 	FormControlLabel,
 	Box,
+	TextField,
+	InputAdornment,
 } from '@material-ui/core'
 import UserContext from '../../../Context'
 import Header from '../../../components/Header'
@@ -56,12 +59,14 @@ const Quiz = (props) => {
 	const [quizTitle, setTitle] = useState(title)
 	const [quizDescription, setDescription] = useState(description)
 	const [quizIsPublic, setPublic] = useState(isPublic)
+	const [quizDuration, setQuizDuration] = useState(10)
 
 	const continueClickHandler = () => {
 		updateQuiz({
 			title: quizTitle,
 			description: quizDescription,
 			isPublic: quizIsPublic,
+			duration: quizDuration,
 		})
 		history.push('/quiz/edit/questions')
 	}
@@ -108,19 +113,49 @@ const Quiz = (props) => {
 								onChange={(e) => setDescription(e.target.value)}
 							/>
 						</FormControl>
-						<FormControl margin='normal' required fullWidth>
-							<FormControlLabel
-								control={
-									<Checkbox
-										checked={quizIsPublic}
-										onChange={(e) => setPublic(e.target.checked)}
-										name='is-public'
-										color='primary'
-									/>
-								}
-								label='Public'
-							/>
-						</FormControl>
+						<Box
+							display='flex'
+							justifyContent='space-between'
+							alignItems='flex-end'
+							alignContent='flex-end'
+							flexDirection='row'
+						>
+							<FormControl margin='normal' required fullWidth>
+								<FormControlLabel
+									control={
+										<Checkbox
+											checked={quizIsPublic}
+											onChange={(e) => setPublic(e.target.checked)}
+											name='is-public'
+											color='primary'
+										/>
+									}
+									label='Public'
+								/>
+							</FormControl>
+							<FormControl margin='normal' required>
+								<FormControlLabel
+									control={
+										<TextField
+											type='number'
+											name='quiz-duration'
+											color='primary'
+											InputProps={{
+												inputProps: { min: 1 },
+												startAdornment: (
+													<InputAdornment position='start'>
+														<AccessTimeIcon />
+													</InputAdornment>
+												),
+											}}
+											value={quizDuration / 60}
+											onChange={(e) => setQuizDuration(e.target.value * 60)}
+											label='Duration (min)'
+										/>
+									}
+								/>
+							</FormControl>
+						</Box>
 						<Box
 							display='flex'
 							justifyContent='space-between'

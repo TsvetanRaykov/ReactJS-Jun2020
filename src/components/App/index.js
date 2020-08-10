@@ -20,15 +20,17 @@ import QuizProgress from '../../pages/Quiz/Progress'
 const App = () => {
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false)
 	const [user, setUser] = useState({})
+	const [quiz, setQuiz] = useState(emptyQuiz())
 
-	const emptyQuiz = {
-		title: '',
-		description: '',
-		isPublic: false,
-		questions: [],
+	function emptyQuiz() {
+		return {
+			title: '',
+			description: '',
+			duration: 0,
+			isPublic: false,
+			questions: [],
+		}
 	}
-
-	const [quiz, setQuiz] = useState(emptyQuiz)
 
 	const updateUser = ({ userImg, userName, userEmail }) => {
 		setUser((current) => {
@@ -49,7 +51,7 @@ const App = () => {
 
 	const updateQuiz = (newState) => {
 		if (!newState) {
-			setQuiz(emptyQuiz)
+			setQuiz(emptyQuiz())
 			return
 		}
 		setQuiz((current) => {
@@ -57,14 +59,16 @@ const App = () => {
 				title: currentTitle,
 				description: currentDescription,
 				questions: curentQuestions,
+				duration: currentDuration,
 			} = current
-			const { title, description, isPublic, questions } = newState
+			const { title, description, isPublic, questions, duration } = newState
 			return {
 				title: title || currentTitle,
 				description: description || currentDescription,
 				isPublic,
 				questions:
 					questions && questions.length > 0 ? questions : curentQuestions,
+				duration: duration || currentDuration,
 			}
 		})
 	}

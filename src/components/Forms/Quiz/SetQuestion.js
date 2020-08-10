@@ -67,21 +67,15 @@ const SetQuestionForm = (props) => {
 			? newQuestions.splice(activeQuestionIndex, 1, { question, answers })
 			: newQuestions.push({ question, answers })
 
-		console.log('onSaveClick', activeQuestionIndex, newQuestions)
 		updateQuiz({ questions: newQuestions, isPublic })
 		formClose()
 	}
 
 	useEffect(() => {
 		const ansList = questions[activeQuestionIndex]?.answers || []
-		console.log('SetQuestion/useEffect', activeQuestionIndex)
 		setAnswers(() => ansList.map((a) => Object.assign({}, a)))
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
-
-	useEffect(() => {
-		console.log(activeQuestionIndex)
-	}, [activeQuestionIndex])
 
 	const selectedValue = () => {
 		for (const a of answers) {
@@ -99,7 +93,6 @@ const SetQuestionForm = (props) => {
 	const onDeleteClick = () => {
 		//TODO: MAke it nicer
 		if (window.confirm('Are you sure?')) {
-			console.log('onDeleteClick', activeQuestionIndex)
 			const newQuestions = questions.slice(0)
 			newQuestions.splice(activeQuestionIndex, 1)
 			updateQuiz({ questions: newQuestions, isPublic })

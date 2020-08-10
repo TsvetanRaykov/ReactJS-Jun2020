@@ -109,7 +109,7 @@ const OwnQuizList = (props) => {
 			<div className={classes.root}>
 				{quizzes.length > 0 ? (
 					quizzes.map(({ id, data }) => {
-						const { title, description, isPublic, questions } = data
+						const { title, description, isPublic, questions, duration } = data
 						return (
 							<Accordion
 								key={id}
@@ -126,25 +126,34 @@ const OwnQuizList = (props) => {
 										dense
 										subheader={
 											<>
-												<Box display='flex' justifyContent='flex-end'>
-													<Tooltip title='Delete Quiz'>
-														<IconButton
-															color='secondary'
-															aria-label='delete quiz'
-															onClick={() => handleDeleteClick(id)}
-														>
-															<DeleteForever />
-														</IconButton>
-													</Tooltip>
-													<Tooltip title='Edit Quiz'>
-														<IconButton
-															color='primary'
-															aria-label='edit quiz'
-															onClick={() => handleEditClick(data)}
-														>
-															<Settings />
-														</IconButton>
-													</Tooltip>
+												<Box
+													display='flex'
+													justifyContent='space-between'
+													alignItems='center'
+												>
+													<Typography className={classes.heading}>{`Duration: ${
+														duration / 60
+													} min`}</Typography>
+													<div>
+														<Tooltip title='Delete Quiz'>
+															<IconButton
+																color='secondary'
+																aria-label='delete quiz'
+																onClick={() => handleDeleteClick(id)}
+															>
+																<DeleteForever />
+															</IconButton>
+														</Tooltip>
+														<Tooltip title='Edit Quiz'>
+															<IconButton
+																color='primary'
+																aria-label='edit quiz'
+																onClick={() => handleEditClick(data)}
+															>
+																<Settings />
+															</IconButton>
+														</Tooltip>
+													</div>
 												</Box>
 												<Typography variant='caption'>{description}</Typography>
 											</>

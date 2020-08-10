@@ -14,6 +14,11 @@ const QuizTimer = (props) => {
 		clearTimeout(timerHandler)
 	})
 
+	const updateTime = (timer) => {
+		setMinutes(parseInt(timer / 60, 10))
+		setSeconds(parseInt(timer % 60, 10))
+	}
+
 	const startTimer = () => {
 		const interval = 1000 // ms
 		let timer = duration
@@ -25,8 +30,7 @@ const QuizTimer = (props) => {
 		function step() {
 			const dt = Date.now() - expected
 
-			setMinutes(parseInt(timer / 60, 10))
-			setSeconds(parseInt(timer % 60, 10))
+			updateTime(timer)
 
 			if (--timer < 0) {
 				complete()
@@ -42,11 +46,17 @@ const QuizTimer = (props) => {
 	}
 
 	useEffect(() => {
+		updateTime(timer.duration)
+	}, [timer])
+
+	useEffect(() => {
 		if (start) startTimer()
 		else {
+			console.log('clearTimeOut', start)
 			clearTimeout(timerHandler)
 		}
 		return () => {
+			console.log('return clearTimeOut', start)
 			clearTimeout(timerHandler)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

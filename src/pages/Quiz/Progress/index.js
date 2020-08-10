@@ -45,29 +45,38 @@ const QuizProgress = (props) => {
 			.getById(atob(id))
 			.then((data) => {
 				setQuiz(data)
+				setTimer((t) => {
+					return { ...t, duration: data.data.duration }
+				})
 			})
 			.finally(() => setLoading(false))
 	}, [id])
 
+	const buildEndQuizConfirmationDialog = () => ({
+		title: 'Please confirm',
+		message: 'Are you ready to end the quiz?',
+		open: true,
+		handleYes: () => {
+			setTimer({ start: false, duration: timeLeft })
+			setModalDialog({ open: false })
+			setStart(false)
+			setQuizResult(() => processQuizResult(quiz))
+		},
+		handleNo: () => {
+			setModalDialog({ open: false })
+		},
+	})
+
 	history.block(function () {
 		if (start) {
-			setModalDialog({
-				title: 'Please confirm',
-				message: 'Are you ready to end the quiz?',
-				open: true,
-				handleYes: () => {
-					setTimer({ start: false })
-					setModalDialog({ open: false })
-					setStart(false)
-					setQuizResult(() => processQuizResult(quiz))
-				},
-				handleNo: () => {
-					setModalDialog({ open: false })
-				},
-			})
+			setModalDialog(buildEndQuizConfirmationDialog())
 			return false
 		}
 	})
+
+	const handleEndQuizClick = () => {
+		setModalDialog(buildEndQuizConfirmationDialog())
+	}
 
 	const [timer, setTimer] = useState({
 		duration: 0,
@@ -80,36 +89,21 @@ const QuizProgress = (props) => {
 		setStart(true)
 
 		setTimer(() => ({
-			duration: 60 * 20,
+			duration: quiz?.data.duration,
 			start: true,
 			complete: () => {
 				console.log('The time is out')
 				setStart(false)
 				setTimer(() => ({
 					start: false,
+					duration: timeLeft,
 				}))
+				setQuizResult(() => processQuizResult(quiz))
 			},
 			progress: (s) => {
 				setTimeLeft(s)
 			},
 		}))
-	}
-
-	const handleEndQuizClick = () => {
-		setModalDialog({
-			title: 'Please confirm',
-			message: 'Are you ready to end the quiz?',
-			open: true,
-			handleYes: () => {
-				setTimer({ start: false })
-				setModalDialog({ open: false })
-				setStart(false)
-				setQuizResult(() => processQuizResult(quiz))
-			},
-			handleNo: () => {
-				setModalDialog({ open: false })
-			},
-		})
 	}
 
 	const theme = createMuiTheme({
@@ -131,7 +125,7 @@ const QuizProgress = (props) => {
 			<QuizRezult
 				correct={correct}
 				total={total}
-				duration={60 * 20 - timeLeft - 1}
+				duration={quiz?.data.duration - timer.duration}
 			/>
 		)
 	}

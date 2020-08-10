@@ -31,7 +31,6 @@ const AuthMenu = (props) => {
 	}
 
 	const handleAddQuiz = () => {
-		console.log('handleAddQuiz')
 		updateQuiz(null)
 		props.history.push('/quiz/edit')
 	}

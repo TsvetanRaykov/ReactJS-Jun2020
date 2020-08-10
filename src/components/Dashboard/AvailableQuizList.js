@@ -6,11 +6,21 @@ import {
 	ListItemAvatar,
 	Avatar,
 	ListItemText,
+	Typography,
+	makeStyles,
 } from '@material-ui/core'
 import Loader from '../Loader'
 import { withRouter } from 'react-router-dom'
 
+const useStyles = makeStyles((theme) => ({
+	inline: {
+		display: 'inline',
+	},
+}))
+
 const AvalableQuizList = (props) => {
+	const classes = useStyles()
+
 	const { history } = props
 
 	const [quizzes, setQuizzes] = useState([])
@@ -28,7 +38,6 @@ const AvalableQuizList = (props) => {
 
 	const handleQuizClick = (id) => {
 		//TODO: make nicer
-		console.log('handleQuizClick', id)
 		if (window.confirm('Are you ready to pass that quiz?')) {
 			history.push(`/quiz/progress/${btoa(id)}`)
 		}
@@ -45,11 +54,24 @@ const AvalableQuizList = (props) => {
 					onClick={() => handleQuizClick(id)}
 				>
 					<ListItemAvatar>
-						<Avatar alt='TODO' src={data.authorImg}></Avatar>
+						<Avatar alt='author' src={data.authorImg}></Avatar>
 					</ListItemAvatar>
 					<ListItemText
+						color='textPrimary'
 						primary={data.title}
-						secondary={data.description}
+						secondary={
+							<Typography>
+								<Typography
+									component='span'
+									variant='body2'
+									className={classes.inline}
+									color='textPrimary'
+								>
+									{`${data.duration / 60} min.`}
+								</Typography>
+								{` — ${data.description}`}
+							</Typography>
+						}
 					></ListItemText>
 				</ListItem>
 			))}

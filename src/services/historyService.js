@@ -7,22 +7,31 @@ class HistoryService extends BaseService {
 	}
 
 	addHistory(quizResult) {
-		const { quiz, correct, total, duration } = quizResult
+		const { quiz, correct, total, timeLeft } = quizResult
+		const {
+			id,
+			data: { title, description, duration },
+		} = quiz
 
 		const history = {
 			uid: this.uid,
 			correct,
 			total,
-			duration: quiz.data.duration - duration,
+			duration: duration - timeLeft,
 			passedAt: new Date(),
-			quiz: quiz.id,
+			quiz: id,
+			title,
+			description,
 			score: parseFloat(correct / total).toFixed(2),
 		}
 		this.ref.add(history)
 	}
 
 	async getHistory() {
-		const data = await this.ref.where('uid', '==', this.uid).get()
+		const data = await this.ref
+			.where('uid', '==', this.uid)
+			.orderBy('passedAt', 'desc')
+			.get()
 		const history = []
 		data.forEach((doc) => history.push({ id: doc.id, data: doc.data() }))
 		return history

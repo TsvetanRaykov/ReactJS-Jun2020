@@ -53,15 +53,38 @@ class QuizService extends BaseService {
 
 	async getAvailable() {
 		const data = await this.ref.where('isPublic', '==', true).get()
-
-		return this.filterPersonal(data)
+		return this.filterPersonal(data).filter(
+			(d) => !d.data.completedBy?.includes(this.uid)
+		)
 	}
 
 	async getCompleted() {
-		const data = await this.ref
-			.where('completedBy', 'array-contains', this.uid)
-			.get()
-		return this.filterPersonal(data)
+		const history = await historyService.getHistory()
+
+		const completed = {}
+		history.forEach(({ data }) => {
+			const {
+				title,
+				description,
+				correct,
+				duration,
+				passedAt,
+				score,
+				total,
+			} = data
+			if (completed[data.quiz] === undefined) {
+				completed[data.quiz] = { title, description, completions: [] }
+			}
+			completed[data.quiz].completions.push({
+				total,
+				correct,
+				duration,
+				passedAt,
+				score,
+			})
+		})
+
+		return completed
 	}
 
 	async getById(id) {

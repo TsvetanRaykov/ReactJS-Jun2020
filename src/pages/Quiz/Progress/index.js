@@ -54,7 +54,6 @@ const QuizProgress = (props) => {
 			.getById(atob(id))
 			.then((data) => {
 				setQuiz(data)
-				console.log('Progress/index:', data)
 				setTimer((t) => {
 					return { ...t, duration: data.data.duration }
 				})
@@ -71,7 +70,7 @@ const QuizProgress = (props) => {
 					quiz,
 					correct: result[0],
 					total: result[1],
-					duration: timeLeft,
+					timeLeft,
 				})
 				return result
 			})

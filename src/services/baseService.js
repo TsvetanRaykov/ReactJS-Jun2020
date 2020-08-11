@@ -1,7 +1,5 @@
 import app from './firebase'
 import 'firebase/auth'
-import 'firebase/firebase-firestore'
-
 class BaseService {
 	constructor() {
 		this.app = app

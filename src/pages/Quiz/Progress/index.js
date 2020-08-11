@@ -11,14 +11,14 @@ import {
 	Container,
 	makeStyles,
 } from '@material-ui/core'
-import quizService from '../../../services/quizService'
 import Loader from '../../../components/Loader'
 import { green } from '@material-ui/core/colors'
 import QuizActive from './QuizActive'
 import ModalDialog from '../../../components/shared/ModalDialog'
 import QuizRezult from './QuizResult'
 import { processQuizResult } from '../../../utils'
-import historyService from '../../../services/historyService'
+
+import quizService from '../../../services/quizService'
 
 const useStyles = makeStyles((theme) => ({
 	button: {
@@ -54,6 +54,7 @@ const QuizProgress = (props) => {
 			.getById(atob(id))
 			.then((data) => {
 				setQuiz(data)
+				console.log('Progress/index:', data)
 				setTimer((t) => {
 					return { ...t, duration: data.data.duration }
 				})
@@ -66,7 +67,7 @@ const QuizProgress = (props) => {
 		setTimer(() => {
 			setQuizResult(() => {
 				const result = processQuizResult(quiz)
-				historyService.addHistory({
+				quizService.completeQuiz({
 					quiz,
 					correct: result[0],
 					total: result[1],

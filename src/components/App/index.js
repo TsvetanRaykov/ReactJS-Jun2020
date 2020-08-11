@@ -24,11 +24,13 @@ const App = () => {
 
 	function emptyQuiz() {
 		return {
+			id: '',
 			title: '',
 			description: '',
 			duration: 0,
 			isPublic: false,
 			questions: [],
+			completedBy: [],
 		}
 	}
 
@@ -56,19 +58,30 @@ const App = () => {
 		}
 		setQuiz((current) => {
 			const {
+				id: currentId,
 				title: currentTitle,
 				description: currentDescription,
 				questions: curentQuestions,
 				duration: currentDuration,
+				completedBy: currentCompletedBy,
 			} = current
-			const { title, description, isPublic, questions, duration } = newState
+			const {
+				title,
+				description,
+				isPublic,
+				questions,
+				duration,
+				completedBy,
+			} = newState
 			return {
+				id: currentId,
 				title: title || currentTitle,
 				description: description || currentDescription,
 				isPublic,
 				questions:
 					questions && questions.length > 0 ? questions : curentQuestions,
 				duration: duration || currentDuration,
+				completedBy: completedBy || currentCompletedBy,
 			}
 		})
 	}

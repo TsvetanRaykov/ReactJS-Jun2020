@@ -2,8 +2,9 @@ import React from 'react'
 import Header from '../Header'
 import { Grid, Paper, withStyles, Box, Typography } from '@material-ui/core'
 import UserData from './UserData'
-import QuizList from './OwnQuizList'
+import OwnQuizList from './OwnQuizList'
 import AvalableQuizList from './AvailableQuizList'
+import CompletedQuizList from './CompletedQuizList'
 
 const styles = (theme) => ({
 	paper: {
@@ -12,7 +13,7 @@ const styles = (theme) => ({
 		margin: theme.spacing(1),
 	},
 	content: {
-		height: '85vh',
+		minHeight: '85vh',
 	},
 })
 
@@ -26,11 +27,14 @@ const Profile = (props) => {
 				<Grid item xs={12} sm={6}>
 					<Paper className={classes.paper}>
 						<Box className={classes.content}>
-							<UserData />
-							<br />
-							<hr />
+							<UserData /> <br /> <hr />
 							<Typography variant='h6'>Your Quizzes</Typography>
-							<QuizList />
+							<OwnQuizList />
+							<br /> <hr />
+							<Box>
+								<Typography variant='h6'>Completed</Typography>
+								<CompletedQuizList />
+							</Box>
 						</Box>
 					</Paper>
 				</Grid>

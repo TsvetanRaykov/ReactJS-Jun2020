@@ -20,6 +20,13 @@ class HistoryService extends BaseService {
 		}
 		this.ref.add(history)
 	}
+
+	async getHistory() {
+		const data = await this.ref.where('uid', '==', this.uid).get()
+		const history = []
+		data.forEach((doc) => history.push({ id: doc.id, data: doc.data() }))
+		return history
+	}
 }
 
 export default new HistoryService()

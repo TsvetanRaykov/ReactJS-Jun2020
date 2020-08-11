@@ -1,15 +1,11 @@
-import app from './firebase'
-import 'firebase/auth'
-import 'firebase/firebase-firestore'
+import BaseService from './baseService'
+import historyService from './historyService'
+import firebase from 'firebase'
 
-class QuizService {
+class QuizService extends BaseService {
 	constructor() {
-		this.auth = app.auth()
-		this.ref = app.firestore().collection('quizzes')
-	}
-
-	get uid() {
-		return this.auth.currentUser.uid
+		super()
+		this.ref = this.app.firestore().collection('quizzes')
 	}
 
 	//TODO: Add Error Handling
@@ -18,7 +14,19 @@ class QuizService {
 		quiz.createdBy = this.uid
 		quiz.createdAt = new Date()
 		quiz.authorImg = this.auth.currentUser.photoURL
+		return this.updateQuiz(quiz)
+	}
+
+	updateQuiz(quiz) {
 		return this.ref.doc(quiz.title).set(quiz)
+	}
+
+	completeQuiz(quizResult) {
+		const { quiz } = quizResult
+		historyService.addHistory(quizResult)
+		this.ref.doc(quiz.id).update({
+			completedBy: firebase.firestore.FieldValue.arrayUnion(this.uid),
+		})
 	}
 
 	async getPersonal() {
@@ -32,8 +40,7 @@ class QuizService {
 		return this.ref.doc(id).delete()
 	}
 
-	async getAvailable() {
-		const data = await this.ref.where('isPublic', '==', true).get()
+	filterPersonal = (data) => {
 		const quizList = []
 		data.forEach((doc) => {
 			const data = doc.data()
@@ -42,6 +49,19 @@ class QuizService {
 			}
 		})
 		return quizList
+	}
+
+	async getAvailable() {
+		const data = await this.ref.where('isPublic', '==', true).get()
+
+		return this.filterPersonal(data)
+	}
+
+	async getCompleted() {
+		const data = await this.ref
+			.where('completedBy', 'array-contains', this.uid)
+			.get()
+		return this.filterPersonal(data)
 	}
 
 	async getById(id) {

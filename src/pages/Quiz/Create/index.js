@@ -50,7 +50,7 @@ const styles = (theme) => ({
 
 const Quiz = (props) => {
 	const {
-		quiz: { title, description, isPublic },
+		quiz: { title, description, isPublic, duration },
 		updateQuiz,
 	} = useContext(UserContext)
 
@@ -59,7 +59,7 @@ const Quiz = (props) => {
 	const [quizTitle, setTitle] = useState(title)
 	const [quizDescription, setDescription] = useState(description)
 	const [quizIsPublic, setPublic] = useState(isPublic)
-	const [quizDuration, setQuizDuration] = useState(10)
+	const [quizDuration, setQuizDuration] = useState(duration)
 
 	const continueClickHandler = () => {
 		updateQuiz({

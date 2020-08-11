@@ -21,27 +21,11 @@ import { ExpandMore } from '@material-ui/icons'
 import { padZero } from '../../utils'
 
 const useStyles = makeStyles((theme) => ({
-	// root: {
-	// 	width: '100%',
-	// },
 	heading: {
 		fontSize: theme.typography.pxToRem(15),
 		fontWeight: theme.typography.fontWeightMedium,
 	},
 	subheading: {},
-	// label: {
-	// 	'& span': {
-	// 		color: theme.palette.text.primary,
-	// 	},
-	// },
-	// question: {
-	// 	'& span': {
-	// 		fontWeight: theme.typography.fontWeightMedium,
-	// 	},
-	// },
-	// inline: {
-	// 	display: 'inline',
-	// },
 }))
 
 const CompletedQuizList = (props) => {
@@ -63,7 +47,6 @@ const CompletedQuizList = (props) => {
 		quizService
 			.getCompleted()
 			.then((data) => {
-				console.log(data)
 				setQuizzes(data)
 			})
 			.finally(() => setLoading(false))
@@ -111,11 +94,6 @@ const CompletedQuizList = (props) => {
 												const seconds = padZero(parseInt(row.duration % 60, 10))
 												return (
 													<TableRow key={i}>
-														{console.log(
-															row.passedAt
-																.toDate()
-																.toLocaleDateString('bg', timeOptions)
-														)}
 														<TableCell component='th' scope='row'>
 															{row.passedAt
 																.toDate()
@@ -131,11 +109,6 @@ const CompletedQuizList = (props) => {
 										</TableBody>
 									</Table>
 								</TableContainer>
-								{/* <ul>
-									{completions.map((c) => {
-										return c.duration
-									})}
-								</ul> */}
 							</AccordionDetails>
 						</Accordion>
 					)

@@ -25,7 +25,11 @@ class QuizService extends BaseService {
 		const { quiz } = quizResult
 		historyService.addHistory(quizResult)
 		this.ref.doc(quiz.id).update({
-			completedBy: firebase.firestore.FieldValue.arrayUnion(this.uid),
+			completedBy: firebase.firestore.FieldValue.arrayUnion({
+				uid: this.uid,
+				email: this.auth.currentUser.email,
+				photo: this.auth.currentUser.photoURL,
+			}),
 		})
 	}
 
@@ -53,9 +57,12 @@ class QuizService extends BaseService {
 
 	async getAvailable() {
 		const data = await this.ref.where('isPublic', '==', true).get()
-		return this.filterPersonal(data).filter(
-			(d) => !d.data.completedBy?.includes(this.uid)
-		)
+		const notPersonal = this.filterPersonal(data).filter((d) => {
+			//console.log(d.data.completedBy && d.data.completedBy)
+			return !d.data.completedBy?.includes(this.uid)
+		})
+
+		return notPersonal
 	}
 
 	async getCompleted() {

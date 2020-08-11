@@ -122,7 +122,9 @@ const OwnQuizList = (props) => {
 									<Typography className={classes.heading}>{title}</Typography>
 								</AccordionSummary>
 								<AccordionDetails>
-									<List
+									<Box display='flex'>{description}</Box>
+
+									{/* <List
 										className={classes.root}
 										dense
 										subheader={
@@ -168,7 +170,7 @@ const OwnQuizList = (props) => {
 												/>
 											</ListItem>
 										))}
-									</List>
+									</List> */}
 								</AccordionDetails>
 							</Accordion>
 						)

@@ -1,4 +1,4 @@
-import React, { useContext, createRef } from 'react'
+import React, { useContext, createRef, useState, useEffect } from 'react'
 import {
 	Grid,
 	List,
@@ -35,10 +35,16 @@ const styles = (theme) => ({
 
 const UserData = (props) => {
 	const { classes } = props
-	const {
-		user: { userImg, userName, userEmail },
-		updateUser,
-	} = useContext(UserContext)
+	const { updateUser } = useContext(UserContext)
+	const [userName, setUserName] = useState('')
+	const [userImg, setUserImg] = useState('')
+	const [userEmail, setUserEmail] = useState('')
+
+	useEffect(() => {
+		setUserImg(userService.getCurrentUser().userImg)
+		setUserName(userService.getCurrentUser().userName)
+		setUserEmail(userService.getCurrentUser().userEmail)
+	}, [])
 
 	const fileRef = createRef()
 

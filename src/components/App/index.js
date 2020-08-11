@@ -89,25 +89,29 @@ const App = () => {
 	useEffect(() => {
 		auth.isInitialized().then((val) => {
 			setFirebaseInitialized(val)
-			setUser(() => userService.getCurrentUser())
+			setUser(() => {
+				const user = userService.getCurrentUser()
+				console.log('App', user)
+				return user
+			})
 		})
 	}, [])
 
 	const theme = createMuiTheme()
 
 	return (
-		<MuiThemeProvider theme={theme}>
-			<CssBaseline />
-			{firebaseInitialized ? (
-				<UserContext.Provider
-					value={{
-						user,
-						quiz,
-						updateUser,
-						updateQuiz,
-					}}
-				>
-					<BrowserRouter>
+		<UserContext.Provider
+			value={{
+				user,
+				quiz,
+				updateUser,
+				updateQuiz,
+			}}
+		>
+			<MuiThemeProvider theme={theme}>
+				<CssBaseline />
+				<BrowserRouter>
+					{firebaseInitialized !== false ? (
 						<Switch>
 							<Route exact path='/' component={HomePage} />
 							<Route exact path='/login' component={Login} />
@@ -125,12 +129,12 @@ const App = () => {
 								component={QuizProgress}
 							/>
 						</Switch>
-					</BrowserRouter>
-				</UserContext.Provider>
-			) : (
-				<Loader />
-			)}
-		</MuiThemeProvider>
+					) : (
+						<Loader />
+					)}
+				</BrowserRouter>
+			</MuiThemeProvider>
+		</UserContext.Provider>
 	)
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import userService from '../../services/userService'
 import {
@@ -15,10 +15,15 @@ import UserContext from '../../Context'
 const AuthMenu = (props) => {
 	const [anchorEl, setAnchorEl] = useState(null)
 
-	const {
-		user: { userImg, userName },
-		updateQuiz,
-	} = useContext(UserContext)
+	const { updateQuiz } = useContext(UserContext)
+
+	const [userName, setUserName] = useState('')
+	const [userImg, setUserImg] = useState('')
+
+	useEffect(() => {
+		setUserImg(userService.getCurrentUser().userImg)
+		setUserName(userService.getCurrentUser().userName)
+	}, [])
 
 	const open = Boolean(anchorEl)
 

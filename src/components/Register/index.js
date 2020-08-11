@@ -139,18 +139,6 @@ function Register(props) {
 							{validators.repassword}
 						</FormHelperText>
 					</FormControl>
-					{/* <FormControl margin='normal' required fullWidth>
-						<InputLabel htmlFor='quote'>Your Favorite Quote</InputLabel>
-						<Input
-							name='quote'
-							type='text'
-							id='quote'
-							autoComplete='off'
-							value={quote}
-							onChange={(e) => setQuote(e.target.value)}
-						/>
-					</FormControl> */}
-
 					<Button
 						type='submit'
 						fullWidth

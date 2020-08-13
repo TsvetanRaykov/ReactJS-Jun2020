@@ -15,7 +15,10 @@ import UserContext from '../../Context'
 const AuthMenu = (props) => {
 	const [anchorEl, setAnchorEl] = useState(null)
 
-	const { updateQuiz } = useContext(UserContext)
+	const {
+		updateQuiz,
+		user: { userImg: img },
+	} = useContext(UserContext)
 
 	const [userName, setUserName] = useState('')
 	const [userImg, setUserImg] = useState('')
@@ -24,6 +27,10 @@ const AuthMenu = (props) => {
 		setUserImg(userService.getCurrentUser().userImg)
 		setUserName(userService.getCurrentUser().userName)
 	}, [])
+
+	useEffect(() => {
+		setUserImg(img)
+	}, [img])
 
 	const open = Boolean(anchorEl)
 

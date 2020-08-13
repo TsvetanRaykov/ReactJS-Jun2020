@@ -69,7 +69,6 @@ class Firebase {
 					userId: this.auth.currentUser.uid,
 			  }
 			: null
-		console.log(user)
 		return user
 	}
 

@@ -57,7 +57,7 @@ const CompletedQuizList = (props) => {
 	}
 	const renderQuizList = () => (
 		<div className={classes.root}>
-			{quizzes ? (
+			{quizzes && quizzes.length > 0 ? (
 				Object.keys(quizzes).map((id) => {
 					const { title, description, completions } = quizzes[id]
 					return (

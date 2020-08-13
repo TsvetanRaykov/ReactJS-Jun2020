@@ -57,6 +57,7 @@ const UserData = (props) => {
 
 		reader.onload = () => {
 			if (reader.readyState === 2) {
+				setUserImg(reader.result)
 				updateUser({
 					userImg: reader.result,
 				})

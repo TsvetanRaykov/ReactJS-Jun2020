@@ -39,40 +39,49 @@ const AvalableQuizList = (props) => {
 		history.push(`/quiz/progress/${btoa(id)}`)
 	}
 
-	const renderQuizList = () => (
-		<List>
-			{quizzes.map(({ id, data }) => (
-				<ListItem
-					key={id}
-					alignItems='flex-start'
-					dense
-					button
-					onClick={() => handleQuizClick(id)}
-				>
-					<ListItemAvatar>
-						<Avatar alt='author' src={data.authorImg}></Avatar>
-					</ListItemAvatar>
-					<ListItemText
-						color='textPrimary'
-						primary={data.title}
-						secondary={
-							<Typography>
-								<Typography
-									component='span'
-									variant='body2'
-									className={classes.inline}
-									color='textPrimary'
-								>
-									{`${data.duration / 60} min.`}
+	const renderQuizList = () => {
+		if (!quizzes || quizzes.length === 0) {
+			return (
+				<Typography variant='caption'>
+					There are no quizzes available for you so far
+				</Typography>
+			)
+		}
+		return (
+			<List>
+				{quizzes.map(({ id, data }) => (
+					<ListItem
+						key={id}
+						alignItems='flex-start'
+						dense
+						button
+						onClick={() => handleQuizClick(id)}
+					>
+						<ListItemAvatar>
+							<Avatar alt='author' src={data.authorImg}></Avatar>
+						</ListItemAvatar>
+						<ListItemText
+							color='textPrimary'
+							primary={data.title}
+							secondary={
+								<Typography>
+									<Typography
+										component='span'
+										variant='body2'
+										className={classes.inline}
+										color='textPrimary'
+									>
+										{`${data.duration / 60} min.`}
+									</Typography>
+									{` — ${data.description}`}
 								</Typography>
-								{` — ${data.description}`}
-							</Typography>
-						}
-					></ListItemText>
-				</ListItem>
-			))}
-		</List>
-	)
+							}
+						></ListItemText>
+					</ListItem>
+				))}
+			</List>
+		)
+	}
 
 	return loading ? <Loader /> : renderQuizList()
 }

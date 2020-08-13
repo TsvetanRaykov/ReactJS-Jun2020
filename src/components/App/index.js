@@ -35,17 +35,13 @@ const App = () => {
 	}
 
 	const updateUser = ({ userImg, userName, userEmail }) => {
-		setUser((current) => {
-			const {
-				userName: currentName,
-				userImg: currentImg,
-				userEmail: currentEmail,
-				userId,
-			} = current
+		setUser(() => {
+			const userId = userService.getCurrentUser().userId
+
 			return {
-				userName: userName || currentName,
-				userImg: userImg || currentImg,
-				userEmail: userEmail || currentEmail,
+				userName: userName || userService.getCurrentUser().userName,
+				userImg: userImg || userService.getCurrentUser().userImg,
+				userEmail: userEmail || userService.getCurrentUser().userEmail,
 				userId,
 			}
 		})
@@ -91,7 +87,6 @@ const App = () => {
 			setFirebaseInitialized(val)
 			setUser(() => {
 				const user = userService.getCurrentUser()
-				console.log('App', user)
 				return user
 			})
 		})

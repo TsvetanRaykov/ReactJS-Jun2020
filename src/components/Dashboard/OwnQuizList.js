@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import quizService from '../../services/quizService'
-import Context from '../../Context'
 import Loader from '../Loader'
 import {
 	withStyles,
@@ -10,21 +9,9 @@ import {
 	Typography,
 	AccordionDetails,
 	Chip,
-	List,
-	ListItem,
-	ListItemText,
 	Box,
-	IconButton,
-	Tooltip,
-	AccordionActions,
 } from '@material-ui/core'
-import {
-	ExpandMore,
-	Public,
-	VpnLock,
-	Settings,
-	DeleteForever,
-} from '@material-ui/icons'
+import { ExpandMore, Public, VpnLock } from '@material-ui/icons'
 
 const styles = (theme) => ({
 	root: {
@@ -48,7 +35,6 @@ const styles = (theme) => ({
 })
 
 const OwnQuizList = (props) => {
-	const { updateQuiz } = useContext(Context)
 	const { classes } = props
 	const [quizzes, setQuizzes] = useState([])
 	const [loading, setLoading] = useState(true)
@@ -89,19 +75,6 @@ const OwnQuizList = (props) => {
 		)
 	}
 
-	const handleEditClick = (data) => {
-		updateQuiz({ ...data })
-		props.history.push('/quiz/edit/questions')
-	}
-
-	const handleDeleteClick = (id) => {
-		//TODO: Make nicer
-		if (window.confirm('Are you sure?')) {
-			setLoading(true)
-			quizService.deleteQuiz(id).finally(() => loadOwnQuizes())
-		}
-	}
-
 	const handleChange = (panel) => (_, isExpanded) => {
 		setExpanded(isExpanded ? panel : false)
 	}
@@ -110,7 +83,7 @@ const OwnQuizList = (props) => {
 			<div className={classes.root}>
 				{quizzes.length > 0 ? (
 					quizzes.map(({ id, data }) => {
-						const { title, description, isPublic, questions, duration } = data
+						const { title, description, isPublic } = data
 						return (
 							<Accordion
 								key={id}

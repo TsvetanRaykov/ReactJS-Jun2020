@@ -28,4 +28,13 @@ const processQuizResult = (quiz) => {
 	return [questions.length - incorrect, questions.length]
 }
 
-export { padZero, processQuizResult }
+const timeOptions = {
+	weekday: 'long',
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+	hour: '2-digit',
+	minute: '2-digit',
+}
+
+export { padZero, processQuizResult, timeOptions }

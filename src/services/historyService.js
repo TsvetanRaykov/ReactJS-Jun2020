@@ -7,7 +7,7 @@ class HistoryService extends BaseService {
 	}
 
 	addHistory(quizResult) {
-		const { quiz, correct, total, timeLeft } = quizResult
+		const { quiz, correct, total, timeLeft, passedAt } = quizResult
 		const {
 			id,
 			data: { title, description, duration },
@@ -18,7 +18,7 @@ class HistoryService extends BaseService {
 			correct,
 			total,
 			duration: duration - timeLeft,
-			passedAt: new Date(),
+			passedAt,
 			quiz: id,
 			title,
 			description,

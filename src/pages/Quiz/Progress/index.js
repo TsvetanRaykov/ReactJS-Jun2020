@@ -71,6 +71,7 @@ const QuizProgress = (props) => {
 					correct: result[0],
 					total: result[1],
 					timeLeft,
+					passedAt: new Date(),
 				})
 				return result
 			})

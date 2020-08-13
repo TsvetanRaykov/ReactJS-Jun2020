@@ -94,7 +94,7 @@ const CompletedQuizList = (props) => {
 															<TableCell component='th' scope='row'>
 																{row.passedAt
 																	.toDate()
-																	.toLocaleDateString('bg', timeOptions)}
+																	.toLocaleDateString('en', timeOptions)}
 															</TableCell>
 															<TableCell align='right'>{`${minutes} : ${seconds}`}</TableCell>
 															<TableCell align='right'>{row.correct}</TableCell>

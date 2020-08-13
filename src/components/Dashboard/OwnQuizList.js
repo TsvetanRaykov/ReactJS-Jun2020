@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { withRouter } from 'react-router-dom'
 import quizService from '../../services/quizService'
 import Loader from '../Loader'
@@ -10,8 +10,18 @@ import {
 	AccordionDetails,
 	Chip,
 	Box,
+	AccordionActions,
+	Button,
 } from '@material-ui/core'
-import { ExpandMore, Public, VpnLock } from '@material-ui/icons'
+import {
+	ExpandMore,
+	Public,
+	VpnLock,
+	DeleteForever,
+	Settings,
+} from '@material-ui/icons'
+
+import Constext from '../../Context'
 
 const styles = (theme) => ({
 	root: {
@@ -32,6 +42,9 @@ const styles = (theme) => ({
 			fontWeight: theme.typography.fontWeightMedium,
 		},
 	},
+	button: {
+		minWidth: '100px',
+	},
 })
 
 const OwnQuizList = (props) => {
@@ -39,6 +52,7 @@ const OwnQuizList = (props) => {
 	const [quizzes, setQuizzes] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [expanded, setExpanded] = useState(false)
+	const { updateQuiz } = useContext(Constext)
 
 	const loadOwnQuizes = () => {
 		quizService
@@ -75,6 +89,18 @@ const OwnQuizList = (props) => {
 		)
 	}
 
+	const handleEditClick = (data) => {
+		updateQuiz({ ...data })
+		props.history.push('/quiz/edit/questions')
+	}
+
+	const handleDeleteClick = (id) => {
+		//TODO: Make nicer
+		if (window.confirm('Are you sure?')) {
+			setLoading(true)
+			quizService.deleteQuiz(id).finally(() => loadOwnQuizes())
+		}
+	}
 	const handleChange = (panel) => (_, isExpanded) => {
 		setExpanded(isExpanded ? panel : false)
 	}
@@ -96,55 +122,29 @@ const OwnQuizList = (props) => {
 								</AccordionSummary>
 								<AccordionDetails>
 									<Box display='flex'>{description}</Box>
-
-									{/* <List
-										className={classes.root}
-										dense
-										subheader={
-											<>
-												<Box
-													display='flex'
-													justifyContent='space-between'
-													alignItems='center'
-												>
-													<Typography className={classes.heading}>{`Duration: ${
-														duration / 60
-													} min`}</Typography>
-													<div>
-														<Tooltip title='Delete Quiz'>
-															<IconButton
-																color='secondary'
-																aria-label='delete quiz'
-																onClick={() => handleDeleteClick(id)}
-															>
-																<DeleteForever />
-															</IconButton>
-														</Tooltip>
-														<Tooltip title='Edit Quiz'>
-															<IconButton
-																color='primary'
-																aria-label='edit quiz'
-																onClick={() => handleEditClick(data)}
-															>
-																<Settings />
-															</IconButton>
-														</Tooltip>
-													</div>
-												</Box>
-												<Typography variant='caption'>{description}</Typography>
-											</>
-										}
-									>
-										{questions.map((q) => (
-											<ListItem key={q.question}>
-												<ListItemText
-													className={classes.question}
-													primary={q.question}
-												/>
-											</ListItem>
-										))}
-									</List> */}
 								</AccordionDetails>
+								<AccordionActions>
+									<Button
+										size='small'
+										variant='contained'
+										color='secondary'
+										className={classes.button}
+										startIcon={<DeleteForever />}
+										onClick={() => handleDeleteClick(id)}
+									>
+										Delete
+									</Button>
+									<Button
+										size='small'
+										variant='contained'
+										color='primary'
+										className={classes.button}
+										startIcon={<Settings />}
+										onClick={() => handleEditClick(data)}
+									>
+										Edit
+									</Button>
+								</AccordionActions>
 							</Accordion>
 						)
 					})

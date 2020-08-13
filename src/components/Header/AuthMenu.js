@@ -15,21 +15,23 @@ import UserContext from '../../Context'
 const AuthMenu = (props) => {
 	const [anchorEl, setAnchorEl] = useState(null)
 
-	const {
-		updateQuiz,
-		user: { userImg: img },
-	} = useContext(UserContext)
-
+	const { updateQuiz, user } = useContext(UserContext)
+	const { userImg: img } = user || { userImg: '-' }
 	const [userName, setUserName] = useState('')
-	const [userImg, setUserImg] = useState('')
+	const [userImg, setUserImg] = useState('-')
+	const [didMount, setDidMount] = useState(false)
 
 	useEffect(() => {
 		setUserImg(userService.getCurrentUser().userImg)
 		setUserName(userService.getCurrentUser().userName)
+		setDidMount(true)
 	}, [])
 
 	useEffect(() => {
-		setUserImg(img)
+		if (didMount) {
+			setUserImg(img)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [img])
 
 	const open = Boolean(anchorEl)
@@ -67,7 +69,11 @@ const AuthMenu = (props) => {
 				onClick={handleMenu}
 				color='inherit'
 			>
-				{userImg ? <Avatar src={userImg} /> : <CircularProgress />}
+				{userImg ? (
+					<Avatar src={userImg} />
+				) : (
+					<CircularProgress color='secondary' />
+				)}
 			</IconButton>
 			<Menu
 				id='menu-appbar'

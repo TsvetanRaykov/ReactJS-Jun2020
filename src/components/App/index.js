@@ -37,7 +37,6 @@ const App = () => {
 	const updateUser = ({ userImg, userName, userEmail }) => {
 		setUser(() => {
 			const userId = userService.getCurrentUser().userId
-
 			return {
 				userName: userName || userService.getCurrentUser().userName,
 				userImg: userImg || userService.getCurrentUser().userImg,
@@ -85,10 +84,6 @@ const App = () => {
 	useEffect(() => {
 		auth.isInitialized().then((val) => {
 			setFirebaseInitialized(val)
-			setUser(() => {
-				const user = userService.getCurrentUser()
-				return user
-			})
 		})
 	}, [])
 

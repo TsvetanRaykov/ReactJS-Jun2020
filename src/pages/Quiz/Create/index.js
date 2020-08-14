@@ -13,6 +13,7 @@ import {
 	Box,
 	TextField,
 	InputAdornment,
+	FormHelperText,
 } from '@material-ui/core'
 import UserContext from '../../../Context'
 import Header from '../../../components/Header'
@@ -60,15 +61,22 @@ const Quiz = (props) => {
 	const [quizDescription, setDescription] = useState(description)
 	const [quizIsPublic, setPublic] = useState(isPublic)
 	const [quizDuration, setQuizDuration] = useState(duration)
+	const [validators, setValidators] = useState({
+		title: '',
+		description: '',
+		duration: '',
+	})
 
 	const continueClickHandler = () => {
-		updateQuiz({
-			title: quizTitle,
-			description: quizDescription,
-			isPublic: quizIsPublic,
-			duration: quizDuration,
-		})
-		history.push('/quiz/edit/questions')
+		if (validateForm()) {
+			updateQuiz({
+				title: quizTitle,
+				description: quizDescription,
+				isPublic: quizIsPublic,
+				duration: quizDuration,
+			})
+			history.push('/quiz/edit/questions')
+		}
 	}
 
 	const cancel = () => {
@@ -99,8 +107,12 @@ const Quiz = (props) => {
 								autoComplete='off'
 								autoFocus
 								value={quizTitle}
+								error={!!validators.title}
 								onChange={(e) => setTitle(e.target.value)}
 							/>
+							<FormHelperText id='title-helper-text'>
+								{validators.title}
+							</FormHelperText>
 						</FormControl>
 						<FormControl margin='normal' required fullWidth>
 							<InputLabel htmlFor='description'>Description</InputLabel>
@@ -110,8 +122,12 @@ const Quiz = (props) => {
 								autoComplete='off'
 								multiline
 								value={quizDescription}
+								error={!!validators.description}
 								onChange={(e) => setDescription(e.target.value)}
 							/>
+							<FormHelperText id='description-helper-text'>
+								{validators.description}
+							</FormHelperText>
 						</FormControl>
 						<Box
 							display='flex'
@@ -149,11 +165,15 @@ const Quiz = (props) => {
 												),
 											}}
 											value={quizDuration / 60}
+											error={!!validators.duration}
 											onChange={(e) => setQuizDuration(e.target.value * 60)}
 											label='Duration (min)'
 										/>
 									}
 								/>
+								<FormHelperText id='duration-helper-text'>
+									{validators.duration}
+								</FormHelperText>
 							</FormControl>
 						</Box>
 						<Box
@@ -186,6 +206,28 @@ const Quiz = (props) => {
 			</main>
 		</>
 	)
+
+	function validateForm() {
+		const errors = { title, description, duration }
+		errors.title =
+			!quizTitle || quizTitle.length < 3
+				? 'Title must be at least 3 characters.'
+				: ''
+
+		errors.description =
+			!quizDescription || quizDescription.length < 3
+				? 'Description must be at least 3 characters.'
+				: ''
+
+		errors.duration =
+			!quizDuration || quizDuration < 1
+				? 'Duration must be at least one minute.'
+				: ''
+
+		setValidators(errors)
+
+		return !Object.entries(errors).find(([k, v]) => v.length > 0)
+	}
 }
 
 export default withStyles(styles)(Quiz)

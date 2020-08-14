@@ -8,7 +8,6 @@ import {
 	Input,
 	InputLabel,
 } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { Link, withRouter } from 'react-router-dom'
 import userService from '../../services/userService'
@@ -37,8 +36,10 @@ const styles = (theme) => ({
 		)}px`,
 	},
 	avatar: {
-		margin: theme.spacing(),
+		margin: theme.spacing(2),
 		backgroundColor: theme.palette.secondary.main,
+		width: theme.spacing(7),
+		height: theme.spacing(7),
 	},
 	form: {
 		width: '100%',
@@ -62,9 +63,7 @@ const SignIn = (props) => {
 	) : (
 		<main className={classes.main}>
 			<Paper className={classes.paper}>
-				<Avatar className={classes.avatar}>
-					<LockOutlinedIcon />
-				</Avatar>
+				<Avatar className={classes.avatar} src='/logo.jpg' />
 				<Typography component='h1' variant='h5'>
 					Sign in
 				</Typography>

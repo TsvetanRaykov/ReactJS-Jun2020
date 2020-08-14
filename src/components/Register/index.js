@@ -9,7 +9,6 @@ import {
 	InputLabel,
 	FormHelperText,
 } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { Link, withRouter } from 'react-router-dom'
 import userService from '../../services/userService'
@@ -36,8 +35,10 @@ const styles = (theme) => ({
 		)}px`,
 	},
 	avatar: {
-		margin: theme.spacing(),
+		margin: theme.spacing(2),
 		backgroundColor: theme.palette.secondary.main,
+		width: theme.spacing(7),
+		height: theme.spacing(7),
 	},
 	form: {
 		width: '100%',
@@ -70,9 +71,7 @@ function Register(props) {
 	return (
 		<main className={classes.main}>
 			<Paper className={classes.paper}>
-				<Avatar className={classes.avatar}>
-					<LockOutlinedIcon />
-				</Avatar>
+				<Avatar className={classes.avatar} src='/logo.jpg'></Avatar>
 				<Typography component='h1' variant='h5'>
 					Register Account
 				</Typography>
@@ -193,8 +192,8 @@ function Register(props) {
 			try {
 				await userService.register(name, email, password)
 				props.history.replace('/dashboard')
-			} catch (error) {
-				alert(error.message)
+			} catch (e) {
+				console.error(e)
 			}
 		}
 	}

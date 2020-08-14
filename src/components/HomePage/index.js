@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Typography, Paper, Avatar, Button } from '@material-ui/core'
-import VerifiedUserOutlined from '@material-ui/icons/VerifiedUserOutlined'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { Link } from 'react-router-dom'
 import userService from '../../services/userService'
@@ -27,8 +26,10 @@ const styles = (theme) => ({
 		)}px`,
 	},
 	avatar: {
-		margin: theme.spacing(),
+		margin: theme.spacing(2),
 		backgroundColor: theme.palette.secondary.main,
+		width: theme.spacing(7),
+		height: theme.spacing(7),
 	},
 	submit: {
 		marginTop: theme.spacing(3),
@@ -46,17 +47,15 @@ function HomePage(props) {
 	return (
 		<main className={classes.main}>
 			<Paper className={classes.paper}>
-				<Avatar className={classes.avatar}>
-					<VerifiedUserOutlined />
-				</Avatar>
+				<Avatar className={classes.avatar} src='/logo.jpg' />
 				<Typography component='h1' variant='h5'>
-					Hello Guest!
+					Wellcome to Quizoom
 				</Typography>
 				<Button
 					type='submit'
 					fullWidth
 					variant='contained'
-					color='secondary'
+					color='primary'
 					component={Link}
 					to='/register'
 					className={classes.submit}
@@ -67,7 +66,7 @@ function HomePage(props) {
 					type='submit'
 					fullWidth
 					variant='contained'
-					color='secondary'
+					color='primary'
 					component={Link}
 					to='/login'
 					className={classes.submit}

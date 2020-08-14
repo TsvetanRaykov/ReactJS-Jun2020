@@ -27,8 +27,8 @@ const App = () => {
 			id: '',
 			title: '',
 			description: '',
-			duration: 0,
-			isPublic: false,
+			duration: 300,
+			isPublic: true,
 			questions: [],
 			completedBy: [],
 		}

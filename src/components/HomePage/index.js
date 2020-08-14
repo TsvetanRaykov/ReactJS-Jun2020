@@ -30,6 +30,7 @@ const styles = (theme) => ({
 		backgroundColor: theme.palette.secondary.main,
 		width: theme.spacing(7),
 		height: theme.spacing(7),
+		border: '0',
 	},
 	submit: {
 		marginTop: theme.spacing(3),

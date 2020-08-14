@@ -16,6 +16,7 @@ import ProtectedRoute from '../ProtectedRoute'
 import userService from '../../services/userService'
 import UserContext from '../../Context'
 import QuizProgress from '../../pages/Quiz/Progress'
+import ErrorBoundary from '../ErrorBoundary'
 
 const App = () => {
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false)
@@ -90,23 +91,29 @@ const App = () => {
 				<CssBaseline />
 				<BrowserRouter>
 					{firebaseInitialized !== false ? (
-						<Switch>
-							<Route exact path='/' component={HomePage} />
-							<Route exact path='/login' component={Login} />
-							<Route exact path='/register' component={Register} />
-							<ProtectedRoute exact path='/dashboard' component={Dashboard} />
-							<ProtectedRoute exact path='/quiz/edit' component={QuizCreate} />
-							<ProtectedRoute
-								exact
-								path='/quiz/edit/questions'
-								component={QuizQuestions}
-							/>
-							<ProtectedRoute
-								exact
-								path='/quiz/progress/:id'
-								component={QuizProgress}
-							/>
-						</Switch>
+						<ErrorBoundary>
+							<Switch>
+								<Route exact path='/' component={HomePage} />
+								<Route exact path='/login' component={Login} />
+								<Route exact path='/register' component={Register} />
+								<ProtectedRoute exact path='/dashboard' component={Dashboard} />
+								<ProtectedRoute
+									exact
+									path='/quiz/edit'
+									component={QuizCreate}
+								/>
+								<ProtectedRoute
+									exact
+									path='/quiz/edit/questions'
+									component={QuizQuestions}
+								/>
+								<ProtectedRoute
+									exact
+									path='/quiz/progress/:id'
+									component={QuizProgress}
+								/>
+							</Switch>
+						</ErrorBoundary>
 					) : (
 						<Loader />
 					)}

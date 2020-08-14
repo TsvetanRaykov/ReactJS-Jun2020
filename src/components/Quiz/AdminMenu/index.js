@@ -34,19 +34,25 @@ const EditMenu = (props) => {
 	})
 
 	history.block(function ({ pathname }) {
+		if (pathname.startsWith('/quiz/edit')) {
+			return true
+		}
 		if (notSaved) {
-			setModalDialog({
-				title: 'There are unsaved changes. Do you want to cancel them?',
-				open: true,
-				handleYes: () => {
-					setNotSaved(false)
-					console.log(pathname)
-					history.push(pathname)
-					setModalDialog({ open: false })
-				},
-				handleNo: () => {
-					setModalDialog({ open: false })
-				},
+			setModalDialog(() => {
+				return {
+					title: 'There are unsaved changes. Are you sure you want to leave?',
+					open: true,
+					handleYes: () => {
+						setModalDialog({ open: false })
+						setNotSaved(false)
+						setTimeout(() => history.push(pathname), 0)
+					},
+					handleNo: () => {
+						setModalDialog(() => ({
+							open: false,
+						}))
+					},
+				}
 			})
 			return false
 		}
@@ -71,8 +77,11 @@ const EditMenu = (props) => {
 		formHandler(true, true)
 	}
 	const saveQuizHandler = () => {
-		quizService.setQuiz(quiz)
-		history.push('/dashboard')
+		setNotSaved(false)
+		setTimeout(() => {
+			quizService.setQuiz(quiz)
+			// history.push('/dashboard')
+		}, 0)
 	}
 
 	return (
@@ -93,6 +102,7 @@ const EditMenu = (props) => {
 						Edit Details
 					</Button>
 					<Button
+						className={classes.green}
 						color='primary'
 						variant='outlined'
 						onClick={addQuestionHandler}
@@ -100,9 +110,8 @@ const EditMenu = (props) => {
 						Add Question
 					</Button>
 					<Button
-						className={notSaved ? classes.green : ''}
 						color='primary'
-						variant='outlined'
+						variant={notSaved ? 'contained' : 'outlined'}
 						onClick={saveQuizHandler}
 						disabled={!canSave}
 					>

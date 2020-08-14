@@ -9,7 +9,7 @@ import {
 	Grid,
 } from '@material-ui/core'
 import AuthMenu from './AuthMenu'
-import QuizTimer from '../../pages/Quiz/Progress/timer'
+import QuizTimer from '../../components/Timer'
 import { withRouter } from 'react-router-dom'
 
 const styles = (theme) => ({

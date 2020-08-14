@@ -21,6 +21,8 @@ import { ExpandMore } from '@material-ui/icons'
 import { padZero, timeOptions } from '../../utils'
 
 const useStyles = makeStyles((theme) => ({
+	root: {},
+	table: {},
 	heading: {
 		fontSize: theme.typography.pxToRem(15),
 		fontWeight: theme.typography.fontWeightMedium,

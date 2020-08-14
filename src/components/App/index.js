@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import '../../styless.css'
-import HomePage from '../HomePage'
-import Login from '../Login'
-import Register from '../Register'
+import HomePage from '../../pages/HomePage'
+import LoginPage from '../../pages/Login'
+import Register from '../../pages/Register'
 import Dashboard from '../Dashboard'
 import QuizCreate from '../../pages/Quiz/Create'
 import QuizQuestions from '../../pages/Quiz/Create/addQuestions'
@@ -94,7 +94,7 @@ const App = () => {
 						<ErrorBoundary>
 							<Switch>
 								<Route exact path='/' component={HomePage} />
-								<Route exact path='/login' component={Login} />
+								<Route exact path='/login' component={LoginPage} />
 								<Route exact path='/register' component={Register} />
 								<ProtectedRoute exact path='/dashboard' component={Dashboard} />
 								<ProtectedRoute

@@ -9,45 +9,8 @@ import {
 	InputLabel,
 	FormHelperText,
 } from '@material-ui/core'
-import withStyles from '@material-ui/core/styles/withStyles'
 import { Link, withRouter } from 'react-router-dom'
-import userService from '../../services/userService'
-
-const styles = (theme) => ({
-	main: {
-		width: 'auto',
-		display: 'block',
-		marginLeft: theme.spacing(3),
-		marginRight: theme.spacing(3),
-		[theme.breakpoints.up(400 + theme.spacing(3 * 2))]: {
-			width: 400,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		},
-	},
-	paper: {
-		marginTop: theme.spacing(8),
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(
-			3
-		)}px`,
-	},
-	avatar: {
-		margin: theme.spacing(2),
-		backgroundColor: theme.palette.secondary.main,
-		width: theme.spacing(7),
-		height: theme.spacing(7),
-	},
-	form: {
-		width: '100%',
-		marginTop: theme.spacing(),
-	},
-	submit: {
-		marginTop: theme.spacing(),
-	},
-})
+import userService from '../../../services/userService'
 
 function Register(props) {
 	const { classes } = props
@@ -184,7 +147,7 @@ function Register(props) {
 
 		setValidators(errors)
 
-		return !Object.entries(errors).find(([k, v]) => v.length > 0)
+		return !Object.entries(errors).find(([, v]) => v.length > 0)
 	}
 
 	async function onRegister() {
@@ -199,4 +162,4 @@ function Register(props) {
 	}
 }
 
-export default withRouter(withStyles(styles)(Register))
+export default withRouter(Register)

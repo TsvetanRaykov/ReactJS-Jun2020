@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
-import { padZero } from '../../../utils'
+import { padZero } from '../../utils'
 
 const QuizTimer = (props) => {
 	const { timer, history } = props

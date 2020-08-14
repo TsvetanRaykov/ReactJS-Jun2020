@@ -75,7 +75,7 @@ const OwnQuizList = (props) => {
 	const [quizzes, setQuizzes] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [expanded, setExpanded] = useState(false)
-	const { updateQuiz } = useContext(Constext)
+	const { updateQuiz, updateQuizSnapshot } = useContext(Constext)
 
 	const [modalDialog, setModalDialog] = useState({
 		title: '',
@@ -122,6 +122,7 @@ const OwnQuizList = (props) => {
 
 	const handleEditClick = (data) => {
 		updateQuiz({ ...data })
+		updateQuizSnapshot({ ...data })
 		props.history.push('/quiz/edit/questions')
 	}
 

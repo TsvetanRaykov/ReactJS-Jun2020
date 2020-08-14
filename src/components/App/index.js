@@ -21,6 +21,7 @@ const App = () => {
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false)
 	const [user, setUser] = useState({})
 	const [quiz, setQuiz] = useState(emptyQuiz())
+	const [quizSnapshot, setQuizSnapshot] = useState(emptyQuiz())
 
 	function emptyQuiz() {
 		return {
@@ -45,38 +46,25 @@ const App = () => {
 			}
 		})
 	}
+	const updateQuizSnapshot = (newState) => {
+		if (!newState) {
+			setQuizSnapshot(emptyQuiz())
+			return
+		}
+		setQuizSnapshot(newState)
+	}
 
 	const updateQuiz = (newState) => {
+		console.log('updateQuiz', newState)
+
 		if (!newState) {
 			setQuiz(emptyQuiz())
 			return
 		}
 		setQuiz((current) => {
-			const {
-				id: currentId,
-				title: currentTitle,
-				description: currentDescription,
-				questions: curentQuestions,
-				duration: currentDuration,
-				completedBy: currentCompletedBy,
-			} = current
-			const {
-				title,
-				description,
-				isPublic,
-				questions,
-				duration,
-				completedBy,
-			} = newState
 			return {
-				id: currentId,
-				title: title || currentTitle,
-				description: description || currentDescription,
-				isPublic,
-				questions:
-					questions && questions.length > 0 ? questions : curentQuestions,
-				duration: duration || currentDuration,
-				completedBy: completedBy || currentCompletedBy,
+				...current,
+				...newState,
 			}
 		})
 	}
@@ -94,8 +82,10 @@ const App = () => {
 			value={{
 				user,
 				quiz,
+				quizSnapshot,
 				updateUser,
 				updateQuiz,
+				updateQuizSnapshot,
 			}}
 		>
 			<MuiThemeProvider theme={theme}>

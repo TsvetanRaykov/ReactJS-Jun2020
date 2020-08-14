@@ -55,8 +55,6 @@ const App = () => {
 	}
 
 	const updateQuiz = (newState) => {
-		console.log('updateQuiz', newState)
-
 		if (!newState) {
 			setQuiz(emptyQuiz())
 			return

@@ -49,13 +49,13 @@ const AvalableQuizList = (props) => {
 		}
 		return (
 			<List>
-				{quizzes.map(({ id, data }) => (
+				{quizzes.map((data) => (
 					<ListItem
-						key={id}
+						key={data.id}
 						alignItems='flex-start'
 						dense
 						button
-						onClick={() => handleQuizClick(id)}
+						onClick={() => handleQuizClick(data.id)}
 					>
 						<ListItemAvatar>
 							<Avatar alt='author' src={data.authorImg}></Avatar>

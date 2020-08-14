@@ -170,8 +170,15 @@ const OwnQuizList = (props) => {
 		return (
 			<div className={classes.root}>
 				{quizzes.length > 0 ? (
-					quizzes.map(({ id, data }) => {
-						const { title, description, isPublic, duration, completedBy } = data
+					quizzes.map((data) => {
+						const {
+							title,
+							description,
+							isPublic,
+							duration,
+							completedBy,
+							id,
+						} = data
 
 						const min = padZero(duration / 60)
 						const sec = padZero(duration % 60)

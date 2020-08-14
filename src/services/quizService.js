@@ -11,14 +11,17 @@ class QuizService extends BaseService {
 	//TODO: Add Error Handling
 
 	setQuiz(quiz) {
+		if (quiz.id) {
+			return this.updateQuiz(quiz)
+		}
 		quiz.createdBy = this.uid
 		quiz.createdAt = new Date()
 		quiz.authorImg = this.auth.currentUser.photoURL
-		return this.updateQuiz(quiz)
+		return this.ref.add(quiz)
 	}
 
 	updateQuiz(quiz) {
-		return this.ref.doc(quiz.title).set(quiz)
+		return this.ref.doc(quiz.id).set(quiz)
 	}
 
 	completeQuiz(quizResult) {
@@ -39,7 +42,9 @@ class QuizService extends BaseService {
 	async getPersonal() {
 		const data = await this.ref.where('createdBy', '==', this.uid).get()
 		const quizList = []
-		data.forEach((doc) => quizList.push({ id: doc.id, data: doc.data() }))
+		data.forEach((doc) => {
+			quizList.push({ ...doc.data(), id: doc.id })
+		})
 		return quizList
 	}
 
@@ -51,17 +56,20 @@ class QuizService extends BaseService {
 		const quizList = []
 		data.forEach((doc) => {
 			const data = doc.data()
+
 			if (data.createdBy !== this.uid) {
-				quizList.push({ id: doc.id, data })
+				quizList.push({ ...data, id: doc.id })
 			}
 		})
+
 		return quizList
 	}
 
 	async getAvailable() {
 		const data = await this.ref.where('isPublic', '==', true).get()
-		const notPersonal = this.filterPersonal(data).filter((d) => {
-			return !d.data.completedBy.some((a) => a.uid === this.uid)
+
+		const notPersonal = this.filterPersonal(data).filter((doc) => {
+			return !doc.completedBy.some((a) => a.uid === this.uid)
 		})
 
 		return notPersonal

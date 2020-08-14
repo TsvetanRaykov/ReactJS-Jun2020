@@ -208,7 +208,7 @@ const SetQuestionForm = (props) => {
 				<Button
 					className={classes.button}
 					type='button'
-					variant='contained'
+					variant='outlined'
 					color='secondary'
 					onClick={onCancelClick}
 					startIcon={<Cancel />}

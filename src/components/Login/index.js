@@ -13,6 +13,7 @@ import { Link, withRouter } from 'react-router-dom'
 import userService from '../../services/userService'
 import Loader from '../Loader'
 import UserContext from '../../Context'
+import { withSnackbar } from 'notistack'
 
 const styles = (theme) => ({
 	main: {
@@ -121,17 +122,22 @@ const SignIn = (props) => {
 
 	async function login() {
 		setLoading(true)
-		try {
-			await userService.login(email, password)
-			updateUser(userService.getCurrentUser())
-			setLoading(false)
-			props.history.replace('/dashboard')
-		} catch (error) {
-			alert(error.message)
-		} finally {
-			setLoading(false)
-		}
+		userService
+			.login(email, password)
+			.then(() => {
+				updateUser(userService.getCurrentUser())
+				setLoading(false)
+				props.history.replace('/dashboard')
+			})
+			.catch(() => {
+				props.enqueueSnackbar('Login failed', {
+					variant: 'error',
+				})
+			})
+			.finally(() => {
+				setLoading(false)
+			})
 	}
 }
 
-export default withRouter(withStyles(styles)(SignIn))
+export default withSnackbar(withRouter(withStyles(styles)(SignIn)))

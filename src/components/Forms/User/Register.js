@@ -169,4 +169,5 @@ function Register(props) {
 	}
 }
 
+export { Register }
 export default withSnackbar(withRouter(Register))

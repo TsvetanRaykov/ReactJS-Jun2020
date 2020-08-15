@@ -102,5 +102,5 @@ const SignIn = (props) => {
 			})
 	}
 }
-
+export { SignIn }
 export default withSnackbar(withRouter(SignIn))

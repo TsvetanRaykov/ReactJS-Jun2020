@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es6: true
   },
-  extends: ['react-app', 'prettier'
+  extends: ['react-app', 'prettier', "plugin:cypress/recommended"
     // 'plugin:react/recommended',
     // 'standard'
   ],

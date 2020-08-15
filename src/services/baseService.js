@@ -7,7 +7,7 @@ class BaseService {
 	}
 
 	get uid() {
-		return this.auth.currentUser.uid
+		return this.auth.currentUser?.uid
 	}
 }
 

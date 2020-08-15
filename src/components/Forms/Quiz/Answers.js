@@ -25,7 +25,7 @@ const Answers = (props) => {
 				value={selectedValue()}
 				onChange={handleRadioChange}
 			>
-				{answers.map((a) => {
+				{answers.map((a, i) => {
 					return (
 						<Box
 							key={a.text}
@@ -39,6 +39,7 @@ const Answers = (props) => {
 								label={a.text}
 							/>
 							<IconButton
+								data-cy={`delete-answer-${i}`}
 								aria-label='delete'
 								color='secondary'
 								onClick={() => handleDeleteAnswer(a.text)}

@@ -63,6 +63,7 @@ const AuthMenu = (props) => {
 		<div>
 			<Typography component='span'>{userName}</Typography>
 			<IconButton
+				data-cy='authMenu'
 				aria-label='account of current user'
 				aria-controls='menu-appbar'
 				aria-haspopup='true'

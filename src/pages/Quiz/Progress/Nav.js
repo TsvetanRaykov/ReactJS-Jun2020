@@ -49,7 +49,7 @@ const QuizNav = ({
 								>
 									{questions.map((n, i) => (
 										<Button
-											key={n.question}
+											key={i}
 											variant={
 												n.userAnswer !== undefined ? 'contained' : 'outlined'
 											}

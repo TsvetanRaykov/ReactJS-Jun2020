@@ -163,6 +163,7 @@ const OwnQuizList = (props) => {
 								</AccordionDetails>
 								<AccordionActions>
 									<Button
+										data-cy={`delete-${title}`}
 										size='small'
 										variant='contained'
 										color='secondary'

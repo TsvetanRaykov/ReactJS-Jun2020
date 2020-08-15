@@ -11,7 +11,6 @@ class QuizService extends BaseService {
 	//TODO: Add Error Handling
 
 	setQuiz(quiz) {
-		console.log('setQuiz', quiz)
 		if (quiz.id) {
 			return this.updateQuiz(quiz)
 		}

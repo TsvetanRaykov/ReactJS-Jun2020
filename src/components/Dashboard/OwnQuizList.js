@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { withRouter } from 'react-router-dom'
 import quizService from '../../services/quizService'
-import { padZero, timeOptions } from '../../utils'
+import { padZero } from '../../utils'
 import Loader from '../Loader'
 import {
 	withStyles,
@@ -13,8 +13,6 @@ import {
 	Box,
 	AccordionActions,
 	Button,
-	Avatar,
-	Tooltip,
 } from '@material-ui/core'
 import {
 	ExpandMore,
@@ -26,6 +24,7 @@ import {
 } from '@material-ui/icons'
 import ModalDialog from '../../components/shared/ModalDialog'
 import Constext from '../../Context'
+import CompletedUsers from './CompletedUsers'
 
 const styles = (theme) => ({
 	root: {
@@ -41,11 +40,7 @@ const styles = (theme) => ({
 			color: theme.palette.text.primary,
 		},
 	},
-	question: {
-		'& span': {
-			fontWeight: theme.typography.fontWeightMedium,
-		},
-	},
+
 	button: {
 		minWidth: '100px',
 	},
@@ -55,20 +50,7 @@ const styles = (theme) => ({
 		margin: theme.spacing(0, 1, 0, 0),
 		minWidth: '50px',
 	},
-	head: {
-		fontWeight: theme.typography.fontWeightMedium,
-		backgroundColor: 'rgba(192,192,192,0.1)',
-	},
 })
-
-const HtmlTooltip = withStyles((theme) => ({
-	tooltip: {
-		backgroundColor: '#f5f5f9',
-		color: 'rgba(0, 0, 0, 0.87)',
-		fontSize: theme.typography.pxToRem(12),
-		border: '1px solid #dadde9',
-	},
-}))(Tooltip)
 
 const OwnQuizList = (props) => {
 	const { classes } = props
@@ -145,27 +127,6 @@ const OwnQuizList = (props) => {
 		setExpanded(isExpanded ? panel : false)
 	}
 
-	const handleReleaseComplete = (qid, uid, arr) => {
-		setModalDialog({
-			title: 'Are you sure?',
-			message:
-				'This will allow that person to try the quiz again. But will remove it from that list.',
-			handleYes: () => {
-				setModalDialog({ open: false })
-				setLoading(true)
-				quizService.releaseQuiz(
-					qid,
-					arr.filter((u) => u.uid !== uid)
-				)
-				loadOwnQuizes()
-			},
-			handleNo: () => {
-				setModalDialog({ open: false })
-			},
-			open: true,
-		})
-	}
-
 	const renderQuizzes = () => {
 		return (
 			<div className={classes.root}>
@@ -179,7 +140,6 @@ const OwnQuizList = (props) => {
 							completedBy,
 							id,
 						} = data
-
 						const min = padZero(duration / 60)
 						const sec = padZero(duration % 60)
 
@@ -224,66 +184,14 @@ const OwnQuizList = (props) => {
 									</Button>
 								</AccordionActions>
 								<Box display='flex' alignItems='center'>
-									{completedBy && completedBy.length > 0 && (
-										<Accordion elevation={0} className={classes.root}>
-											<AccordionSummary
-												expandIcon={<ExpandMore />}
-												className={classes.head}
-											>
-												<Typography className={classes.heading}>
-													Completed by
-												</Typography>
-											</AccordionSummary>
-											<AccordionDetails>
-												{completedBy.map((p) => {
-													const {
-														correct,
-														passedAt,
-														timeLeft,
-														total,
-													} = p.result
-
-													const min = parseInt((duration - timeLeft) / 60, 10)
-													const sec = parseInt((duration - timeLeft) % 60, 10)
-
-													return (
-														<HtmlTooltip
-															key={p.uid}
-															title={
-																<>
-																	<em>
-																		{passedAt
-																			.toDate()
-																			.toLocaleDateString('en', timeOptions)}
-																	</em>
-																	<br />
-																	<em>Result:</em>&nbsp;
-																	<b>{`${correct}/${total}`}</b>
-																	<br />
-																	<em>Time:</em>&nbsp;
-																	<b>{`${min}:${sec}`}</b>
-																</>
-															}
-														>
-															<Chip
-																avatar={<Avatar alt={p.email} src={p.photo} />}
-																label={p.email}
-																onDelete={(e) =>
-																	handleReleaseComplete(
-																		id,
-																		p.uid,
-																		completedBy.slice(0)
-																	)
-																}
-																variant='outlined'
-																color='primary'
-															/>
-														</HtmlTooltip>
-													)
-												})}
-											</AccordionDetails>
-										</Accordion>
-									)}
+									<CompletedUsers
+										completedBy={completedBy}
+										setModalDialog={setModalDialog}
+										loadOwnQuizes={loadOwnQuizes}
+										setLoading={setLoading}
+										duration={duration}
+										id={id}
+									/>
 								</Box>
 							</Accordion>
 						)

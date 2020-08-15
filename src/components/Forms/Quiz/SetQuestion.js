@@ -50,7 +50,7 @@ const theme = createMuiTheme({
 const SetQuestionForm = (props) => {
 	const { classes, formClose, activeQuestionIndex } = props
 	const {
-		quiz: { questions, isPublic },
+		quiz: { questions },
 		updateQuiz,
 	} = useContext(Context)
 
@@ -63,11 +63,18 @@ const SetQuestionForm = (props) => {
 
 	const onSaveClick = () => {
 		const newQuestions = questions.slice(0)
-		activeQuestionIndex >= 0
-			? newQuestions.splice(activeQuestionIndex, 1, { question, answers })
-			: newQuestions.push({ question, answers })
+		if (activeQuestionIndex >= 0) {
+			newQuestions.splice(activeQuestionIndex, 1, { question, answers })
+		} else {
+			const idx = newQuestions.findIndex((q) => q.question === question)
+			if (idx >= 0) {
+				newQuestions.splice(idx, 1, { question, answers })
+			} else {
+				newQuestions.push({ question, answers })
+			}
+		}
 
-		updateQuiz({ questions: newQuestions, isPublic })
+		updateQuiz({ questions: newQuestions })
 		formClose()
 	}
 
@@ -95,7 +102,7 @@ const SetQuestionForm = (props) => {
 		if (window.confirm('Are you sure?')) {
 			const newQuestions = questions.slice(0)
 			newQuestions.splice(activeQuestionIndex, 1)
-			updateQuiz({ questions: newQuestions, isPublic })
+			updateQuiz({ questions: newQuestions })
 			formClose()
 		}
 	}

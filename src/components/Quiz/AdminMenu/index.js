@@ -77,11 +77,25 @@ const EditMenu = (props) => {
 		formHandler(true, true)
 	}
 	const saveQuizHandler = () => {
-		setNotSaved(false)
-		setTimeout(() => {
-			quizService.setQuiz(quiz)
-			// history.push('/dashboard')
-		}, 0)
+		setModalDialog(() => {
+			return {
+				title: 'Ready to save and go?',
+				open: true,
+				handleYes: () => {
+					setModalDialog({ open: false })
+					setNotSaved(false)
+					setTimeout(() => {
+						quizService.setQuiz(quiz)
+						history.push('/dashboard')
+					}, 0)
+				},
+				handleNo: () => {
+					setModalDialog(() => ({
+						open: false,
+					}))
+				},
+			}
+		})
 	}
 
 	return (

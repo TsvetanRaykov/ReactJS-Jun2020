@@ -23,7 +23,7 @@ const EditMenu = (props) => {
 
 	const { formHandler, history } = props
 	const { quiz, quizSnapshot } = useContext(Context)
-	const [canSave, setCanSave] = useState(true)
+	const [canSave, setCanSave] = useState(false)
 	const [notSaved, setNotSaved] = useState(false)
 	const [modalDialog, setModalDialog] = useState({
 		title: '',
@@ -62,15 +62,13 @@ const EditMenu = (props) => {
 		const errors = { questions: '' }
 
 		errors.questions =
-			!quiz.questions || quiz.questions.length === 0
+			!quiz?.questions || quiz.questions.length === 0
 				? 'The Quiz must have at least one question.'
 				: ''
-		const result = !Object.entries(errors).find(([k, v]) => v.length > 0)
-		setCanSave(result)
-	}, [quiz.questions])
-
-	useEffect(() => {
-		setNotSaved(!deepEqual(quiz, quizSnapshot))
+		const hasNoErrors = !Object.entries(errors).find(([k, v]) => v.length > 0)
+		const hasChanges = !deepEqual(quiz, quizSnapshot)
+		setNotSaved(hasChanges)
+		setCanSave(hasNoErrors && hasChanges)
 	}, [quiz, quizSnapshot])
 
 	const addQuestionHandler = () => {

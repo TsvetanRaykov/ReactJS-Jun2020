@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 import { Link, withRouter } from 'react-router-dom'
 import userService from '../../../services/userService'
+import { withSnackbar } from 'notistack'
 
 function Register(props) {
 	const { classes } = props
@@ -138,7 +139,7 @@ function Register(props) {
 			: 'Email address is invalid.'
 
 		errors.password =
-			password.length < 3 ? 'Password must be at least 3 characters.' : ''
+			password.length < 6 ? 'Password must be at least 6 characters.' : ''
 
 		errors.repassword =
 			!errors.password && password !== repassword
@@ -156,10 +157,16 @@ function Register(props) {
 				await userService.register(name, email, password)
 				props.history.replace('/dashboard')
 			} catch (e) {
-				console.error(e)
+				const message =
+					e?.code === 'auth/email-already-in-use'
+						? 'Email is already registered'
+						: 'Registraion failed'
+				props.enqueueSnackbar(message, {
+					variant: 'error',
+				})
 			}
 		}
 	}
 }
 
-export default withRouter(Register)
+export default withSnackbar(withRouter(Register))

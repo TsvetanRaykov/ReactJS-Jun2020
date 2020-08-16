@@ -17,6 +17,7 @@ import userService from '../../services/userService'
 import UserContext from '../../Context'
 import QuizProgress from '../../pages/Quiz/Progress'
 import ErrorBoundary from '../ErrorBoundary'
+import NotFoundPage from '../../pages/NotFound'
 
 const App = () => {
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false)
@@ -112,6 +113,7 @@ const App = () => {
 									path='/quiz/progress/:id'
 									component={QuizProgress}
 								/>
+								<Route path='*' exact={true} component={NotFoundPage} />
 							</Switch>
 						</ErrorBoundary>
 					) : (

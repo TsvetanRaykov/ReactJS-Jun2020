@@ -51,7 +51,7 @@ The results are displayed at the end and added to the history.
 User: {
     id: String,
     email: String,
-    password: String
+    password: String,
     displayName: String,
     photoURL: String,
 }
@@ -77,7 +77,7 @@ Quiz: {
     completedBy: [{
         uid: String,
         email: String,
-        photo: String
+        photo: String,
         result: {
         	correct: Number,
         	total: Number,
@@ -91,7 +91,7 @@ Quiz: {
 ```js
 History: {
     uid: String,
-	title: String,
+    title: String,
     description: String,
     duration: Number,
     passedAt: Date,
@@ -120,7 +120,7 @@ History: {
 <ProtectedRoute exact path='/dashboard' component={Dashboard} />
 <ProtectedRoute exact path='/quiz/edit' component={QuizCreate} />
 <ProtectedRoute exact path='/quiz/edit/questions' component={QuizQuestions} />
-<ProtectedRoute exact path='/quiz/progress/:id' component={QuizProgress}/>
+<ProtectedRoute exact path='/quiz/progress/:id' component={QuizProgress} />
 ```
 
 

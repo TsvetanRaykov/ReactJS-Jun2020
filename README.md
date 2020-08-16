@@ -60,11 +60,11 @@ User: {
 ```js
 Quiz: {
     id: String,
-	title: String,
-	description: String,
-	duration: Number,
+    title: String,
+    description: String,
+    duration: Number,
     isPublic: Boolean,
-	authorImg: String,
+    authorImg: String,
     createdAt: Date,
     createdBy: String,
     questions: [{
@@ -79,11 +79,11 @@ Quiz: {
         email: String,
         photo: String,
         result: {
-        	correct: Number,
-        	total: Number,
-        	timeLeft: Number,
-        	passedAt: Date
-    	}
+            correct: Number,
+            total: Number,
+            timeLeft: Number,
+            passedAt: Date
+        }
     },],
 }
 ```

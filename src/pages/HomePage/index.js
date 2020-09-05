@@ -50,7 +50,7 @@ function HomePage(props) {
 			<Paper className={classes.paper}>
 				<Avatar className={classes.avatar} src='/logo.jpg' />
 				<Typography component='h1' variant='h5'>
-					Wellcome to Quizoom
+					Welcome to Quizoom
 				</Typography>
 				<Button
 					type='submit'

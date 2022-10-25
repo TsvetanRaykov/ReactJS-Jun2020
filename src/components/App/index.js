@@ -5,9 +5,9 @@ import LoginPage from '../../pages/Login'
 import Register from '../../pages/Register'
 import Dashboard from '../Dashboard'
 import QuizCreate from '../../pages/Quiz/Create'
-import QuizQuestions from '../../pages/Quiz/Create/AddQuestions'
+import QuizQuestions from '../../pages/Quiz/Create/addQuestions'
 
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles'
 import { CssBaseline } from '@material-ui/core'
 import Loader from '../Loader'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
@@ -75,7 +75,7 @@ const App = () => {
 		})
 	}, [])
 
-	const theme = createMuiTheme()
+	const theme = createTheme()
 
 	return (
 		<UserContext.Provider
@@ -91,36 +91,37 @@ const App = () => {
 			<MuiThemeProvider theme={theme}>
 				<CssBaseline />
 				<BrowserRouter>
+					{' '}
 					{firebaseInitialized !== false ? (
 						<ErrorBoundary>
 							<Switch>
-								<Route exact path='/' component={HomePage} />
-								<Route exact path='/login' component={LoginPage} />
-								<Route exact path='/register' component={Register} />
-								<ProtectedRoute exact path='/dashboard' component={Dashboard} />
+								<Route exact path='/' component={HomePage} />{' '}
+								<Route exact path='/login' component={LoginPage} />{' '}
+								<Route exact path='/register' component={Register} />{' '}
+								<ProtectedRoute exact path='/dashboard' component={Dashboard} />{' '}
 								<ProtectedRoute
 									exact
 									path='/quiz/edit'
 									component={QuizCreate}
-								/>
+								/>{' '}
 								<ProtectedRoute
 									exact
 									path='/quiz/edit/questions'
 									component={QuizQuestions}
-								/>
+								/>{' '}
 								<ProtectedRoute
 									exact
 									path='/quiz/progress/:id'
 									component={QuizProgress}
-								/>
-								<Route path='*' exact={true} component={NotFoundPage} />
-							</Switch>
+								/>{' '}
+								<Route path='*' exact={true} component={NotFoundPage} />{' '}
+							</Switch>{' '}
 						</ErrorBoundary>
 					) : (
 						<Loader />
-					)}
-				</BrowserRouter>
-			</MuiThemeProvider>
+					)}{' '}
+				</BrowserRouter>{' '}
+			</MuiThemeProvider>{' '}
 		</UserContext.Provider>
 	)
 }

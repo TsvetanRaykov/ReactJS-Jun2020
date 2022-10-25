@@ -5,7 +5,7 @@ import {
 	Box,
 	Button,
 	ButtonGroup,
-	createMuiTheme,
+	createTheme,
 	ThemeProvider,
 	Container,
 	Grid,
@@ -21,7 +21,7 @@ const QuizNav = ({
 	const handleClick = (e, i) => {
 		changeQuestion(i)
 	}
-	const theme = createMuiTheme({
+	const theme = createTheme({
 		palette: {
 			primary: {
 				main: green[500],

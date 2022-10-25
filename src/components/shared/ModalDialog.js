@@ -36,8 +36,12 @@ export default function ModalDialog(props) {
 				BackdropProps={{
 					timeout: 500,
 				}}
-				disableBackdropClick
 				disableEscapeKeyDown
+				onClose={(event, reason) => {
+					if (reason === 'backdropClick') {
+						return false
+					}
+				}}
 			>
 				<Fade in={open}>
 					<div className={classes.paper}>

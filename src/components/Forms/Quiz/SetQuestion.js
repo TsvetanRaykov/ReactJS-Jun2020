@@ -10,7 +10,7 @@ import {
 	Dialog,
 	DialogActions,
 	DialogContent,
-	createMuiTheme,
+	createTheme,
 	ThemeProvider,
 	TextField,
 } from '@material-ui/core'
@@ -39,7 +39,7 @@ const styles = (theme) => ({
 	},
 })
 
-const theme = createMuiTheme({
+const theme = createTheme({
 	palette: {
 		primary: {
 			main: green[500],

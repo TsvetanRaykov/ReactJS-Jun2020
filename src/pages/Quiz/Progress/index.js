@@ -7,7 +7,7 @@ import {
 	Typography,
 	Box,
 	ThemeProvider,
-	createMuiTheme,
+	createTheme,
 	Container,
 	makeStyles,
 } from '@material-ui/core'
@@ -139,7 +139,7 @@ const QuizProgress = (props) => {
 		})
 	}
 
-	const theme = createMuiTheme({
+	const theme = createTheme({
 		palette: {
 			primary: {
 				main: green[500],

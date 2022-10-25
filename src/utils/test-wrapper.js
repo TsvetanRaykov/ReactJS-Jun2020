@@ -1,6 +1,6 @@
 import React from 'react'
 import Context from '../Context'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core'
+import { createTheme, ThemeProvider } from '@material-ui/core'
 import { BrowserRouter } from 'react-router-dom'
 import { configure } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
@@ -30,7 +30,7 @@ jest.mock('../services/firebase.js', () => {
 
 const TestWrapper = (props) => {
 	function FakeThemeProvider({ children }) {
-		const theme = createMuiTheme()
+		const theme = createTheme()
 		return <ThemeProvider theme={theme}>{children}</ThemeProvider>
 	}
 	return (

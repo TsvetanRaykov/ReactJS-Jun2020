@@ -1,5 +1,6 @@
 import React from 'react'
-import { createRender } from '@material-ui/core/test-utils'
+import { act } from 'react-test-renderer'
+import { shallow } from 'enzyme'
 import TestWrapper from '../../utils/test-wrapper'
 import ProtectedRoute from '.'
 
@@ -9,20 +10,16 @@ jest.mock('react', () => ({
 }))
 
 describe('<ProtectedRoute />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
 	it('Should match the snapshot', () => {
-		const wrapper = render(
-			<TestWrapper>
-				<ProtectedRoute exact path='/' component={<h1>TEST</h1>}>
-					<h1>TEST</h1>
-				</ProtectedRoute>
-			</TestWrapper>
-		)
-		expect(wrapper).toMatchSnapshot()
+		act(() => {
+			const wrapper = shallow(
+				<TestWrapper>
+					<ProtectedRoute exact path='/' component={<h1>TEST</h1>}>
+						<h1>TEST</h1>
+					</ProtectedRoute>
+				</TestWrapper>
+			)
+			expect(wrapper).toMatchSnapshot()
+		})
 	})
 })

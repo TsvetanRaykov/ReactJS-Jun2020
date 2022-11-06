@@ -1,5 +1,5 @@
 import React from 'react'
-import { createRender } from '@material-ui/core/test-utils'
+import renderer from 'react-test-renderer'
 import TestWrapper from '../../utils/test-wrapper'
 import NotFound from '.'
 
@@ -9,14 +9,8 @@ jest.mock('react', () => ({
 }))
 
 describe('<NotFound />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
 	it('Should match the snapshot', () => {
-		const wrapper = render(
+		const wrapper = renderer.create(
 			<TestWrapper>
 				<NotFound />
 			</TestWrapper>

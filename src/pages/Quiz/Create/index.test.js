@@ -1,44 +1,34 @@
 import React from 'react'
-import { createRender } from '@material-ui/core/test-utils'
+import { act } from 'react-test-renderer'
+import { shallow } from 'enzyme'
 import TestWrapper from '../../../utils/test-wrapper'
-import CreateQuiz from '.'
 import AddQuestions from './AddQuestions'
+import CreateQuiz from '.'
 
-jest.mock('react', () => ({
-	...jest.requireActual('react'),
-	useLayoutEffect: jest.requireActual('react').useEffect,
-}))
-
-describe('<CreateQuiz />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
+describe('<AddQuestions />', () => {
 	it('Should match the snapshot', () => {
-		const wrapper = render(
-			<TestWrapper>
-				<CreateQuiz />
-			</TestWrapper>
-		)
-		expect(wrapper).toMatchSnapshot()
+		act(() => {
+			const wrapper = shallow(
+				<TestWrapper>
+					<AddQuestions />
+				</TestWrapper>
+			)
+
+			expect(wrapper).toMatchSnapshot()
+		})
 	})
 })
 
-describe('<AddQuestions />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
+describe('<CreateQuiz />', () => {
 	it('Should match the snapshot', () => {
-		const wrapper = render(
-			<TestWrapper>
-				<AddQuestions />
-			</TestWrapper>
-		)
-		expect(wrapper).toMatchSnapshot()
+		act(() => {
+			const wrapper = shallow(
+				<TestWrapper>
+					<CreateQuiz />
+				</TestWrapper>
+			)
+
+			expect(wrapper).toMatchSnapshot()
+		})
 	})
 })

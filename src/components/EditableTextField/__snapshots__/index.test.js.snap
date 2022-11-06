@@ -1,156 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<EditableTextField /> should match the snapshot 1`] = `
-initialize {
-  "0": Object {
-    "attribs": Object {
-      "class": "EditableTextField-userName-1",
-      "title": "Double click to edit",
-    },
-    "children": Array [],
-    "name": "div",
-    "namespace": "http://www.w3.org/1999/xhtml",
-    "next": Object {
-      "data": ")",
-      "next": null,
-      "parent": null,
-      "prev": [Circular],
-      "root": Object {
-        "attribs": Object {},
-        "children": Array [
-          [Circular],
-          [Circular],
-        ],
-        "name": "root",
-        "namespace": "http://www.w3.org/1999/xhtml",
-        "next": null,
-        "parent": null,
-        "prev": null,
-        "type": "root",
-        "x-attribsNamespace": Object {},
-        "x-attribsPrefix": Object {},
-      },
-      "type": "text",
-    },
-    "parent": null,
-    "prev": null,
-    "root": Object {
-      "attribs": Object {},
-      "children": Array [
-        [Circular],
-        Object {
-          "data": ")",
-          "next": null,
-          "parent": null,
-          "prev": [Circular],
-          "root": [Circular],
-          "type": "text",
-        },
-      ],
-      "name": "root",
-      "namespace": "http://www.w3.org/1999/xhtml",
-      "next": null,
-      "parent": null,
-      "prev": null,
-      "type": "root",
-      "x-attribsNamespace": Object {},
-      "x-attribsPrefix": Object {},
-    },
-    "type": "tag",
-    "x-attribsNamespace": Object {
-      "class": undefined,
-      "title": undefined,
-    },
-    "x-attribsPrefix": Object {
-      "class": undefined,
-      "title": undefined,
-    },
-  },
-  "1": Object {
-    "data": ")",
-    "next": null,
-    "parent": null,
-    "prev": Object {
-      "attribs": Object {
-        "class": "EditableTextField-userName-1",
-        "title": "Double click to edit",
-      },
-      "children": Array [],
-      "name": "div",
-      "namespace": "http://www.w3.org/1999/xhtml",
-      "next": [Circular],
-      "parent": null,
-      "prev": null,
-      "root": Object {
-        "attribs": Object {},
-        "children": Array [
-          [Circular],
-          [Circular],
-        ],
-        "name": "root",
-        "namespace": "http://www.w3.org/1999/xhtml",
-        "next": null,
-        "parent": null,
-        "prev": null,
-        "type": "root",
-        "x-attribsNamespace": Object {},
-        "x-attribsPrefix": Object {},
-      },
-      "type": "tag",
-      "x-attribsNamespace": Object {
-        "class": undefined,
-        "title": undefined,
-      },
-      "x-attribsPrefix": Object {
-        "class": undefined,
-        "title": undefined,
-      },
-    },
-    "root": Object {
-      "attribs": Object {},
-      "children": Array [
-        Object {
-          "attribs": Object {
-            "class": "EditableTextField-userName-1",
-            "title": "Double click to edit",
-          },
-          "children": Array [],
-          "name": "div",
-          "namespace": "http://www.w3.org/1999/xhtml",
-          "next": [Circular],
-          "parent": null,
-          "prev": null,
-          "root": [Circular],
-          "type": "tag",
-          "x-attribsNamespace": Object {
-            "class": undefined,
-            "title": undefined,
-          },
-          "x-attribsPrefix": Object {
-            "class": undefined,
-            "title": undefined,
-          },
-        },
-        [Circular],
-      ],
-      "name": "root",
-      "namespace": "http://www.w3.org/1999/xhtml",
-      "next": null,
-      "parent": null,
-      "prev": null,
-      "type": "root",
-      "x-attribsNamespace": Object {},
-      "x-attribsPrefix": Object {},
-    },
-    "type": "text",
-  },
-  "_root": [Circular],
-  "length": 2,
-  "options": Object {
-    "decodeEntities": true,
-    "normalizeWhitespace": false,
-    "withDomLvl1": true,
-    "xml": false,
-  },
-}
+Array [
+  <div
+    aria-describedby={null}
+    className="EditableTextField-userName-1"
+    onBlur={[Function]}
+    onDoubleClick={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+    onMouseOver={[Function]}
+    onTouchEnd={[Function]}
+    onTouchStart={[Function]}
+    title="Double click to edit"
+  />,
+  ")",
+]
 `;

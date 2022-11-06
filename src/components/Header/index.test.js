@@ -1,5 +1,6 @@
 import React from 'react'
-import { createRender } from '@material-ui/core/test-utils'
+import { act } from 'react-test-renderer'
+import { shallow } from 'enzyme'
 import TestWrapper from '../../utils/test-wrapper'
 import Header from '.'
 import AuthMenu from './AuthMenu'
@@ -9,36 +10,28 @@ jest.mock('react', () => ({
 	useLayoutEffect: jest.requireActual('react').useEffect,
 }))
 
-describe('<AuthMenu />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
+describe('<Header />', () => {
 	it('Should match the snapshot', () => {
-		const wrapper = render(
-			<TestWrapper>
-				<AuthMenu />
-			</TestWrapper>
-		)
-		expect(wrapper).toMatchSnapshot()
+		act(() => {
+			const wrapper = shallow(
+				<TestWrapper>
+					<Header />
+				</TestWrapper>
+			)
+			expect(wrapper).toMatchSnapshot()
+		})
 	})
 })
 
-describe('<Header />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
+describe('<AuthMenu />', () => {
 	it('Should match the snapshot', () => {
-		const wrapper = render(
-			<TestWrapper>
-				<Header />
-			</TestWrapper>
-		)
-		expect(wrapper).toMatchSnapshot()
+		act(() => {
+			const wrapper = shallow(
+				<TestWrapper>
+					<AuthMenu />
+				</TestWrapper>
+			)
+			expect(wrapper).toMatchSnapshot()
+		})
 	})
 })

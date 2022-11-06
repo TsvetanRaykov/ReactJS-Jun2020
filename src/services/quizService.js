@@ -80,15 +80,8 @@ class QuizService extends BaseService {
 
 		const completed = {}
 		history.forEach(({ data }) => {
-			const {
-				correct,
-				description,
-				duration,
-				passedAt,
-				score,
-				title,
-				total,
-			} = data
+			const { correct, description, duration, passedAt, score, title, total } =
+				data
 			if (completed[data.quiz] === undefined) {
 				completed[data.quiz] = { title, description, completions: [] }
 			}

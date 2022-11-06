@@ -1,5 +1,5 @@
 import React from 'react'
-import { createRender } from '@material-ui/core/test-utils'
+import renderer from 'react-test-renderer'
 import TestWrapper from '../../../utils/test-wrapper'
 import Answers from './Answers'
 import SetQuestion from './SetQuestion'
@@ -10,14 +10,8 @@ jest.mock('react', () => ({
 }))
 
 describe('<Answers />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
 	it('should match the snapshot', () => {
-		const wrapper = render(
+		const wrapper = renderer.create(
 			<TestWrapper>
 				<Answers selectedValue={jest.fn()} answers={[]} />
 			</TestWrapper>
@@ -27,14 +21,8 @@ describe('<Answers />', () => {
 })
 
 describe('<SetQuestion />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
 	it('should match the snapshot', () => {
-		const wrapper = render(
+		const wrapper = renderer.create(
 			<TestWrapper>
 				<SetQuestion />
 			</TestWrapper>

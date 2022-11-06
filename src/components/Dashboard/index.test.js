@@ -1,5 +1,7 @@
+import { shallow } from 'enzyme'
 import React from 'react'
-import { createRender } from '@material-ui/core/test-utils'
+// import { createRender } from 'react-test-renderer'
+import { act, create } from 'react-test-renderer'
 import TestWrapper from '../../utils/test-wrapper'
 import AvailableQuizList from './AvailableQuizList'
 import CompletedQuizList from './CompletedQuizList'
@@ -13,86 +15,66 @@ jest.mock('react', () => ({
 }))
 
 describe('<AvailableQuizList />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
 	it('Should match the snapshot', () => {
-		const wrapper = render(
-			<TestWrapper>
-				<AvailableQuizList />)
-			</TestWrapper>
-		)
-		expect(wrapper).toMatchSnapshot()
+		act(() => {
+			const wrapper = shallow(
+				<TestWrapper>
+					<AvailableQuizList />)
+				</TestWrapper>
+			)
+			expect(wrapper).toMatchSnapshot()
+		})
 	})
 })
 
 describe('<CompletedQuizList />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
 	it('Should match the snapshot', () => {
-		const wrapper = render(
-			<TestWrapper>
-				<CompletedQuizList />)
-			</TestWrapper>
-		)
-		expect(wrapper).toMatchSnapshot()
+		act(() => {
+			const wrapper = shallow(
+				<TestWrapper>
+					<CompletedQuizList />)
+				</TestWrapper>
+			)
+			expect(wrapper).toMatchSnapshot()
+		})
 	})
 })
 
 describe('<CompletedUsers />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
 	it('Should match the snapshot', () => {
-		const wrapper = render(
-			<TestWrapper>
-				<CompletedUsers />)
-			</TestWrapper>
-		)
-		expect(wrapper).toMatchSnapshot()
+		act(() => {
+			const wrapper = create(
+				<TestWrapper>
+					<CompletedUsers />)
+				</TestWrapper>
+			).toJSON()
+			expect(wrapper).toMatchSnapshot()
+		})
 	})
 })
 
 describe('<OwnQuizList />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
 	it('Should match the snapshot', () => {
-		const wrapper = render(
-			<TestWrapper>
-				<OwnQuizList />)
-			</TestWrapper>
-		)
-		expect(wrapper).toMatchSnapshot()
+		act(() => {
+			const wrapper = shallow(
+				<TestWrapper>
+					<OwnQuizList />)
+				</TestWrapper>
+			)
+			expect(wrapper).toMatchSnapshot()
+		})
 	})
 })
 
 describe('<UserData />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
 	it('Should match the snapshot', () => {
-		const wrapper = render(
-			<TestWrapper>
-				<UserData />)
-			</TestWrapper>
-		)
-		expect(wrapper).toMatchSnapshot()
+		act(() => {
+			const wrapper = shallow(
+				<TestWrapper>
+					<UserData />)
+				</TestWrapper>
+			)
+			expect(wrapper).toMatchSnapshot()
+		})
 	})
 })

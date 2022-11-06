@@ -1,5 +1,5 @@
 import React from 'react'
-import { createRender } from '@material-ui/core/test-utils'
+import renderer from 'react-test-renderer'
 import { Register } from './Register'
 import { SignIn } from './Login'
 import TestWrapper from '../../../utils/test-wrapper'
@@ -10,14 +10,8 @@ jest.mock('react', () => ({
 }))
 
 describe('<RegisterForm />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
 	it('should match the snapshot', () => {
-		const wrapper = render(
+		const wrapper = renderer.create(
 			<TestWrapper>
 				<Register classes={{ main: {} }} />)
 			</TestWrapper>
@@ -27,14 +21,8 @@ describe('<RegisterForm />', () => {
 })
 
 describe('<LoginForm />', () => {
-	let render
-
-	beforeAll(() => {
-		render = createRender()
-	})
-
 	it('should match the snapshot', () => {
-		const wrapper = render(
+		const wrapper = renderer.create(
 			<TestWrapper>
 				<SignIn classes={{ main: {} }} />)
 			</TestWrapper>

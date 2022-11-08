@@ -10,12 +10,8 @@ import {
 import { DeleteForever } from '@material-ui/icons'
 
 const Answers = (props) => {
-	const {
-		selectedValue,
-		answers,
-		handleRadioChange,
-		handleDeleteAnswer,
-	} = props
+	const { selectedValue, answers, handleRadioChange, handleDeleteAnswer } =
+		props
 
 	return (
 		<FormControl fullWidth>

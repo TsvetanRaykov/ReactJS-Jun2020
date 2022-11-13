@@ -12,10 +12,8 @@ const QuizActive = (props) => {
 	} = props
 
 	const [active, setActiveQuestion] = useState(0)
-	const [rerender, setRerender] = useState(null)
 	const handleAnswer = (a) => {
 		questions[active].userAnswer = a
-		setRerender(a)
 	}
 
 	const changeQuestion = (i) => {
@@ -27,7 +25,6 @@ const QuizActive = (props) => {
 			<QuizNav
 				questions={questions}
 				changeQuestion={changeQuestion}
-				rerender={rerender}
 				handleEndQuizClick={handleEndQuizClick}
 			/>
 			<QuizActiveBody

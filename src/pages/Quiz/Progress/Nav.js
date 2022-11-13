@@ -12,12 +12,7 @@ import {
 } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
 
-const QuizNav = ({
-	questions,
-	changeQuestion,
-	rerender,
-	handleEndQuizClick,
-}) => {
+const QuizNav = ({ questions, changeQuestion, handleEndQuizClick }) => {
 	const handleClick = (e, i) => {
 		changeQuestion(i)
 	}

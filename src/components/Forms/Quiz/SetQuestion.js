@@ -49,16 +49,17 @@ const theme = createTheme({
 })
 
 const SetQuestionForm = (props) => {
-	const { classes, formClose, activeQuestionIndex } = props
+	const { classes, formClose, newQuestionType, activeQuestionIndex } = props
 	const {
 		quiz: { questions },
 		updateQuiz,
 	} = useContext(Context)
 
-	const [open, setOpen] = useState(false)
+	const [open, setOpenAnswerAdd] = useState(false)
 	const [question, setQuestion] = useState(
 		questions[activeQuestionIndex]?.question || ''
 	)
+
 	const [newAnswer, setNewAnswer] = useState('')
 	const [answers, setAnswers] = useState([])
 
@@ -70,17 +71,19 @@ const SetQuestionForm = (props) => {
 		handleNo: () => {},
 	})
 
-	const onSaveClick = () => {
+	const questionType = () =>
+		questions[activeQuestionIndex]?.type || newQuestionType || 'single'
+
+	const onSaveQuestionClick = () => {
 		const newQuestions = questions.slice(0)
 		if (activeQuestionIndex >= 0) {
-			newQuestions.splice(activeQuestionIndex, 1, { question, answers })
-		} else {
-			const idx = newQuestions.findIndex((q) => q.question === question)
-			if (idx >= 0) {
-				newQuestions.splice(idx, 1, { question, answers })
-			} else {
-				newQuestions.push({ question, answers })
+			newQuestions[activeQuestionIndex] = {
+				...newQuestions[activeQuestionIndex],
+				question,
+				answers,
 			}
+		} else {
+			newQuestions.push({ question, answers, type: questionType() })
 		}
 
 		updateQuiz({ questions: newQuestions })
@@ -90,16 +93,12 @@ const SetQuestionForm = (props) => {
 	useEffect(() => {
 		const ansList = questions[activeQuestionIndex]?.answers || []
 		setAnswers(() => ansList.map((a) => Object.assign({}, a)))
+		setQuestion(questions[activeQuestionIndex]?.question)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, [activeQuestionIndex])
 
-	const selectedValue = () => {
-		for (const a of answers) {
-			if (a.correct) {
-				return a.text
-			}
-		}
-		return ''
+	const hasCorrectAnswer = () => {
+		return answers.some((ans) => ans.correct === true)
 	}
 
 	const onCancelClick = () => {
@@ -124,31 +123,22 @@ const SetQuestionForm = (props) => {
 	}
 
 	const handleClickOpen = () => {
-		setOpen(true)
+		setOpenAnswerAdd(true)
 	}
 
 	const handleClose = () => {
 		if (newAnswer) {
 			setAnswers([
 				...answers.filter((a) => a.text !== newAnswer),
-				{ text: newAnswer, correct: false },
+				{ text: newAnswer, correct: questionType() === 'open' },
 			])
 			setNewAnswer('')
 		}
-		setOpen(false)
+		setOpenAnswerAdd(false)
 	}
 
-	const handleDeleteAnswer = (key) => {
-		setAnswers(answers.filter((a) => a.text !== key))
-	}
-
-	const handleRadioChange = (event) => {
-		setAnswers(
-			answers.map((a) => {
-				a.correct = a.text === event.target.value
-				return a
-			})
-		)
+	const updateAnswers = (updated) => {
+		setAnswers(updated)
 	}
 
 	return (
@@ -156,7 +146,10 @@ const SetQuestionForm = (props) => {
 			<Paper className={classes.paper}>
 				<form onSubmit={(e) => e.preventDefault() && false}>
 					<FormControl margin='normal' required fullWidth>
-						<InputLabel htmlFor='question'>Question</InputLabel>
+						<InputLabel htmlFor='question'>
+							Question ({questionType()} answer
+							{questionType() === 'multiple' ? 's' : ''})
+						</InputLabel>
 						<Input
 							id='question'
 							name='question'
@@ -184,9 +177,8 @@ const SetQuestionForm = (props) => {
 					<Box display='flex' justifyContent='space-around' flexDirection='row'>
 						<Answers
 							answers={answers}
-							handleRadioChange={handleRadioChange}
-							handleDeleteAnswer={handleDeleteAnswer}
-							selectedValue={selectedValue}
+							updateAnswers={updateAnswers}
+							questionType={questionType()}
 						/>
 					</Box>
 					<Dialog
@@ -221,10 +213,10 @@ const SetQuestionForm = (props) => {
 					</Dialog>
 					<Button
 						type='submit'
-						disabled={!selectedValue()}
+						disabled={!hasCorrectAnswer()}
 						variant='contained'
 						color='primary'
-						onClick={onSaveClick}
+						onClick={onSaveQuestionClick}
 						className={classes.submit}
 					>
 						Save Question

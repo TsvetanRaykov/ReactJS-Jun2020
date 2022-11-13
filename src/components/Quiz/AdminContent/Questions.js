@@ -10,27 +10,30 @@ import {
 import { Edit } from '@material-ui/icons'
 
 const Questions = (props) => {
-	const { questions, editQuestion } = props
+	const { questions, editQuestion, activeQuestionIndex } = props
 
 	return (
 		<List>
 			{questions.map(({ question }, i) => {
+				const styles = i === activeQuestionIndex ? { display: 'none' } : {}
 				return (
-					<ListItem key={question}>
-						<ListItemText primary={question} />
-						<ListItemSecondaryAction>
-							<Tooltip title='Edit question and answers' placement='left'>
-								<IconButton
-									edge='end'
-									aria-label='edit'
-									color='primary'
-									onClick={() => editQuestion(i)}
-								>
-									<Edit />
-								</IconButton>
-							</Tooltip>
-						</ListItemSecondaryAction>
-					</ListItem>
+					<div style={styles} key={question}>
+						<ListItem>
+							<ListItemText primary={question} />
+							<ListItemSecondaryAction>
+								<Tooltip title='Edit question and answers' placement='left'>
+									<IconButton
+										edge='end'
+										aria-label='edit'
+										color='primary'
+										onClick={() => editQuestion(i)}
+									>
+										<Edit />
+									</IconButton>
+								</Tooltip>
+							</ListItemSecondaryAction>
+						</ListItem>
+					</div>
 				)
 			})}
 		</List>

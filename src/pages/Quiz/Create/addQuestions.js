@@ -12,11 +12,11 @@ const AddQuestions = () => {
 	} = useContext(Context)
 
 	const [isFormOpen, setFormOpen] = useState(false)
-	const [isNewQuestion, setIsNewQuestion] = useState(false)
+	const [newQuestionType, setNewQuestionType] = useState(null)
 
-	const formHandler = (isFormOpen, isNewQuestion) => {
+	const formHandler = (isFormOpen, newQuestionType) => {
+		setNewQuestionType(newQuestionType)
 		setFormOpen(isFormOpen)
-		setIsNewQuestion(isNewQuestion)
 	}
 
 	if (title) {
@@ -24,11 +24,11 @@ const AddQuestions = () => {
 			<>
 				<Header title={title} />
 				<Container>
-					<AdminMenu formHandler={formHandler} />
+					<AdminMenu formHandler={formHandler} isFormOpen={isFormOpen} />
 					<AdminContent
 						formOpen={isFormOpen}
 						formHandler={formHandler}
-						isNewQuestion={isNewQuestion}
+						newQuestionType={newQuestionType}
 					/>
 				</Container>
 			</>

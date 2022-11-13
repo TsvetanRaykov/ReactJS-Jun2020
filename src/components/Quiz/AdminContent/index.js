@@ -3,6 +3,7 @@ import { Paper, Typography, withStyles } from '@material-ui/core'
 import SetQuestionForm from '../../Forms/Quiz/SetQuestion'
 import Context from '../../../Context'
 import Questions from './Questions'
+import CustomPaginationActionsTable from './QuestionsTable'
 
 const styles = (theme) => ({
 	root: {
@@ -11,7 +12,7 @@ const styles = (theme) => ({
 })
 
 const AdminContent = (props) => {
-	const { classes, formOpen, formHandler, isNewQuestion } = props
+	const { classes, formOpen, formHandler, newQuestionType } = props
 
 	const {
 		quiz: { questions },
@@ -23,16 +24,13 @@ const AdminContent = (props) => {
 
 	const formClose = () => {
 		setQuestionList(questions)
-		formHandler(false, isNewQuestion)
+		formHandler(false)
 		setActiveQuestion(-1)
 	}
 
 	const editQuestion = (i) => {
 		setActiveQuestion(i)
-		setQuestionList((current) => {
-			return current.filter((a, n) => n !== i)
-		})
-		formHandler(true, false)
+		formHandler(true)
 	}
 
 	useEffect(() => {
@@ -45,12 +43,22 @@ const AdminContent = (props) => {
 				<Typography component='h1' variant='h6'>
 					Questions
 				</Typography>
-				<Questions questions={questionList} editQuestion={editQuestion} />
+				{/* <Questions
+					questions={questionList}
+					editQuestion={editQuestion}
+					activeQuestionIndex={activeQuestionIndex}
+				/> */}
+				<CustomPaginationActionsTable
+					questions={questionList}
+					editQuestion={editQuestion}
+					activeQuestionIndex={activeQuestionIndex}
+				/>
 			</Paper>
 			{formOpen && (
 				<SetQuestionForm
 					formClose={formClose}
 					activeQuestionIndex={activeQuestionIndex}
+					newQuestionType={newQuestionType}
 				/>
 			)}
 		</>

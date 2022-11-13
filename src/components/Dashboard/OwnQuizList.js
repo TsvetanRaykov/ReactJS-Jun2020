@@ -23,7 +23,7 @@ import {
 	AccessTime,
 } from '@material-ui/icons'
 import ModalDialog from '../../components/shared/ModalDialog'
-import Constext from '../../Context'
+import Context from '../../Context'
 import CompletedUsers from './CompletedUsers'
 
 const styles = (theme) => ({
@@ -57,7 +57,7 @@ const OwnQuizList = (props) => {
 	const [quizzes, setQuizzes] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [expanded, setExpanded] = useState(false)
-	const { updateQuiz, updateQuizSnapshot } = useContext(Constext)
+	const { updateQuiz, updateQuizSnapshot } = useContext(Context)
 
 	const [modalDialog, setModalDialog] = useState({
 		title: '',
@@ -102,10 +102,12 @@ const OwnQuizList = (props) => {
 		)
 	}
 
-	const handleEditClick = (data) => {
-		updateQuiz({ ...data })
-		updateQuizSnapshot({ ...data })
-		props.history.push('/quiz/edit/questions')
+	const handleEditClick = (id) => {
+		quizService.getById(id).then(({ data }) => {
+			updateQuiz({ ...data, id })
+			updateQuizSnapshot({ ...data, id })
+			props.history.push('/quiz/edit/questions')
+		})
 	}
 
 	const handleDeleteClick = (id) => {
@@ -173,7 +175,7 @@ const OwnQuizList = (props) => {
 										color='primary'
 										className={classes.button}
 										startIcon={<Settings />}
-										onClick={() => handleEditClick(data)}
+										onClick={() => handleEditClick(id)}
 									>
 										Edit
 									</Button>

@@ -46,7 +46,10 @@ export default function ModalDialog(props) {
 				<Fade in={open}>
 					<div className={classes.paper}>
 						<h2 id='modal-dialog-title'>{title}</h2>
-						<p id='modal-dialog-description'>{message}</p>
+						<p
+							id='modal-dialog-description'
+							dangerouslySetInnerHTML={{ __html: message }}
+						></p>
 
 						<Box display='flex' mt={2} justifyContent='space-around'>
 							<Button autoFocus onClick={() => handleNo()} color='primary'>

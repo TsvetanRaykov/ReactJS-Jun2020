@@ -1,52 +1,23 @@
 import React from 'react'
-import {
-	FormControlLabel,
-	Radio,
-	FormControl,
-	RadioGroup,
-	Box,
-	IconButton,
-} from '@material-ui/core'
-import { DeleteForever } from '@material-ui/icons'
+import Single from './AnswerTypes/Single'
+import Multiple from './AnswerTypes/Multiple'
+import Open from './AnswerTypes/Open'
 
 const Answers = (props) => {
-	const { selectedValue, answers, handleRadioChange, handleDeleteAnswer } =
-		props
+	const { answers, questionType, updateAnswers } = props
 
 	return (
-		<FormControl fullWidth>
-			<RadioGroup
-				aria-label='quiz'
-				name='quiz'
-				value={selectedValue()}
-				onChange={handleRadioChange}
-			>
-				{answers.map((a, i) => {
-					return (
-						<Box
-							key={a.text}
-							display='flex'
-							justifyContent='space-between'
-							flexDirection='row'
-						>
-							<FormControlLabel
-								value={a.text}
-								control={<Radio />}
-								label={a.text}
-							/>
-							<IconButton
-								data-cy={`delete-answer-${i}`}
-								aria-label='delete'
-								color='secondary'
-								onClick={() => handleDeleteAnswer(a.text)}
-							>
-								<DeleteForever />
-							</IconButton>
-						</Box>
-					)
-				})}
-			</RadioGroup>
-		</FormControl>
+		<>
+			{questionType === 'single' && (
+				<Single answers={answers} updateAnswers={updateAnswers} />
+			)}
+			{questionType === 'multiple' && (
+				<Multiple answers={answers} updateAnswers={updateAnswers} />
+			)}
+			{questionType === 'open' && (
+				<Open answers={answers} updateAnswers={updateAnswers} />
+			)}
+		</>
 	)
 }
 

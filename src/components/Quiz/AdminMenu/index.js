@@ -7,6 +7,7 @@ import quizService from '../../../services/quizService'
 import { deepEqual } from '../../../utils'
 import Green from '@material-ui/core/colors/green'
 import ModalDialog from '../../shared/ModalDialog'
+import QuestionTypesMenu from '../AdminMenu/QuestionTypesMenu'
 
 const useStyles = makeStyles((theme) => ({
 	green: {
@@ -15,13 +16,18 @@ const useStyles = makeStyles((theme) => ({
 		'&:hover': {
 			color: theme.palette.primary.dark,
 		},
+		'&:disabled': {
+			boxShadow: 'none',
+			background: 'rgb(255, 255, 255)',
+			color: 'rgba(0, 0, 0, 0.26)',
+		},
 	},
 }))
 
 const EditMenu = (props) => {
 	const classes = useStyles()
 
-	const { formHandler, history } = props
+	const { formHandler, isFormOpen, history } = props
 	const { quiz, quizSnapshot } = useContext(Context)
 	const [canSave, setCanSave] = useState(false)
 	const [notSaved, setNotSaved] = useState(false)
@@ -68,12 +74,13 @@ const EditMenu = (props) => {
 		const hasNoErrors = !Object.entries(errors).find(([k, v]) => v.length > 0)
 		const hasChanges = !deepEqual(quiz, quizSnapshot)
 		setNotSaved(hasChanges)
-		setCanSave(hasNoErrors && hasChanges)
-	}, [quiz, quizSnapshot])
+		setCanSave(hasNoErrors && hasChanges && !isFormOpen)
+	}, [isFormOpen, quiz, quizSnapshot])
 
-	const addQuestionHandler = () => {
-		formHandler(true, true)
-	}
+	// const addQuestionHandler = () => {
+	// 	formHandler(true, true)
+	// }
+
 	const saveQuizHandler = () => {
 		setModalDialog(() => {
 			return {
@@ -96,6 +103,10 @@ const EditMenu = (props) => {
 		})
 	}
 
+	const handleQuestionTypeSelect = (type) => {
+		formHandler(true, type)
+	}
+
 	return (
 		<>
 			<Paper>
@@ -113,14 +124,19 @@ const EditMenu = (props) => {
 					>
 						Edit Details
 					</Button>
-					<Button
+					{/* <Button
 						className={classes.green}
 						color='primary'
 						variant='outlined'
 						onClick={addQuestionHandler}
 					>
 						Add Question
-					</Button>
+					</Button> */}
+					<QuestionTypesMenu
+						classes={classes}
+						disabled={isFormOpen}
+						handleQuestionTypeSelect={handleQuestionTypeSelect}
+					/>
 					<Button
 						color='primary'
 						variant={notSaved ? 'contained' : 'outlined'}

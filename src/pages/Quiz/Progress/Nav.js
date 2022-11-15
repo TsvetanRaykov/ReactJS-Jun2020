@@ -46,7 +46,9 @@ const QuizNav = ({ questions, changeQuestion, handleEndQuizClick }) => {
 										<Button
 											key={i}
 											variant={
-												n.userAnswer !== undefined ? 'contained' : 'outlined'
+												n.userAnswers && n.userAnswers.length > 0
+													? 'contained'
+													: 'outlined'
 											}
 											onClick={(e) => handleClick(e, i)}
 										>

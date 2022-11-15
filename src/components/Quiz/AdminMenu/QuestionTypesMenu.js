@@ -12,7 +12,9 @@ export default function SimpleMenu(props) {
 	}
 
 	const handleClose = (type) => {
-		handleQuestionTypeSelect(type)
+		if (['single', 'multiple', 'open'].includes(type)) {
+			handleQuestionTypeSelect(type)
+		}
 		setAnchorEl(null)
 	}
 
@@ -34,9 +36,11 @@ export default function SimpleMenu(props) {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}
 			>
-				<MenuItem onClick={() => handleClose('single')}>Single</MenuItem>
-				<MenuItem onClick={() => handleClose('multiple')}>Multiple</MenuItem>
-				<MenuItem onClick={() => handleClose('open')}>Open</MenuItem>
+				<MenuItem onClick={() => handleClose('single')}>Single answer</MenuItem>
+				<MenuItem onClick={() => handleClose('multiple')}>
+					Multiple answers
+				</MenuItem>
+				<MenuItem onClick={() => handleClose('open')}>Open answer</MenuItem>
 			</Menu>
 		</div>
 	)

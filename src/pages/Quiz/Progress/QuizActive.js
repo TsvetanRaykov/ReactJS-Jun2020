@@ -12,8 +12,23 @@ const QuizActive = (props) => {
 	} = props
 
 	const [active, setActiveQuestion] = useState(0)
-	const handleAnswer = (a) => {
-		questions[active].userAnswer = a
+
+	const handleAnswer = (a, remove) => {
+		const question = questions[active]
+
+		if (!question?.userAnswers) {
+			question.userAnswers = []
+		}
+
+		if (question.type === 'multiple') {
+			const set = new Set(question.userAnswers)
+			remove ? set.delete(a) : set.add(a)
+			question.userAnswers = Array.from(set)
+		} else {
+			if (a.trim() === '') question.userAnswers = []
+			else question.userAnswers = [a]
+		}
+		console.log(question.userAnswers)
 	}
 
 	const changeQuestion = (i) => {

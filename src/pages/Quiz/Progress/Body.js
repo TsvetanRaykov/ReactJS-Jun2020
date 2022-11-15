@@ -10,21 +10,40 @@ import {
 	Container,
 	FormControl,
 	FormLabel,
+	Checkbox,
+	TextField,
 } from '@material-ui/core'
 
 const QuizActiveBody = (props) => {
 	const { handleAnswer, question } = props
 	const [answers, setAnswers] = useState([])
 
-	const [value, setValue] = useState(question.userAnswer || '')
-	const handleChange = (event) => {
-		setValue(event.target.value)
+	const [radioGroupValue, setRadioGroupValue] = useState(
+		question?.userAnswers && question.userAnswers.lenght > 0
+			? question.userAnswers[0]
+			: ''
+	)
+
+	const handleRadioChange = (event) => {
+		setRadioGroupValue(event.target.value)
+		handleAnswer(event.target.value.trim())
+	}
+
+	const handleCheckboxChange = (event) => {
+		handleAnswer(event.target.value, !event.target.checked)
+	}
+
+	const handleInputChange = (event) => {
 		handleAnswer(event.target.value)
 	}
 
 	useEffect(() => {
 		setAnswers(question?.answers || [])
-		setValue(question.userAnswer || '')
+		setRadioGroupValue(
+			question?.userAnswers && question.userAnswers.lenght > 0
+				? question.userAnswers[0]
+				: ''
+		)
 	}, [question])
 
 	return (
@@ -45,18 +64,44 @@ const QuizActiveBody = (props) => {
 						px={5}
 						py={2}
 					>
-						<FormControl component='fieldset'>
+						<FormControl fullWidth component='fieldset'>
 							<FormLabel component='legend'></FormLabel>
-							<RadioGroup value={value} onChange={handleChange}>
-								{answers.map((a) => (
+							{question.type === 'multiple' &&
+								answers.map((a) => (
 									<FormControlLabel
 										key={a.text}
 										value={a.text}
-										control={<Radio color='primary' />}
+										control={
+											<Checkbox
+												color='primary'
+												onChange={handleCheckboxChange}
+											/>
+										}
 										label={a.text}
 									/>
 								))}
-							</RadioGroup>
+							{question.type === 'open' && (
+								<TextField
+									id='user-answer'
+									label='Your answer'
+									onChange={handleInputChange}
+								/>
+							)}
+							{(question.type === 'single' || !question?.type) && (
+								<RadioGroup
+									value={radioGroupValue}
+									onChange={handleRadioChange}
+								>
+									{answers.map((a) => (
+										<FormControlLabel
+											key={a.text}
+											value={a.text}
+											control={<Radio color='primary' />}
+											label={a.text}
+										/>
+									))}
+								</RadioGroup>
+							)}
 						</FormControl>
 					</Box>
 				</Paper>

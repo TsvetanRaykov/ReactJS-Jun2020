@@ -68,11 +68,12 @@ class QuizService extends BaseService {
 	async getAvailable() {
 		const data = await this.ref.where('isPublic', '==', true).get()
 
-		const notPersonal = this.filterPersonal(data).filter((doc) => {
+		const available = this.filterPersonal(data).filter((doc) => {
+			// filer completed by the current user
 			return !doc.completedBy.some((a) => a.uid === this.uid)
 		})
 
-		return notPersonal
+		return available
 	}
 
 	async getCompleted() {

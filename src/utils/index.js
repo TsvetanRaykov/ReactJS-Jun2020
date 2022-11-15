@@ -6,18 +6,39 @@ const processQuizResult = (quiz) => {
 	} = quiz
 	let incorrect = 0
 	for (const question of questions) {
-		const { answers, userAnswer } = question
-		if (userAnswer === undefined) {
+		const { answers, userAnswers } = question
+		if (!userAnswers || userAnswers.length === 0) {
 			incorrect++
 			continue
 		}
 
 		let correct = false
-		for (let i = 0; i < answers.length; i++) {
-			const answer = answers[i]
-			if (answer.correct && answer.text === userAnswer) {
-				correct = true
-				break
+		if (question.type === 'multiple') {
+			const authorSet = new Set(
+				answers.filter((a) => a.correct === true).map((a) => a.text)
+			)
+			const userSet = new Set(userAnswers)
+			correct =
+				authorSet.size === userSet.size &&
+				[...authorSet].every((x) => userSet.has(x))
+		} else if (question.type === 'open') {
+			correct = Boolean(
+				answers.find(
+					(a) =>
+						a.text.localeCompare(userAnswers[0], undefined, {
+							ignorePunctuation: true,
+							sensitivity: 'accent',
+						}) === 0
+				)
+			)
+		} else {
+			// single
+			for (let i = 0; i < answers.length; i++) {
+				const answer = answers[i]
+				if (answer.correct && answer.text === userAnswers[0]) {
+					correct = true
+					break
+				}
 			}
 		}
 		if (correct === false) {

@@ -66,7 +66,7 @@ describe('<QuizActive />', () => {
 		act(() => {
 			const wrapper = create(
 				<TestWrapper>
-					<QuizActive quiz={{ data: { questions: [{ userAnswer: '' }] } }} />
+					<QuizActive quiz={{ data: { questions: [{ userAnswers: [] }] } }} />
 				</TestWrapper>
 			).toJSON()
 			expect(wrapper).toMatchSnapshot()

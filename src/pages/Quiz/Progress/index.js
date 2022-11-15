@@ -49,14 +49,30 @@ const QuizProgress = (props) => {
 	})
 
 	useEffect(() => {
+		// Prompt confirmation when reload page is triggered
+		window.onbeforeunload = () => {
+			return ''
+		}
+
+		// Unmount the window.onbeforeunload event
+		return () => {
+			window.onbeforeunload = null
+		}
+	}, [])
+
+	useEffect(() => {
 		setLoading(true)
+
 		quizService
-			.getById(atob(id))
+			.getAvailable()
 			.then((data) => {
-				setQuiz(data)
-				setTimer((t) => {
-					return { ...t, duration: data.data.duration }
-				})
+				const quiz = data.find((q) => q.id === atob(id))
+				if (quiz) {
+					setQuiz({ id: quiz.id, data: quiz })
+					setTimer((t) => {
+						return { ...t, duration: quiz.duration }
+					})
+				}
 			})
 			.finally(() => setLoading(false))
 	}, [id])
@@ -193,6 +209,34 @@ const QuizProgress = (props) => {
 
 		if (start) {
 			return <QuizActive quiz={quiz} handleEndQuizClick={handleEndQuizClick} />
+		}
+
+		if (Object.keys(quiz).length === 0) {
+			return (
+				<Container>
+					<Paper>
+						<Box
+							display='flex'
+							my={3}
+							py={2}
+							flexDirection='row'
+							justifyContent='center'
+						>
+							<Typography component='h4' variant='h5'>
+								This quiz is not available to you.
+							</Typography>
+						</Box>
+						<Box
+							display='flex'
+							py={2}
+							flexDirection='row'
+							justifyContent='center'
+						>
+							<Typography>Please contact the author</Typography>
+						</Box>
+					</Paper>
+				</Container>
+			)
 		}
 
 		return (

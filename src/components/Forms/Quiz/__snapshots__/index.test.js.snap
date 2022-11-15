@@ -1,16 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Answers /> should match the snapshot 1`] = `
-<div
-  className="MuiFormControl-root MuiFormControl-fullWidth"
->
-  <div
-    aria-label="quiz"
-    className="MuiFormGroup-root"
-    role="radiogroup"
-  />
-</div>
-`;
+exports[`<Answers /> should match the snapshot 1`] = `null`;
 
 exports[`<SetQuestion /> should match the snapshot 1`] = `
 Array [
@@ -28,7 +18,11 @@ Array [
           data-shrink={false}
           htmlFor="question"
         >
-          Question
+          Question (
+          single
+           answer
+          
+          )
           <span
             aria-hidden={true}
             className="MuiFormLabel-asterisk MuiInputLabel-asterisk"

@@ -33,30 +33,32 @@ Array [
           Edit Details
         </span>
       </a>
-      <button
-        className="MuiButtonBase-root MuiButton-root MuiButton-outlined makeStyles-green-1 MuiButton-outlinedPrimary"
-        disabled={false}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onDragLeave={[Function]}
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        onKeyUp={[Function]}
-        onMouseDown={[Function]}
-        onMouseLeave={[Function]}
-        onMouseUp={[Function]}
-        onTouchEnd={[Function]}
-        onTouchMove={[Function]}
-        onTouchStart={[Function]}
-        tabIndex={0}
-        type="button"
-      >
-        <span
-          className="MuiButton-label"
+      <div>
+        <button
+          className="MuiButtonBase-root MuiButton-root MuiButton-outlined makeStyles-green-1 MuiButton-outlinedPrimary"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          tabIndex={0}
+          type="button"
         >
-          Add Question
-        </span>
-      </button>
+          <span
+            className="MuiButton-label"
+          >
+            Add Question
+          </span>
+        </button>
+      </div>
       <button
         className="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary Mui-disabled Mui-disabled"
         disabled={true}
